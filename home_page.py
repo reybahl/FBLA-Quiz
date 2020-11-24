@@ -24,6 +24,6 @@ def takequiz():
     if request.method == "POST":
         req = request.form
         print(req)
-    return render_template('quizpage.html', Q1name = "Question !1!", Q1type = "select")
+    return render_template('quizpage.html', Q1name = "Question !1!", Q1type = "text")
 
 app.run()
