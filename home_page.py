@@ -23,7 +23,7 @@ def login():
 def takequiz():
     if request.method == "POST":
         req = request.form
-
-    return render_template('quizpage.html')
+        print(req)
+    return render_template('quizpage.html', Q1name = "Question !1!", Q1type = "select")
 
 app.run()
