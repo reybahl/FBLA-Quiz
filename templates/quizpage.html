@@ -22,24 +22,41 @@
   </nav>
   <br> 
 
-    <form action="/takequiz" method="POST">
+    <form class = "col-lg-6 offset-lg-3" action="/takequiz" method="POST">
       <div class = "form-group">
         <label>Question Name</label>
-      <select class="custom-select" name="Question1">
-        <option selected>Choose an answer</option>
-        <option value="1">One</option>
-        <option value="2">Two</option>
-        <option value="3">Three</option>
-      </select>
+          <select class="custom-select" name="Question1">
+            <option selected>Choose an answer</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
       </div>
         <div class="form-group">
-          <label for="exampleInputEmail1">{{Q1name}}</label>
-          <input type= {{Q1type}} class="form-control" name= "Answer1">
+          <label>{{Q1name}}</label>
+          <input type= {{Q1type}} class="form-control" name= "Answer1" placeholder="Fill in the blank">
         </div>
         <div class="form-group">
-          <label for="exampleInputPassword1">Password</label>
-          <input type="password" class="form-control" name= "Password" id="exampleInputPassword1" placeholder="Password">
+          <label>checkbox</label>
+            <div class="checkbox">
+              <label><input type="checkbox" value="1" name = " Option1">Option 1</label>
+            </div>
+            <div class="checkbox">
+              <label><input type="checkbox" value="2" name = " Option2">Option 2</label>
+            </div>
+            <div class="checkbox">
+              <label><input type="checkbox" value="3" name = " Option3">Option 1</label>
+            </div> 
         </div>
+        <label>Question Name</label>
+          <select class="custom-select" name="Question1">
+            <option selected>True or False?</option>
+            <option value="True">True</option>
+            <option value="False">False</option>
+          </select>
+          <br>
+
+          <br>
         <button type="submit" class="btn btn-primary">Submit</button>
-      </form>
+    </form>
 </body>

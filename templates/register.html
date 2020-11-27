@@ -28,11 +28,14 @@
     <label for="exampleInputPassword1">Password</label>
     <input type="password" class="form-control" name= "Password" id="exampleInputPassword1" placeholder="Password">
   </div>
-  <button type="submit" class="btn btn-primary">Sign In</button>
+  <div class="form-group">
+    <label for="exampleInputPassword1">Password</label>
+    <input type="password" class="form-control" name= "Password" id="exampleInputPassword1" placeholder="Confirm Password">
+  </div>
+  <button type="submit" class="btn btn-primary">Create account</button>
 </form>
 <br>
-<p style="text-align:center;">Don't have an account? <a href="/register">Create one</a> </p>
-{% if message != "None" %}
+{% if message != "" %}
 <div class="alert alert-danger" role="alert">
   <h1 class = "lead" style = "text-align:center;">{{message}}</h1>
 </div>
