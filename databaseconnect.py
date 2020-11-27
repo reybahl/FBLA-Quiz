@@ -1,7 +1,5 @@
 import mysql.connector
 
-mydb = None
-
 class Connection():
     def create_connection(self):
         self.mydb = mysql.connector.connect(
