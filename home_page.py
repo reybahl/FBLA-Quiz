@@ -1,6 +1,8 @@
-from flask import Flask, render_template,  redirect,  url_for, request
+from flask import Flask, render_template,  redirect,  url_for, request, session
 from databaseconnect import Connection
 app = Flask(__name__)
+
+app.secret_key = "FBLA"
 
 connection = Connection()
 @app.route('/')
@@ -9,7 +11,10 @@ def start():
 
 @app.route('/home')
 def home():
-    return render_template('homepage.html')
+    user= session['username']
+    if user is None:
+        user = 'None'
+    return render_template('homepage.html', user = session['username'])
 
 @app.route('/login',  methods=["GET", "POST"])
 def login():
@@ -18,6 +23,13 @@ def login():
         print(req)
         if req['Username'] == '' or req['Password'] == '':
             return render_template('loginpage.html', message = "Please enter a valid username and password!")
+
+
+        user = connection.login(req['Username'], req['Password'])
+        if user is None:
+            return render_template('loginpage.html', message = "Please enter a valid username and password!")
+        else:
+            session['username'] = user[0]
 
     return render_template('loginpage.html', message = "")
 
@@ -38,4 +50,5 @@ def register():
 
         connection.create_account(req['Username'], req['Password'])
     return render_template('register.html', message = "")
+
 app.run()
