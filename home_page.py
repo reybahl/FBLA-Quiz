@@ -1,7 +1,8 @@
 from flask import Flask, render_template,  redirect,  url_for, request
-
+from databaseconnect import Connection
 app = Flask(__name__)
 
+connection = Connection()
 @app.route('/')
 def start():
     return redirect(url_for("home"))
@@ -17,7 +18,7 @@ def login():
         print(req)
         if req['Username'] == '' or req['Password'] == '':
             return render_template('loginpage.html', message = "Please enter a valid username and password!")
-        
+
     return render_template('loginpage.html', message = "")
 
 @app.route('/takequiz', methods= ["GET", "POST"] )
@@ -31,8 +32,10 @@ def takequiz():
 def register():
     if request.method == "POST":
         req = request.form
-        print(req)
+        print(req['Username'])
         if req['Username'] == '' or req['Password'] == '':
             return render_template('register.html', message = "Please enter a valid username and password!")
+
+        connection.create_account(req['Username'], req['Password'])
     return render_template('register.html', message = "")
 app.run()
