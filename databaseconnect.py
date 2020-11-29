@@ -1,4 +1,5 @@
 import mysql.connector
+import random
 
 class Connection():
     def create_connection(self):
@@ -37,4 +38,12 @@ class Connection():
         self.close_connection()
 
         return self.ret_val
-        
+    def generate_quiz():
+        types = ['fillblank', 'mult_choice', 'true_false', 'checkbox'] #These are the different types of questions in a quiz
+        random.shuffle(types)
+        questions = []
+        for _type in types:
+            if _type == 'fillblank' or _type == 'true_false':
+                questions.append({'type':_type})
+            elif _type == 'mult_choice' or _type == 'checkbox':
+                questions.append({'type' : _type, choices : []}) 

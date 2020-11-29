@@ -7,14 +7,16 @@ app.secret_key = "FBLA"
 connection = Connection()
 @app.route('/')
 def start():
-    return redirect(url_for("home"))
+    return redirect(url_for('home'))
 
 @app.route('/home')
 def home():
-    user= session['username']
-    if user is None:
+    
+    if 'username' in session.keys():
+        user= session['username']
+    else:
         user = 'None'
-    return render_template('homepage.html', user = session['username'])
+    return render_template('homepage.html', user = user)
 
 @app.route('/login',  methods=["GET", "POST"])
 def login():
@@ -30,6 +32,7 @@ def login():
             return render_template('loginpage.html', message = "Please enter a valid username and password!")
         else:
             session['username'] = user[0]
+            return redirect(url_for('home'))
 
     return render_template('loginpage.html', message = "")
 
@@ -38,7 +41,7 @@ def takequiz():
     if request.method == "POST":
         req = request.form
         print(req)
-    return render_template('quizpage.html', Q1name = "Question !1!", Q1type = "text")
+    return render_template('quizpage.html', questions = [{'type': 'fillblank'}, {'type': 'mult_choice'}])
 
 @app.route('/register',  methods=["GET", "POST"])
 def register():
@@ -51,4 +54,8 @@ def register():
         connection.create_account(req['Username'], req['Password'])
     return render_template('register.html', message = "")
 
+@app.route('/logout')
+def logout():
+    if 'username' in session.keys():
+        del session['username']
 app.run()
