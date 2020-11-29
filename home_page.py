@@ -58,4 +58,5 @@ def register():
 def logout():
     if 'username' in session.keys():
         del session['username']
+    return redirect(url_for('home'))
 app.run()

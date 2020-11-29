@@ -12,22 +12,21 @@ class Connection():
     def close_connection(self):
         self.mydb.close()
 
-    def create_account(self, username, password):
+    def execute_sql(self, script, val = ()):
         self.create_connection()
-        self.sql = "INSERT INTO FBLA_2021.users(username, password) values (%s, %s)"
-        self.val = (username, password)
+        self.sqlfile = open(script, 'r')
+        self.sql = self.sqlfile.read()
+        self.val = val
         self.mycursor = self.mydb.cursor()
-
         self.mycursor.execute(self.sql, self.val)
+
+    def create_account(self, username, password):
+        self.execute_sql(script= 'sqlscripts/register.sql', val=(username, password))
         self.mydb.commit()
         self.close_connection()
     
     def login(self, username, password):
-        self.create_connection()
-        self.sql = "SELECT * from FBLA_2021.users where username = %s and password = %s"
-        self.val = (username, password)
-        self.mycursor = self.mydb.cursor()
-        self.mycursor.execute(self.sql, self.val)
+        self.execute_sql(script='sqlscripts/login.sql', val=(username, password))
         self.result = self.mycursor.fetchall()
         
         if len(self.result) == 0:
@@ -47,3 +46,5 @@ class Connection():
                 questions.append({'type':_type})
             elif _type == 'mult_choice' or _type == 'checkbox':
                 questions.append({'type' : _type, choices : []}) 
+            
+        return questions
