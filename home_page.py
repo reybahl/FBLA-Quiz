@@ -23,8 +23,8 @@ def login():
     if request.method == "POST":
         req = request.form
         print(req)
-        if req['Username'] == '' or req['Password'] == '':
-            return render_template('loginpage.html', message = "Please enter a valid username and password!")
+        # if req['Username'] == '' or req['Password'] == '':
+        #     return render_template('loginpage.html', message = "Please enter a valid username and password!")
 
 
         user = connection.login(req['Username'], req['Password'])
@@ -48,10 +48,11 @@ def register():
     if request.method == "POST":
         req = request.form
         print(req['Username'])
-        if req['Username'] == '' or req['Password'] == '':
-            return render_template('register.html', message = "Please enter a valid username and password!")
+        if req['Password'] != req['confirmPassword']:
+            return render_template('register.html', message = "Passwords don't match")
 
-        connection.create_account(req['Username'], req['Password'])
+        else:
+            connection.create_account(req['Username'], req['Password'])
     return render_template('register.html', message = "")
 
 @app.route('/logout')

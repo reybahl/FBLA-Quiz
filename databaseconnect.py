@@ -37,6 +37,7 @@ class Connection():
         self.close_connection()
 
         return self.ret_val
+        
     def generate_quiz():
         types = ['fillblank', 'mult_choice', 'true_false', 'checkbox'] #These are the different types of questions in a quiz
         random.shuffle(types)
