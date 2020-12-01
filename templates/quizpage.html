@@ -21,23 +21,21 @@
     </ul>
   </nav>
   <br> 
-
-    <form class = "col-lg-6 offset-lg-3" action="/takequiz" method="POST">
+  <div class = "col-lg-6 offset-lg-3">
+    <form class = "needs-validation" novalidate action="/takequiz" method="POST">
       {% for question in questions %}
         {% if question['type'] == 'mult_choice' %}
         <div class = "form-group">
           <label>Question Name</label>
-            <select class="custom-select" name="Question1">
-              <option selected>Choose an answer</option>
+            <select class="custom-select" name="Question1" required>
+              <option value="">Choose an answer</option>
               <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
             </select>
         </div>
         {% elif question['type'] == 'fillblank' %}
         <div class="form-group">
           <label>testblank</label>
-          <input type= "text" class="form-control" name= "Answer1" placeholder="Fill in the blank">
+          <input type= "text" class="form-control" name= "Answer1" placeholder="Fill in the blank" required>
         </div>
           {% elif question['type'] == 'checkbox' %}
           <div class="form-group">
@@ -45,16 +43,10 @@
               <div class="checkbox">
                 <label><input type="checkbox" value="1" name = " Option1">Option 1</label>
               </div>
-              <div class="checkbox">
-                <label><input type="checkbox" value="2" name = " Option2">Option 2</label>
-              </div>
-              <div class="checkbox">
-                <label><input type="checkbox" value="3" name = " Option3">Option 1</label>
-              </div> 
           </div>
           {% elif question['type'] == 'true_false' %}
           <label>Question Name</label>
-            <select class="custom-select" name="Question1">
+            <select class="custom-select" name="Question1" required>
               <option selected>True or False?</option>
               <option value="True">True</option>
               <option value="False">False</option>
@@ -65,4 +57,26 @@
           {% endfor %}
           <button type="submit" class="btn btn-primary">Submit</button>
       </form>
+  </div>
   </body>
+
+  <script>
+    // Example starter JavaScript for disabling form submissions if there are invalid fields
+    (function() {
+      'use strict';
+      window.addEventListener('load', function() {
+        // Fetch all the forms we want to apply custom Bootstrap validation styles to
+        var forms = document.getElementsByClassName('needs-validation');
+        // Loop over them and prevent submission
+        var validation = Array.prototype.filter.call(forms, function(form) {
+          form.addEventListener('submit', function(event) {
+            if (form.checkValidity() === false) {
+              event.preventDefault();
+              event.stopPropagation();
+            }
+            form.classList.add('was-validated');
+          }, false);
+        });
+      }, false);
+    })();
+    </script>
