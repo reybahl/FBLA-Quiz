@@ -21,12 +21,12 @@ class Connection():
         self.mycursor.execute(self.sql, self.val)
 
     def create_account(self, username, password):
-        self.execute_sql(script= 'sqlscripts/register.sql', val=(username, password))
+        self.execute_sql(script= 'register.sql', val=(username, password))
         self.mydb.commit()
         self.close_connection()
     
     def login(self, username, password):
-        self.execute_sql(script='sqlscripts/login.sql', val=(username, password))
+        self.execute_sql(script='login.sql', val=(username, password))
         self.result = self.mycursor.fetchall()
         
         if len(self.result) == 0:
@@ -38,14 +38,46 @@ class Connection():
 
         return self.ret_val
         
-    def generate_quiz():
-        types = ['fillblank', 'mult_choice', 'true_false', 'checkbox'] #These are the different types of questions in a quiz
-        random.shuffle(types)
-        questions = []
-        for _type in types:
+    def generate_quiz(self):
+        self.types = ['fillblank', 'mult_choice', 'true_false', 'checkbox'] #These are the different types of questions in a quiz
+        random.shuffle(self.types)
+        self.questions = []
+        for _type in self.types:
             if _type == 'fillblank' or _type == 'true_false':
-                questions.append({'type':_type})
+                self.execute_sql('quizgenerate.sql', (_type,))
+                self.question = self.mycursor.fetchall()
+                print(self.question)
+                for i, x in enumerate(self.question[0]):
+                    if i == 1: 
+                        self.name = x
+                    if i == 3:
+                        self.answer = x
+                self.questions.append({'type':_type, 
+                                  'name': self.name, 
+                                  'answer': self.answer })
             elif _type == 'mult_choice' or _type == 'checkbox':
-                questions.append({'type' : _type, choices : []}) 
+                self.execute_sql('quizgenerate.sql', (_type,))
+                self.question = self.mycursor.fetchall()
+                print(self.question)
+                for i, x in enumerate(self.question[0]):
+                    if i == 1: 
+                        self.name = x
+                    if i == 2:
+                        if ',' in x:
+                            self.options = x.split(',')
+                        elif '.' in x:
+                            self.options = x.split('.')
+                    if i == 3:
+                        if ',' in x:
+                            self.answer = x.split(',')
+                        elif '.' in x:
+                            self.answer = x.split('.')
+                            
+                        else:
+                            self.answer = x
+                self.questions.append({'type':_type, 
+                                  'name': self.name,
+                                  'options' : self.options, 
+                                  'answer': self.answer}) 
             
-        return questions
+        return self.questions

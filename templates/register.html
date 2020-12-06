@@ -9,8 +9,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script type=text/javascript src="{{
-    url_for('static', filename='validation.js') }}"></script>
+  <script type=text/javascript src="{{url_for('static', filename='validation.js') }}"></script>
 </head>
 <body>
   <nav class="navbar navbar-expand-sm bg-light">
@@ -22,7 +21,7 @@
   </nav>
   <br>
   <div class = "col-lg-6 offset-lg-3">
-<form class="needs-validation" novalidate action="/register" method="POST">
+<form class="needs-validation" novalidate action="/register" method="POST" oninput='confirmPassword.setCustomValidity(Password.value != confirmPassword.value ? "Passwords do not match." : "")'>
   <div class="form-group">
     <label for="exampleInputEmail1">Username or email</label>
     <input type="text" class="form-control" name= "Username"  id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email or username" required>
@@ -34,6 +33,7 @@
   <div class="form-group">
     <label for="exampleInputPassword1">Password</label>
     <input type="password" class="form-control" name= "confirmPassword" id="exampleInputPassword1" placeholder="Confirm Password" required>
+    <div class="invalid-feedback">Passwords must match</div>
   </div>
   <button type="submit" class="btn btn-primary">Create account</button>
 </form>

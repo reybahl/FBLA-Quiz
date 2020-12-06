@@ -23,11 +23,9 @@ def login():
     if request.method == "POST":
         req = request.form
         print(req)
-        # if req['Username'] == '' or req['Password'] == '':
-        #     return render_template('loginpage.html', message = "Please enter a valid username and password!")
-
 
         user = connection.login(req['Username'], req['Password'])
+        print(user)
         if user is None:
             return render_template('loginpage.html', message = "Please enter a valid username and password!")
         else:
@@ -41,23 +39,27 @@ def takequiz():
     if request.method == "POST":
         req = request.form
         print(req)
-    return render_template('quizpage.html', questions = [{'type': 'fillblank'}, {'type': 'mult_choice'}])
-
+        return redirect(url_for('results'))
+    if 'username' in session.keys():    
+        return render_template('quizpage.html', questions = connection.generate_quiz(), enumerate = enumerate)
+    else:
+        return redirect(url_for('login'))
+        
 @app.route('/register',  methods=["GET", "POST"])
 def register():
     if request.method == "POST":
         req = request.form
-        print(req['Username'])
-        if req['Password'] != req['confirmPassword']:
-            return render_template('register.html', message = "Passwords don't match")
-
-        else:
-            connection.create_account(req['Username'], req['Password'])
+        #print(req['Username'])
+        
+        connection.create_account(req['Username'], req['Password'])
     return render_template('register.html', message = "")
 
 @app.route('/logout')
 def logout():
     if 'username' in session.keys():
-        del session['username']
+        del session['username'] #deleting 'username' from session
     return redirect(url_for('home'))
+@app.route('/results')
+def results():
+    return 'Results here!'
 app.run()

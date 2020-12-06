@@ -1,0 +1,1 @@
+SELECT * from FBLA_2021.questions where type = %s ORDER BY RAND() LIMIT 1; 
