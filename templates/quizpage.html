@@ -28,30 +28,30 @@
         {% if question['type'] == 'mult_choice' %}
         <div class = "form-group">
           <label>{{question['name']}}</label>
-            <select class="custom-select" name="Question1" required>
+            <select class="custom-select" name="mult_choice" required>
               <option value="">Choose an answer</option>
               {% for i, option in enumerate(question['options']) %}
-              <option value="{{i}}">{{option}}</option>
+              <option value="{{option}}">{{option}}</option>
               {% endfor %}
             </select>
         </div>
         {% elif question['type'] == 'fillblank' %}
         <div class="form-group">
           <label>{{question['name']}}</label>
-          <input type= "text" class="form-control" name= "Answer1" placeholder="Fill in the blank" required>
+          <input type= "text" class="form-control" name= "fillblank" placeholder="Fill in the blank" required>
         </div>
           {% elif question['type'] == 'checkbox' %}
           <div class="form-group">
             <label>{{question['name']}}</label>
               {% for i, option in enumerate(question['options']) %}
               <div class="checkbox">
-                <label><input type="checkbox" value="{{i}}" name = "{{option}}">{{option}}</label>
+                <label><input type="checkbox" value="checkbox" name = "{{option}}">{{option}}</label>
               </div>
               {% endfor %}
           </div>
           {% elif question['type'] == 'true_false' %}
           <label>{{question['name']}}</label>
-            <select class="custom-select" name="Question1" required>
+            <select class="custom-select" name="true_false" required>
               <option value = "">True or False?</option>
               <option value="True">True</option>
               <option value="False">False</option>

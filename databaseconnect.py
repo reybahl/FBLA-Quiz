@@ -46,7 +46,7 @@ class Connection():
             if _type == 'fillblank' or _type == 'true_false':
                 self.execute_sql('quizgenerate.sql', (_type,))
                 self.question = self.mycursor.fetchall()
-                print(self.question)
+                #print(self.question)
                 for i, x in enumerate(self.question[0]):
                     if i == 1: 
                         self.name = x
@@ -58,7 +58,7 @@ class Connection():
             elif _type == 'mult_choice' or _type == 'checkbox':
                 self.execute_sql('quizgenerate.sql', (_type,))
                 self.question = self.mycursor.fetchall()
-                print(self.question)
+                #print(self.question)
                 for i, x in enumerate(self.question[0]):
                     if i == 1: 
                         self.name = x

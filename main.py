@@ -1,5 +1,6 @@
 from flask import Flask, render_template,  redirect,  url_for, request, session
 from databaseconnect import Connection
+from checkanswers import convert_to_dict
 app = Flask(__name__)
 
 app.secret_key = "FBLA"
@@ -38,7 +39,7 @@ def login():
 def takequiz():
     if request.method == "POST":
         req = request.form
-        print(req)
+        print(convert_to_dict(list(req.items())))
         return redirect(url_for('results'))
     if 'username' in session.keys():    
         return render_template('quizpage.html', questions = connection.generate_quiz(), enumerate = enumerate)
