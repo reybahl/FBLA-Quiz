@@ -1,6 +1,9 @@
-from flask import Flask, render_template,  redirect,  url_for, request, session
+from flask import Flask, render_template,  redirect,  url_for, request, session, make_response
 from databaseconnect import Connection
 from checkanswers import convert_to_dict, check
+import pdfkit
+import requests
+
 app = Flask(__name__)
 
 app.secret_key = "FBLA"
@@ -37,20 +40,36 @@ def login():
 
     return render_template('loginpage.html', message = "")
 
-@app.route('/takequiz', methods= ["GET", "POST"] )
-def takequiz():
+@app.route('/quiz', methods= ["GET", "POST"] )
+def quiz():
 
-    global questions_answers 
-    if questions_answers is None:
+    global questions_answers
+    if request.method != "POST":
         questions_answers = connection.generate_quiz()
+       
         
     if request.method == "POST":
         req = request.form
         if questions_answers is not None:
-            check(questions_answers, list(req.items()))
-            return redirect(url_for('results'))
+            options = {
+                        'title': 'Quiz Results',
+                        'page-size': 'Letter',
+                        'margin-top': '1in',
+                        'margin-right': '1in',
+                        'margin-bottom': '1in',
+                        'margin-left': '1in',
+                        'encoding': "UTF-8",
+                        }
+            results = check(questions_answers, list(req.items()))
+            rendered = render_template('resultpagetemplate.html', results = results )
+            pdf = pdfkit.from_string(rendered, False, options)
 
+            response = make_response(pdf)
+            response.headers['Content-Type'] = 'application/pdf'
+            response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
 
+            return response
+            
     if 'username' in session.keys():    
         return render_template('quizpage.html', questions = questions_answers, enumerate = enumerate)
     else:
@@ -72,7 +91,9 @@ def logout():
     if 'username' in session.keys():
         del session['username'] #deleting 'username' from session
     return redirect(url_for('home'))
-@app.route('/results')
-def results():
-    return 'Results here!'
+
+@app.route('/settings')
+def settings():
+    return render_template('settings.html')
+
 app.run()

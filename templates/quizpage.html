@@ -23,7 +23,7 @@
   </nav>
   <br> 
   <div class = "col-lg-6 offset-lg-3">
-    <form class = "needs-validation" novalidate action="/takequiz" method="POST">
+    <form class = "needs-validation" novalidate action="/quiz" method="POST">
       {% for question in questions %}
         {% if question['type'] == 'mult_choice' %}
         <div class = "form-group">

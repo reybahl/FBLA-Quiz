@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>Quiz Results</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</head>
+<body>
+    <h1 class="display-4" style="text-align:center;">Results</h1>
+    {% for question in results %}
+        {% if question['boolcorrect'] %} 
+            <div style="color:green; font-size: large;">
+        {% else %}
+            <div style="color:red;font-size: large;">
+        {% endif %}
+            <p>{{question['question']}}</p>
+            <p><i>You answered: <b>{{question['answer']}}</b></i></p>
+            {% if not question['boolcorrect'] %}
+            <p><i>Correct answer: <b>{{question['correct']}}</b></i></p>   
+            {% endif %}     
+            </div>
+
+        <br>
+    {% endfor %}
+</body>
+

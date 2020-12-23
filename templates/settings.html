@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <title>FBLA Quizzer Settings</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+  <script type = "text/javascript" src ="{{url_for('static', filename = 'validation.js')}}"></script>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-sm bg-light">
+        <ul class="navbar-nav ml-auto">
+          <button class="btn btn-outline-primary">
+            <a class="nav-link" href="/">Exit Quiz</a>
+          </button>
+        </ul>
+      </nav>
+      <br> 
+      
+    <div class = "col-lg-6 offset-lg-3">
+        <form action="/updatesettings" method="POST">
+            <div class="form-group">
+            <label>Username or email</label>
+            <input type="text" class="form-control" name= "Username"  id="exampleInputEmail1" readonly>
+            </div>
+            <div class="form-group">
+            <label>Name: What you want your name to show as</label>
+            <input type="text" class="form-control" name= "Name" id="exampleInputPassword1" placeholder=""">
+            </div>
+            <div class="form-group">
+                <label>
+                    Quiz reports:
+                    Check below what to include in quiz reports.
+                </label>        
+                <div class="checkbox">
+                    <label><input type="checkbox" value="checked" name = "q_number">Question numbers</label>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Sign In</button>
+        </form>
+    </div>
+</body>

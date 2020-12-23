@@ -1,0 +1,10 @@
+#correct {
+    color: green;
+  }
+#incorrect {
+    color: red;
+}
+
+p {
+    font-size: medium;
+}
