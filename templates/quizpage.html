@@ -47,7 +47,7 @@
               <div class="checkbox">
                 <label><input type="checkbox" value="checkbox" name = "{{option}}">{{option}}</label>
               </div>
-              {% endfor %}
+              {% endfor %} <!-- End the for loop -->
           </div>
           {% elif question['type'] == 'true_false' %}
           <label>{{question['name']}}</label>

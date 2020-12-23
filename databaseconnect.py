@@ -81,3 +81,6 @@ class Connection():
                                   'answer': self.answer}) 
             
         return self.questions
+
+connection = Connection()
+connection.generate_quiz()

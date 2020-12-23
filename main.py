@@ -1,11 +1,13 @@
 from flask import Flask, render_template,  redirect,  url_for, request, session
 from databaseconnect import Connection
-from checkanswers import convert_to_dict
+from checkanswers import convert_to_dict, check
 app = Flask(__name__)
 
 app.secret_key = "FBLA"
 
-connection = Connection()
+connection = Connection() 
+questions_answers = None
+
 @app.route('/')
 def start():
     return redirect(url_for('home'))
@@ -23,10 +25,10 @@ def home():
 def login():
     if request.method == "POST":
         req = request.form
-        print(req)
+        #print(req)
 
         user = connection.login(req['Username'], req['Password'])
-        print(user)
+        #print(user)
         if user is None:
             return render_template('loginpage.html', message = "Please enter a valid username and password!")
         else:
@@ -37,14 +39,24 @@ def login():
 
 @app.route('/takequiz', methods= ["GET", "POST"] )
 def takequiz():
+
+    global questions_answers 
+    if questions_answers is None:
+        questions_answers = connection.generate_quiz()
+        
     if request.method == "POST":
         req = request.form
-        print(convert_to_dict(list(req.items())))
-        return redirect(url_for('results'))
+        if questions_answers is not None:
+            check(questions_answers, list(req.items()))
+            return redirect(url_for('results'))
+
+
     if 'username' in session.keys():    
-        return render_template('quizpage.html', questions = connection.generate_quiz(), enumerate = enumerate)
+        return render_template('quizpage.html', questions = questions_answers, enumerate = enumerate)
     else:
         return redirect(url_for('login'))
+
+    
         
 @app.route('/register',  methods=["GET", "POST"])
 def register():
