@@ -6,5 +6,5 @@
 }
 
 p {
-    font-size: medium;
+    class: "lead";
 }

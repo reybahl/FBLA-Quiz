@@ -22,26 +22,51 @@
       </nav>
       <br> 
       
+    <h3 class="display-4" style="text-align:center;">FBLA Quizzer Settings</h3>
+
+    <br>
+    <br>
+
     <div class = "col-lg-6 offset-lg-3">
         <form action="/updatesettings" method="POST">
             <div class="form-group">
-            <label>Username or email</label>
-            <input type="text" class="form-control" name= "Username"  id="exampleInputEmail1" readonly>
+            <label><p class = "lead">Email</p></label>
+            <input type="text" class="form-control-plaintext" name= "Username"  id="exampleInputEmail1" value="{{email}}" readonly>
             </div>
             <div class="form-group">
-            <label>Name: What you want your name to show as</label>
-            <input type="text" class="form-control" name= "Name" id="exampleInputPassword1" placeholder=""">
+            <label><p class="lead">Name: What you want your name to show as</p></label>
+            <input type="text" class="form-control" name= "Name" value="{{name}}">
             </div>
             <div class="form-group">
                 <label>
-                    Quiz reports:
-                    Check below what to include in quiz reports.
+                    <p class = "lead">Quiz reports:
+                    Check below what to include in quiz reports.</p>
                 </label>        
                 <div class="checkbox">
-                    <label><input type="checkbox" value="checked" name = "q_number">Question numbers</label>
+                    <label class = "btn btn-default active"><input type="checkbox" value="checked" name = "q_number"> Question numbers</label>
                 </div>
-            </div>
-            <button type="submit" class="btn btn-primary">Sign In</button>
+                <div class="checkbox">
+                  <label class = "btn btn-default active"><input type="checkbox" value="checked" name = "show_name"> Your Name</label>
+                </div>
+                <div class="checkbox">
+                  <label class="btn btn-default active"><input type="checkbox" value="checked" name = "time"> Time submitted</label>
+                </div>
+                <div>
+                  <input type="number" name="font" min="10" max="20" value="{{}}">
+                </div>
+                <div class="form-group">
+                  <label>
+                    <p3 class = "lead">Include the correct answer for:</p>
+                  </label> 
+                  <div class="checkbox">
+                    <label class="btn btn-default active"><input type="checkbox" value="checked" name = "showcorrectanswer"> Correct Answers</label>
+                  </div>
+                  <div class="checkbox">
+                    <label class="btn btn-default active"><input type="checkbox" value="checked" name = "showwronganswer"> Wrong Answers</label>
+                  </div>
+                </div>
+          </div>
+            <button type="submit" class="btn btn-primary">Update Settings</button>
         </form>
     </div>
 </body>
