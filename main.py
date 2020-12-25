@@ -13,7 +13,7 @@ questions_answers = None
 
 @app.route('/')
 def start():
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 @app.route('/home')
 def home():
@@ -28,17 +28,25 @@ def home():
 def login():
     if request.method == "POST":
         req = request.form
-        #print(req)
+        print(req)
+        user = req['email']
 
-        user = connection.login(req['Username'], req['Password'])
-        #print(user)
-        if user is None:
-            return render_template('loginpage.html', message = "Please enter a valid username and password!")
-        else:
-            session['username'] = user[0]
-            return redirect(url_for('home'))
+        # if user is None:
+        #     return render_template('loginpagefirebase.html', message = "Please enter a valid username and password!")
 
-    return render_template('loginpage.html', message = "")
+        session['username'] = user
+        return redirect(url_for('dashboard'))
+
+    return render_template('loginpagefirebase.html', message = "")
+
+@app.route('/dashboard',  methods=["POST"])
+def dashboard():
+    if request.method == "POST":
+        req = request.form
+        print(req)
+        user = req['email']
+        session['username'] = user
+        return render_template('dashboard.html', email=user)
 
 @app.route('/quiz', methods= ["GET", "POST"] )
 def quiz():
@@ -61,14 +69,15 @@ def quiz():
                         'encoding': "UTF-8",
                         }
             results = check(questions_answers, list(req.items()))
+            print(results)
             rendered = render_template('resultpagetemplate.html', results = results )
-            pdf = pdfkit.from_string(rendered, False, options)
-
-            response = make_response(pdf)
-            response.headers['Content-Type'] = 'application/pdf'
-            response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
-
-            return response
+            # pdf = pdfkit.from_string(rendered, False, options)
+            #
+            # response = make_response(pdf)
+            # response.headers['Content-Type'] = 'application/pdf'
+            # response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
+            #
+            # return response
             
     if 'username' in session.keys():    
         return render_template('quizpage.html', questions = questions_answers, enumerate = enumerate)
@@ -96,4 +105,7 @@ def logout():
 def settings():
     return render_template('settings.html')
 
-app.run()
+@app.route('/reports')
+def reports():
+    return '<h1 class="h2">Reports</h1>'
+app.run('localhost')

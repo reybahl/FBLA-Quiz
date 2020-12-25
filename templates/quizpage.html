@@ -25,32 +25,32 @@
   <div class = "col-lg-6 offset-lg-3">
     <form class = "needs-validation" novalidate action="/quiz" method="POST">
       {% for question in questions %}
-        {% if question['type'] == 'mult_choice' %}
+        {% if question['type'] == 'multiple_choice' %}
         <div class = "form-group">
-          <label>{{question['name']}}</label>
-            <select class="custom-select" name="mult_choice" required>
+          <label>{{question['question']['content']}}</label>
+            <select class="custom-select" name="multiple_choice" required>
               <option value="">Choose an answer</option>
-              {% for i, option in enumerate(question['options']) %}
+              {% for i, option in enumerate(question['question']['options']) %}
               <option value="{{option}}">{{option}}</option>
               {% endfor %}
             </select>
         </div>
-        {% elif question['type'] == 'fillblank' %}
+        {% elif question['type'] == 'fill_in_the_blank' %}
         <div class="form-group">
-          <label>{{question['name']}}</label>
-          <input type= "text" class="form-control" name= "fillblank" placeholder="Fill in the blank" required>
+          <label>{{question['question']['content']}}</label>
+          <input type= "text" class="form-control" name= "fill_in_the_blank" placeholder="Fill in the blank" required>
         </div>
           {% elif question['type'] == 'checkbox' %}
           <div class="form-group">
-            <label>{{question['name']}}</label>
-              {% for i, option in enumerate(question['options']) %}
+            <label>{{question['question']['content']}}</label>
+              {% for i, option in enumerate(question['question']['options']) %}
               <div class="checkbox">
                 <label><input type="checkbox" value="checkbox" name = "{{option}}">{{option}}</label>
               </div>
               {% endfor %} <!-- End the for loop -->
           </div>
           {% elif question['type'] == 'true_false' %}
-          <label>{{question['name']}}</label>
+          <label>{{question['question']['content']}}</label>
             <select class="custom-select" name="true_false" required>
               <option value = "">True or False?</option>
               <option value="True">True</option>

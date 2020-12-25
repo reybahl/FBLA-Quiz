@@ -12,37 +12,35 @@ def convert_to_dict(_list):
 
 def check(questions, responses):
     responses = convert_to_dict(responses)
-    print(responses)
+    #print(responses)
     results = []
     for x in questions:
-        if x['type'] == 'fillblank':
+        question = x['question']
+        if x['type'] == 'fill_in_the_blank':
             results.append({'type': x['type'], 
-            'question': x['name'], 
-            'answer': responses['fillblank'][0], 
-            'correct' : x['answer'], 
-            'boolcorrect' : responses[x['type']][0] == x['answer']})    
+            'question': question['content'],
+            'answer': responses['fill_in_the_blank'][0],
+            'correct' : question['answer'],
+            'boolcorrect' : responses[x['type']][0] == question['answer']})
         elif x['type'] == 'checkbox':
-            for correct_choice in x['answer']:
-                correct_choice.replace(' ', '')
-            for selected in responses['checkbox']:
-                selected.replace(' ', '')
 
-            correct = sorted(x['answer']) if type(x['answer']) == 'list' else x['answer']
-            if len(responses['checkbox']) == 1:
-                response = responses['checkbox'][0] 
-            else:
-                response = sorted(responses['checkbox'])
+
+            correct = sorted(question['answer'])
+
+            response = sorted(responses['checkbox'])
+
             results.append({'type': x['type'], 
-            'question': x['name'], 
+            'question': question['content'],
             'answer': response, 
-            'correct' : correct_choice, 
-            'boolcorrect' : bool(response == correct_choice)})
-        elif x['type'] == 'mult_choice' or x['type'] == 'true_false':
+            'correct' : correct,
+            'boolcorrect' : response == correct})
+
+        elif x['type'] == 'multiple_choice' or x['type'] == 'true_false':
             results.append({'type': x['type'], 
-            'question': x['name'], 
+            'question': question['content'],
             'answer': responses[x['type']][0], 
-            'correct' : x['answer'], 
-            'boolcorrect' : responses[x['type']][0].lower() == x['answer'].lower()})
+            'correct' : question['answer'],
+            'boolcorrect' : responses[x['type']][0] in question['answer']})
         
 
     print(results)

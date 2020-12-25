@@ -1,14 +1,27 @@
 import mysql.connector
 import random
+import firebase_admin
+import random
+from firebase_admin import credentials
+from firebase_admin import firestore
+
+cred = credentials.Certificate("/Users/sumitbahl/Rey/firestoretest/serviceAccountKey.json")
+firebase_admin.initialize_app(cred, {
+            'projectId': 'fir-demo-537d0',
+        })
+dbref=firestore.client()
 
 class Connection():
+    def __init__(self):
+        self.connect()
+
     def create_connection(self):
         self.mydb = mysql.connector.connect(
             host="192.168.1.67",
             user="fbla",
             password="fbla#123"
         )
-    
+
     def close_connection(self):
         self.mydb.close()
 
@@ -24,63 +37,40 @@ class Connection():
         self.execute_sql(script= 'register.sql', val=(username, password))
         self.mydb.commit()
         self.close_connection()
-    
+
     def login(self, username, password):
         self.execute_sql(script='login.sql', val=(username, password))
         self.result = self.mycursor.fetchall()
-        
+
         if len(self.result) == 0:
             return None
         for x in self.result:
             self.ret_val = x
-            
+
         self.close_connection()
 
         return self.ret_val
-        
+
+    def connect(self):
+        pass
+
     def generate_quiz(self):
-        self.types = ['fillblank', 'mult_choice', 'true_false', 'checkbox'] #These are the different types of questions in a quiz
-        random.shuffle(self.types)
-        self.questions = []
-        for _type in self.types:
-            if _type == 'fillblank' or _type == 'true_false':
-                self.execute_sql('quizgenerate.sql', (_type,))
-                self.question = self.mycursor.fetchall()
-                #print(self.question)
-                for i, x in enumerate(self.question[0]):
-                    if i == 1: 
-                        self.name = x
-                    if i == 3:
-                        self.answer = x
-                self.questions.append({'type':_type, 
-                                  'name': self.name, 
-                                  'answer': self.answer })
-            elif _type == 'mult_choice' or _type == 'checkbox':
-                self.execute_sql('quizgenerate.sql', (_type,))
-                self.question = self.mycursor.fetchall()
-                #print(self.question)
-                for i, x in enumerate(self.question[0]):
-                    if i == 1: 
-                        self.name = x
-                    if i == 2:
-                        if ',' in x:
-                            self.options = x.split(',')
-                        elif '.' in x:
-                            self.options = x.split('.')
-                    if i == 3:
-                        if ',' in x:
-                            self.answer = x.split(',')
-                        elif '.' in x:
-                            self.answer = x.split('.')
-                            
-                        else:
-                            self.answer = x
-                self.questions.append({'type':_type, 
-                                  'name': self.name,
-                                  'options' : self.options, 
-                                  'answer': self.answer}) 
-            
-        return self.questions
+
+        #self.connect()
+        questions_by_type_ref = dbref.collection('questions_by_type')
+
+        self.question_types = ['multiple_choice', 'checkbox', 'fill_in_the_blank', 'true_false']
+        self.quiz = []
+        random.shuffle(self.question_types)
+        for question_type in self.question_types:
+            questions_ref = questions_by_type_ref.document(question_type).collection('questions')
+            questions_count = len(questions_ref.get())
+            question = questions_ref.where('id', '==', random.randrange(0, questions_count - 1)).stream()
+            for doc in question:
+                self.quiz.append({'type': question_type, 'question' : doc.to_dict()})
+
+        return self.quiz
+
 
 connection = Connection()
-connection.generate_quiz()
+print(connection.generate_quiz())

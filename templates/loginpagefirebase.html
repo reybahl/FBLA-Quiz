@@ -1,0 +1,183 @@
+<head>
+  <title>Bootstrap Example</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="google-signin-client_id"
+    content="617126747783-9ag356g7b04sn88ibo59ccie741h9ikt.apps.googleusercontent.com">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <!-- The core Firebase JS SDK is always required and must be listed first -->
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
+
+  <!-- TODO: Add SDKs for Firebase products that you want to use
+     https://firebase.google.com/docs/web/setup#available-libraries -->
+
+  <script>
+    // Your web app's Firebase configuration
+    var firebaseConfig = {
+      apiKey: "AIzaSyBtwXtdiOpGQpU806OTt1VuL_uceWDzO1k",
+      authDomain: "firestoredemo-2.firebaseapp.com",
+      projectId: "firestoredemo-2",
+      storageBucket: "firestoredemo-2.appspot.com",
+      messagingSenderId: "617126747783",
+      appId: "1:617126747783:web:0e5a6d7013f6032b92e222"
+    };
+    // Initialize Firebase
+    firebase.initializeApp(firebaseConfig);
+  </script>
+</head>
+
+<style>
+  html,
+  body {
+    height: 100%;
+  }
+
+  body {
+    display: -ms-flexbox;
+    display: flex;
+    -ms-flex-align: center;
+    align-items: center;
+    padding-top: 40px;
+    padding-bottom: 40px;
+    background-color: #f5f5f5;
+  }
+
+  .form-signin {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  }
+
+  .form-signin .checkbox {
+    font-weight: 400;
+  }
+
+  .form-signin .form-control {
+    position: relative;
+    box-sizing: border-box;
+    height: auto;
+    padding: 10px;
+    font-size: 16px;
+  }
+
+  .form-signin .form-control:focus {
+    z-index: 2;
+  }
+
+  .form-signin input[type="email"] {
+    margin-bottom: -1px;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .form-signin input[type="password"] {
+    margin-bottom: 10px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+</style>
+
+<body class="text-center">
+  <div class="container">
+    <h2>FBLA Sign In</h2>
+    <form class="form-signin">
+      <!-- Email input -->
+
+      <label for="inputEmail" class="sr-only">Email address</label>
+      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+      <label for="inputPassword" class="sr-only">Password</label>
+      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+
+      <!-- Submit button -->
+      <input type="button" onclick="SignInWithEmail()" value="Sign in" class="btn btn-primary btn-block"/>
+
+      <!-- Register buttons -->
+      <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal"
+        data-whatever="@getbootstrap">Register</button>
+
+      <div class="row">
+
+
+        <div class="col">
+          <!-- Simple link -->
+          <div class="g-signin2" data-onsuccess="onSignIn"></div>
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+    aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Register for FBLA quiz</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <label for="registerEmail" class="sr-only">Email address</label>
+            <input type="email" id="registerEmail" class="form-control" placeholder="Email address" required autofocus>
+            <label for="registerPassword" class="sr-only">Password</label>
+            <input type="password" id="registerPassword" class="form-control" placeholder="Password" required>
+            <label for="registerConfirmPassword" class="sr-only">Confirm Password</label>
+            <input type="password" id="registerConfirmPassword" class="form-control" placeholder="Confirm Password" required>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-primary" onclick="RegisterWithEmail()">Register</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+<script>
+  function SignInWithEmail() {
+
+    var email = document.getElementById("inputEmail").value;//"myemail@email.com";
+    var password = document.getElementById("inputPassword").value;//"mypassword";
+    firebase.auth().signInWithEmailAndPassword(email, password)
+      .then((user) => {
+        console.log(user);
+        $.post('dashboard', { email: email},
+            function(response){
+              document.write(response);
+        });
+
+      })
+      .catch((error) => {
+        console.log(error.code);
+        console.log(error.message);
+      });
+  }
+
+  function RegisterWithEmail() {
+    var email = document.getElementById("registerEmail").value;//"myemail@email.com";
+    var password = document.getElementById("registerPassword").value;//"mypassword";
+
+    firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+      console.log(user);
+      //window.location.href = "dashboard.html?email="+email;
+    }).catch(function (error) {      
+      console.log(error.message);
+    });
+  }
+
+  function onSignIn(googleUser) {
+  var profile = googleUser.getBasicProfile();
+  var email = profile.getEmail();
+  console.log('Email: ' + email); // This is null if the 'email' scope is not present.
+  //window.location.href = "dashboard.html?email="+email;
+}
+
+</script>
