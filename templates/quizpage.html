@@ -14,16 +14,16 @@
 
 <body>
 
-  <nav class="navbar navbar-expand-sm bg-light">
-    <ul class="navbar-nav ml-auto">
-      <button class="btn btn-outline-primary">
-        <a class="nav-link" href="/">Exit Quiz</a>
-      </button>
-    </ul>
-  </nav>
+<!--  <nav class="navbar navbar-expand-sm bg-light">-->
+<!--    <ul class="navbar-nav ml-auto">-->
+<!--      <button class="btn btn-outline-primary">-->
+<!--        <a class="nav-link" href="/">Exit Quiz</a>-->
+<!--      </button>-->
+<!--    </ul>-->
+<!--  </nav>-->
   <br> 
-  <div class = "col-lg-6 offset-lg-3">
-    <form class = "needs-validation" novalidate action="/quiz" method="POST">
+  <div class = "col-lg-6">
+    <form class = "needs-validation" action="/quiz" method="POST">
       {% for question in questions %}
         {% if question['type'] == 'multiple_choice' %}
         <div class = "form-group">

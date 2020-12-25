@@ -71,14 +71,14 @@ def quiz():
             results = check(questions_answers, list(req.items()))
             print(results)
             rendered = render_template('resultpagetemplate.html', results = results )
-            # pdf = pdfkit.from_string(rendered, False, options)
-            #
-            # response = make_response(pdf)
-            # response.headers['Content-Type'] = 'application/pdf'
-            # response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
-            #
-            # return response
-            
+            pdf = pdfkit.from_string(rendered, False, options)
+
+            response = make_response(pdf)
+            response.headers['Content-Type'] = 'application/pdf'
+            response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
+
+            return response
+
     if 'username' in session.keys():    
         return render_template('quizpage.html', questions = questions_answers, enumerate = enumerate)
     else:
@@ -107,5 +107,5 @@ def settings():
 
 @app.route('/reports')
 def reports():
-    return '<h1 class="h2">Reports</h1>'
+    return redirect(url_for('quiz'))
 app.run('localhost')

@@ -1,0 +1,4 @@
+.DS_Store
+.idea/
+__pycache__/checkanswers.cpython-38.pyc
+__pycache__/databaseconnect.cpython-38.pyc
