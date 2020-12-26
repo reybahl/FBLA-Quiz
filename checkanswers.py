@@ -14,6 +14,7 @@ def check(questions, responses):
     responses = convert_to_dict(responses)
     #print(responses)
     results = []
+    
     for x in questions:
         question = x['question']
         if x['type'] == 'fill_in_the_blank':
@@ -21,9 +22,9 @@ def check(questions, responses):
             'question': question['content'],
             'answer': responses['fill_in_the_blank'][0],
             'correct' : question['answer'],
-            'boolcorrect' : responses[x['type']][0] == question['answer']})
+            'boolcorrect' : responses[x['type']][0] in question['answer']})
+        
         elif x['type'] == 'checkbox':
-
 
             correct = sorted(question['answer'])
 
@@ -36,11 +37,17 @@ def check(questions, responses):
             'boolcorrect' : response == correct})
 
         elif x['type'] == 'multiple_choice' or x['type'] == 'true_false':
+            if type(question['answer']) == 'list':
+                correct_fixed = [choice.lower() for choice in question['answer']]
+                boolcorrect = responses[x['type']][0].lower() in correct_fixed
+            elif type(question['answer'] == 'str'):
+                correct_fixed = question['answer'].lower()
+                boolcorrect = responses[x['type']][0].lower() == correct_fixed
             results.append({'type': x['type'], 
             'question': question['content'],
             'answer': responses[x['type']][0], 
-            'correct' : question['answer'],
-            'boolcorrect' : responses[x['type']][0] in question['answer']})
+            'correct' : correct_fixed,
+            'boolcorrect' : boolcorrect})
         
 
     print(results)

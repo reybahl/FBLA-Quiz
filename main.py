@@ -35,11 +35,14 @@ def login():
         #     return render_template('loginpagefirebase.html', message = "Please enter a valid username and password!")
 
         session['username'] = user
+        
+
+    if 'username' in session.keys():
         return redirect(url_for('dashboard'))
 
     return render_template('loginpagefirebase.html', message = "")
 
-@app.route('/dashboard',  methods=["POST"])
+@app.route('/dashboard',  methods=["GET", "POST"])
 def dashboard():
     if request.method == "POST":
         req = request.form
@@ -48,6 +51,10 @@ def dashboard():
         session['username'] = user
         return render_template('dashboard.html', email=user)
 
+    if 'username' in session.keys():
+        return render_template('dashboard.html', email=session['username'])
+    else:
+        return redirect(url_for('login'))
 @app.route('/quiz', methods= ["GET", "POST"] )
 def quiz():
 
@@ -70,6 +77,7 @@ def quiz():
                         }
             results = check(questions_answers, list(req.items()))
             print(results)
+            connection.save_results(session['username'], results)
             rendered = render_template('resultpagetemplate.html', results = results )
             pdf = pdfkit.from_string(rendered, False, options)
 
@@ -99,7 +107,7 @@ def register():
 def logout():
     if 'username' in session.keys():
         del session['username'] #deleting 'username' from session
-    return redirect(url_for('home'))
+    return redirect(url_for('login'))
 
 @app.route('/settings')
 def settings():
