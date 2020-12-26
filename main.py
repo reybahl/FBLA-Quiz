@@ -111,8 +111,15 @@ def logout():
 
 @app.route('/settings')
 def settings():
+    include_in_quiz_checkbox = {
+        'q_number' : 'Question numbers',
+        'show_name' : 'Your Name',
+        'time':'Time submitted',
+        'showcorrectanswer': 'Correct Answers',
+        'showwronganswer':'Wrong Answers'
+    }
     if 'username' in session.keys():
-        return render_template('settings.html', email = session['username'])
+        return render_template('settings.html', prefs = connection.get_prefs(session['username'])['settings'], include_in_quiz_checkbox =include_in_quiz_checkbox)
 
 @app.route('/reports')
 def reports():
@@ -122,7 +129,7 @@ def reports():
 def updatesettings():
     if request.method == 'POST':
         prefs = convert_to_dict(request.form.items())
-        connection.store_prefs(session['username'], prefs)
+        connection.set_prefs(session['username'], prefs)
         print(prefs)
         
     
