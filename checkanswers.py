@@ -4,7 +4,7 @@ connection = Connection()
 def convert_to_dict(_list):
     d = {}
     for a, b in _list:
-        if b == 'checkbox':
+        if b == 'checked':
             d.setdefault(b, []).append(a)
         else:
             d.setdefault(a, []).append(b)

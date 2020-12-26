@@ -75,6 +75,12 @@ class Connection():
         
         current_user_quizzes_ref.add({'results':results})
 
+    def store_prefs(self, user, settings):
+        users_ref = dbref.collection('users')
+        current_user_settings_ref = users_ref.document(user).collection('settings').document('settings')
+
+        current_user_settings_ref.set({'settings': settings})
+
 
 
 connection = Connection()

@@ -111,9 +111,21 @@ def logout():
 
 @app.route('/settings')
 def settings():
-    return render_template('settings.html')
+    if 'username' in session.keys():
+        return render_template('settings.html', email = session['username'])
 
 @app.route('/reports')
 def reports():
     return redirect(url_for('quiz'))
+
+@app.route('/updatesettings', methods=['POST'])
+def updatesettings():
+    if request.method == 'POST':
+        prefs = convert_to_dict(request.form.items())
+        connection.store_prefs(session['username'], prefs)
+        print(prefs)
+        
+    
+    return "Settings updated!"
+
 app.run('localhost')
