@@ -4,6 +4,7 @@ import firebase_admin
 import random
 from firebase_admin import credentials
 from firebase_admin import firestore
+from datetime import datetime
 
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred, {
@@ -30,10 +31,13 @@ class Connection():
 
 
     def save_results(self, user, results):
+
+        now = datetime.now()
+        now_formatted = now.strftime('%c')
         users_ref = dbref.collection('users')
-        current_user_quizzes_ref = users_ref.document(user).collection('quiz_results')
+        current_user_quizzes_ref = users_ref.document(user).collection('quiz_results').document(now_formatted)
         
-        current_user_quizzes_ref.add({'results':results})
+        current_user_quizzes_ref.set({'results':results})
 
 
 

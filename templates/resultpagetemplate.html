@@ -11,7 +11,10 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 </head>
 <body>
-    <h1 class="display-4" style="text-align:center;">Results</h1>
+    <h1 class="display-2" style="text-align:center;">Results</h1>
+    {% if 'show_name' in prefs['checkbox'] %}
+        <h1 class="display-4" style="text-align: center;">{{prefs['Name'][0]}}</h6>
+    {% endif %}
     {% for question in results %}
         {% if question['boolcorrect'] %} 
             <div style="color:green; font-size: large;">

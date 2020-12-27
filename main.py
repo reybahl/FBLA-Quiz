@@ -78,7 +78,7 @@ def quiz():
             results = check(questions_answers, list(req.items()))
             print(results)
             connection.save_results(session['username'], results)
-            rendered = render_template('resultpagetemplate.html', results = results )
+            rendered = render_template('resultpagetemplate.html', results = results, prefs = connection.get_prefs(session['username'])['settings'])
             pdf = pdfkit.from_string(rendered, False, options)
 
             response = make_response(pdf)
@@ -111,6 +111,11 @@ def logout():
 
 @app.route('/settings')
 def settings():
+    if request.method == 'POST':
+        prefs = convert_to_dict(request.form.items())
+        connection.set_prefs(session['username'], prefs)
+        print(prefs)
+        
     include_in_quiz_checkbox = {
         'q_number' : 'Question numbers',
         'show_name' : 'Your Name',
@@ -133,6 +138,6 @@ def updatesettings():
         print(prefs)
         
     
-    return "Settings updated!"
+    return "<h1>Settings updated!</h1>"
 
 app.run('localhost')
