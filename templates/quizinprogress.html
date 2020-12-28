@@ -10,12 +10,6 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script type = "text/javascript" src ="{{url_for('static', filename = 'validation.js')}}"></script>
-  <script>
-
-  function updatequiz() {
-    console.log("inside...")
-  }
-  </script>
 </head>
 
 <body>
@@ -30,36 +24,45 @@
   <br> 
   <div class = "col-lg-6">
     <form class = "needs-validation" action="/quiz" method="POST">
-      {% for question in questions %}
+      {% for question in quizqa %}
         {% if question['type'] == 'multiple_choice' %}
         <div class = "form-group">
-          <label>{{question['question']['content']}}</label>
-            <select select id="multiple_choice" class="custom-select" name="multiple_choice" required onchange="updatequiz()">
+          <label>{{question['question']}}</label>
+            <select id="multiple_choice" class="custom-select" name="multiple_choice" onchange="updatequiz()" required>
               <option value="">Choose an answer</option>
-              {% for i, option in enumerate(question['question']['options']) %}
-              <option value="{{option}}">{{option}}</option>
+              {% for option in question['options'] %}
+                {% if option in question['answer'] %}
+                <option value="{{option}}">{{option}}</option>
+                {% else %}
+                <option value="{{option}}" selected>{{option}}</option>
+                {% endif %}
               {% endfor %}
             </select>
         </div>
         {% elif question['type'] == 'fill_in_the_blank' %}
         <div class="form-group">
-          <label>{{question['question']['content']}}</label>
-          <input id="fill" type= "text" class="form-control" name= "fill_in_the_blank" placeholder="Fill in the blank" onchange="updatequiz()" required>
+          <label>{{question['question']}}</label>
+          <input id="fill" type= "text" class="form-control" name= "fill_in_the_blank" onchange="updatequiz()" placeholder="Fill in the blank" value="{{question['answer']}}" required>
         </div>
           {% elif question['type'] == 'checkbox' %}
           <div class="form-group">
-            <label>{{question['question']['content']}}</label>
-            <div id="checkbox_options" class="checkbox">
-              {% for i, option in enumerate(question['question']['options']) %}
-              
-                <label><input id="{{option}}" type="checkbox" value="checkbox" name = "{{option}}" onchange="updatequiz()">{{option}}</label><br/>
-              
+            <label>{{question['question']}}</label>
+              {% for i, option in enumerate(question['options']) %}
+              {% if option in question['answer'] %}
+                <div class="checkbox">
+                  <label><input id="{{option}}" type="checkbox" value="checkbox" name = "{{option}}" onchange="updatequiz()" checked>{{option}}</label>
+                </div>
+              {% else %}
+                <div id="checkbox_options" class="checkbox">
+                  <label><input id="{{option}}" type="checkbox" value="checkbox" name = "{{option}}" onchange="updatequiz()">{{option}}</label>
+                </div>
+              {% endif %}
+
               {% endfor %} <!-- End the for loop -->
-            </div>
           </div>
           {% elif question['type'] == 'true_false' %}
-          <label>{{question['question']['content']}}</label>
-            <select id="true_false" class="custom-select" name="true_false" required onchange="updatequiz()">
+          <label>{{question['question']}}</label>
+            <select id="true_false" class="custom-select" name="true_false" required onchange="updatequiz()">>
               <option value = "">True or False?</option>
               <option value="True">True</option>
               <option value="False">False</option>

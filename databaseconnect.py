@@ -62,9 +62,49 @@ class Connection():
         if doc.exists:
             return doc.to_dict()
         else:
-            return default_settings   
+            return default_settings 
+
+    def get_reports(self, user):
+
+        users_ref = dbref.collection('users')
+        docs = users_ref.document(user).collection('quiz_results').stream()
+        reports = []
+        for doc in docs:
+            reports.append({
+                'datetime' : doc.id,
+                'score' : 'none'
+            })
+
+        return reports
+        #print(reports)
+
+    def get_report_for_date(self, user, datetime):
+        users_ref = dbref.collection('users')
+        doc = users_ref.document(user).collection('quiz_results').document(datetime).get()
+        return doc.to_dict()
+
+    def get_quiz_in_progress(self, user):
+        quiz = dbref.collection('users').document('myemail@email.com').collection('quizinprogress').stream()
+        for doc in quiz:
+            return doc.to_dict()
+    def update_quiz_in_progress(self, user, quiz_json):
+        doc_ref = dbref.collection('users').document('myemail@email.com').collection('quizinprogress').document(
+            'currentstate')
+
+        questions = doc_ref.get().to_dict()['results']
+        for question in questions:
+            if(question['type'] == 'fill_in_the_blank'):
+                question['answer'] = quiz_json['fillblank_answer']
+            elif(question['type'] == 'true_false'):
+                question['answer'] = quiz_json['true_false_answer']
+            elif (question['type'] == 'checkbox'):
+                question['answer'] = quiz_json['checkbox_answers']
+            elif (question['type'] == 'multiple_choice'):
+                question['answer'] = quiz_json['multiple_choice_answer']
+        updatedquiz = {'results': questions}
+        #doc_ref.set(updatedquiz)
+        print(updatedquiz)
+
 
 connection = Connection()
-print(connection.get_prefs('myemail@email.com'))     
-
-
+connection.get_reports('myemail@email.com')     

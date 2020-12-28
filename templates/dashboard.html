@@ -59,7 +59,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#quiz" onclick="populateReports()">
+                <a class="nav-link" href="#quiz" onclick="generateQuiz()">
                   <span data-feather="file"></span>
                   Take a Quiz
                 </a>
@@ -77,7 +77,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="#" onclick="populateReports()ß">
+                <a class="nav-link" href="#" onclick="populateReports()">
                   <span data-feather="bar-chart-2"></span>
                   Reports
                 </a>
@@ -324,7 +324,7 @@
   }
     </script>
     <script>
-  }
+  
 
     </script>
 
@@ -337,12 +337,64 @@
         });
   }
 
+  function generateQuiz() {
+    $.get('quiz', {},
+            function(response){
+              document.getElementById("dynamicContent").innerHTML  = response
+        });
+  }
+
   function populateSettings() {
     $.get('settings', {},
             function(response){
               document.getElementById("dynamicContent").innerHTML  = response
         });
   }
+  
+
+  function updatequiz() {
+    //console.log("inside..." + document.getElementById("true_false").value)
+    var tfval = document.getElementById("true_false").value;
+    //console.log("inside..." + document.getElementById("multiple_choice").value)
+    var mcval = document.getElementById("multiple_choice").value;
+    //console.log("inside..." + document.getElementById("fill").value);
+    var fillblankval = document.getElementById("fill").value;
+    
+    var nodes = document.getElementById('checkbox_options').childNodes;
+    var checkbox_answers = [];
+    for(var i=0; i<nodes.length; i++) {
+         {
+            //console.log(nodes[i]);
+            var labelChildNodes = nodes[i].childNodes;
+            for(var j=0; j<labelChildNodes.length; j++) {
+                //console.log(labelChildNodes[j].nodeName);    
+                if(labelChildNodes[j].nodeName == 'INPUT' && document.getElementById(labelChildNodes[j].id).checked) {
+                  if(labelChildNodes[j+1].nodeName == '#text') {
+                    //console.log(labelChildNodes[j+1].nodeValue);
+                    checkbox_answers.push(labelChildNodes[j+1].nodeValue);
+                    //console.log("Array" + checkbox_answers.toString());
+                  }
+                }
+                j=j+1;
+            }
+        }
+      }
+
+      var quiz_json = {"true_false_answer": tfval, "multiple_choice_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers}
+      console.log(JSON.stringify(quiz_json))
+
+      //$.post('updateCurrentQuizState', {quiz_json});
+
+      $.ajax({
+          type: 'POST',
+          url: 'updateCurrentQuizState',
+          data: JSON.stringify(quiz_json),
+          //success: function(data) { alert('data: ' + data); },
+          contentType: "application/json",
+          dataType: 'json'
+      });
+  }
+  
   </script>
 
   </body>

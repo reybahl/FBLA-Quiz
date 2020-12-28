@@ -3,6 +3,9 @@ from databaseconnect import Connection
 from checkanswers import convert_to_dict, check
 import pdfkit
 import requests
+import fpdf
+class MyPDF(fpdf.FPDF, fpdf.HTMLMixin):
+    pass
 
 app = Flask(__name__)
 
@@ -60,8 +63,15 @@ def quiz():
 
     global questions_answers
     if request.method != "POST":
+        #first check if a quiz is in progress, if yes, show that quiz, otherwise show screen to generate a new quiz
+        quizqa = connection.get_quiz_in_progress(session['username'])
+        if quizqa is not None:
+            return render_template('quizinprogress.html', quizqa = quizqa['results'], enumerate = enumerate)
         questions_answers = connection.generate_quiz()
-       
+        if 'username' in session.keys():
+            return render_template('quizpage.html', questions = questions_answers, enumerate = enumerate)
+        else:
+            return redirect(url_for('login'))
         
     if request.method == "POST":
         req = request.form
@@ -81,18 +91,31 @@ def quiz():
             rendered = render_template('resultpagetemplate.html', results = results, prefs = connection.get_prefs(session['username'])['settings'])
             pdf = pdfkit.from_string(rendered, False, options)
 
+            # pdf = MyPDF()
+            # # Add a page
+            # pdf.add_page()
+            #
+            # pdf.write_html(rendered)
+            #
+            # response = make_response(pdf.output(dest='S').encode('latin-1'))
             response = make_response(pdf)
             response.headers['Content-Type'] = 'application/pdf'
             response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
 
             return response
 
-    if 'username' in session.keys():    
-        return render_template('quizpage.html', questions = questions_answers, enumerate = enumerate)
-    else:
-        return redirect(url_for('login'))
+@app.route('/generateReport',methods=["GET"])
+def generate_report():
+    datetime = request.args['datetime']
+    if request.method == "GET":
+        results = connection.get_report_for_date(session['username'], datetime)
+        rendered = render_template('resultpagetemplate.html', results = results['results'], prefs = connection.get_prefs(session['username'])['settings'])
+        pdf = pdfkit.from_string(rendered, False)
+        response = make_response(pdf)
+        response.headers['Content-Type'] = 'application/pdf'
+        response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
 
-    
+        return response
         
 @app.route('/register',  methods=["GET", "POST"])
 def register():
@@ -128,7 +151,7 @@ def settings():
 
 @app.route('/reports')
 def reports():
-    return redirect(url_for('quiz'))
+    return render_template("reports.html", reports = connection.get_reports(session['username']))
 
 @app.route('/updatesettings', methods=['POST'])
 def updatesettings():
@@ -136,8 +159,10 @@ def updatesettings():
         prefs = convert_to_dict(request.form.items())
         connection.set_prefs(session['username'], prefs)
         print(prefs)
-        
-    
     return "<h1>Settings updated!</h1>"
 
+@app.route('/updateCurrentQuizState', methods=['POST'])
+def updateCurrentQuizState():
+    if request.method == 'POST':
+        connection.update_quiz_in_progress(session['username'], request.get_json())
 app.run('localhost')
