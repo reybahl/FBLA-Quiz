@@ -1,4 +1,4 @@
-from flask import Flask, render_template,  redirect,  url_for, request, session, make_response
+from flask import Flask, render_template,  redirect,  url_for, request, session, make_response, jsonify
 from databaseconnect import Connection
 from checkanswers import convert_to_dict, check
 import pdfkit
@@ -67,7 +67,7 @@ def quiz():
         quizqa = connection.get_quiz_in_progress(session['username'])
         if quizqa is not None:
             return render_template('quizinprogress.html', quizqa = quizqa['results'], enumerate = enumerate)
-        questions_answers = connection.generate_quiz()
+        questions_answers = connection.generate_quiz(session['username'])
         if 'username' in session.keys():
             return render_template('quizpage.html', questions = questions_answers, enumerate = enumerate)
         else:
@@ -101,7 +101,8 @@ def quiz():
             response = make_response(pdf)
             response.headers['Content-Type'] = 'application/pdf'
             response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
-
+            
+            connection.delete_quiz_in_progress(session['username'])
             return response
 
 @app.route('/generateReport',methods=["GET"])
@@ -165,4 +166,11 @@ def updatesettings():
 def updateCurrentQuizState():
     if request.method == 'POST':
         connection.update_quiz_in_progress(session['username'], request.get_json())
+
+@app.route('/getHelp', methods=['POST'])
+def getHelp():
+    if request.method == 'POST':
+        qa = connection.get_help(request.get_json())
+        return jsonify(qa)
+        
 app.run('localhost')

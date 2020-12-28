@@ -5,6 +5,7 @@ import random
 from firebase_admin import credentials
 from firebase_admin import firestore
 from datetime import datetime
+from textblob.classifiers import NaiveBayesClassifier
 
 cred = credentials.Certificate("serviceAccountKey.json")
 firebase_admin.initialize_app(cred, {
@@ -13,20 +14,28 @@ firebase_admin.initialize_app(cred, {
 dbref=firestore.client()
 
 class Connection():
-    def generate_quiz(self):
+    def generate_quiz(self, user):
 
         questions_by_type_ref = dbref.collection('questions_by_type')
+        currentstate_ref = dbref.collection('users').document(user).collection('quizinprogress').document('currentstate')
 
         self.question_types = ['multiple_choice', 'checkbox', 'fill_in_the_blank', 'true_false']
         self.quiz = []
         random.shuffle(self.question_types)
+        currentstate_results = []
         for question_type in self.question_types:
-            questions_ref = questions_by_type_ref.document(question_type).collection('questions')
+            questions_ref = questions_by_type_ref.document(question_type).collection('questions')            
             questions_count = len(questions_ref.get())
             question = questions_ref.where('id', '==', random.randrange(0, questions_count - 1)).stream()
             for doc in question:
-                self.quiz.append({'type': question_type, 'question' : doc.to_dict()})
-
+                doc_dict = doc.to_dict()
+                self.quiz.append({'type': question_type, 'question' : doc_dict})
+                if(question_type == 'multiple_choice' or question_type == 'checkbox'):
+                    currentstate_question = {'type': question_type, 'question': doc_dict['content'], 'options': doc_dict['options']}
+                else:
+                    currentstate_question = {'type': question_type, 'question': doc_dict['content']}
+                currentstate_results.append(currentstate_question)
+        currentstate_ref.set({'results': currentstate_results})
         return self.quiz
 
 
@@ -84,11 +93,10 @@ class Connection():
         return doc.to_dict()
 
     def get_quiz_in_progress(self, user):
-        quiz = dbref.collection('users').document('myemail@email.com').collection('quizinprogress').stream()
-        for doc in quiz:
-            return doc.to_dict()
+        return dbref.collection('users').document(user).collection('quizinprogress').document(
+            'currentstate').get().to_dict()
     def update_quiz_in_progress(self, user, quiz_json):
-        doc_ref = dbref.collection('users').document('myemail@email.com').collection('quizinprogress').document(
+        doc_ref = dbref.collection('users').document(user).collection('quizinprogress').document(
             'currentstate')
 
         questions = doc_ref.get().to_dict()['results']
@@ -102,9 +110,28 @@ class Connection():
             elif (question['type'] == 'multiple_choice'):
                 question['answer'] = quiz_json['multiple_choice_answer']
         updatedquiz = {'results': questions}
-        #doc_ref.set(updatedquiz)
-        print(updatedquiz)
+        doc_ref.set(updatedquiz)
+        #print(updatedquiz)
+    
+    def delete_quiz_in_progress(self, user):
+        dbref.collection('users').document(user).collection('quizinprogress').document('currentstate').delete()
 
+    def get_help(self, question_json):
+        classification = self.classify(question_json['question'])
+        qas = dbref.collection('help').document(classification).collection('Q&A').stream()
+        qaarr = []
+        for doc in qas:
+            qa = doc.to_dict()
+            qaarr.append(qa)
+        return qaarr
+    def classify(self, question):
+        data = dbref.collection('intelligent_help')
+        docs = data.stream()
+        training_data = []
+        for doc in docs:
+            training_data.append((doc.to_dict()['text'], doc.to_dict()['label']))
+        cl = NaiveBayesClassifier(training_data)
+        return cl.classify(question)
 
-connection = Connection()
-connection.get_reports('myemail@email.com')     
+# connection = Connection()
+# connection.get_reports(user)     

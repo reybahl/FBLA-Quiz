@@ -32,9 +32,9 @@
               <option value="">Choose an answer</option>
               {% for option in question['options'] %}
                 {% if option in question['answer'] %}
-                <option value="{{option}}">{{option}}</option>
-                {% else %}
                 <option value="{{option}}" selected>{{option}}</option>
+                {% else %}
+                <option value="{{option}}">{{option}}</option>
                 {% endif %}
               {% endfor %}
             </select>
@@ -47,25 +47,30 @@
           {% elif question['type'] == 'checkbox' %}
           <div class="form-group">
             <label>{{question['question']}}</label>
+            <div id="checkbox_options" class="checkbox">
               {% for i, option in enumerate(question['options']) %}
               {% if option in question['answer'] %}
-                <div class="checkbox">
-                  <label><input id="{{option}}" type="checkbox" value="checkbox" name = "{{option}}" onchange="updatequiz()" checked>{{option}}</label>
-                </div>
+                  <label><input id="{{option}}" type="checkbox" value="checkbox" name = "{{option}}" onchange="updatequiz()" checked>{{option}}</label><br/>
               {% else %}
-                <div id="checkbox_options" class="checkbox">
-                  <label><input id="{{option}}" type="checkbox" value="checkbox" name = "{{option}}" onchange="updatequiz()">{{option}}</label>
-                </div>
+                  <label><input id="{{option}}" type="checkbox" value="checkbox" name = "{{option}}" onchange="updatequiz()">{{option}}</label><br/>
               {% endif %}
-
               {% endfor %} <!-- End the for loop -->
+              </div>
           </div>
           {% elif question['type'] == 'true_false' %}
           <label>{{question['question']}}</label>
             <select id="true_false" class="custom-select" name="true_false" required onchange="updatequiz()">>
               <option value = "">True or False?</option>
+              {% if question['answer'] == 'True'%}
+              <option value="True" selected>True</option>
+              <option value="False">False</option>
+              {% elif question['answer'] == 'False'%}
+              <option value="True">True</option>
+              <option value="False" selected>False</option>
+              {% else %}
               <option value="True">True</option>
               <option value="False">False</option>
+              {% endif %}
             </select>
             <br>
             <br>
