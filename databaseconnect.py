@@ -19,19 +19,25 @@ class Connection():
         questions_by_type_ref = dbref.collection('questions_by_type')
         currentstate_ref = dbref.collection('users').document(user).collection('quizinprogress').document('currentstate')
 
-        self.question_types = ['multiple_choice', 'checkbox', 'fill_in_the_blank', 'true_false']
+        self.question_types = ['multiple_choice', 'checkbox', 'fill_in_the_blank', 'true_false', 'matching']
         self.quiz = []
         random.shuffle(self.question_types)
         currentstate_results = []
         for question_type in self.question_types:
             questions_ref = questions_by_type_ref.document(question_type).collection('questions')            
             questions_count = len(questions_ref.get())
-            question = questions_ref.where('id', '==', random.randrange(0, questions_count - 1)).stream()
+            if(questions_count == 1):
+                question = questions_ref.stream()
+            else:
+                question = questions_ref.where('id', '==', random.randrange(0, questions_count - 1)).stream()
             for doc in question:
                 doc_dict = doc.to_dict()
                 self.quiz.append({'type': question_type, 'question' : doc_dict})
                 if(question_type == 'multiple_choice' or question_type == 'checkbox'):
                     currentstate_question = {'type': question_type, 'question': doc_dict['content'], 'options': doc_dict['options']}
+                elif(question_type == 'matching'):
+                    currentstate_question = {'type': question_type, 'question': doc_dict['question']}
+                    pass
                 else:
                     currentstate_question = {'type': question_type, 'question': doc_dict['content']}
                 currentstate_results.append(currentstate_question)
@@ -109,6 +115,8 @@ class Connection():
                 question['answer'] = quiz_json['checkbox_answers']
             elif (question['type'] == 'multiple_choice'):
                 question['answer'] = quiz_json['multiple_choice_answer']
+            elif (question['type'] == 'matching'):
+                question['answer'] = quiz_json['matching']
         updatedquiz = {'results': questions}
         doc_ref.set(updatedquiz)
         #print(updatedquiz)

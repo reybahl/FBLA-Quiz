@@ -470,7 +470,49 @@
         }
       }
 
-      var quiz_json = { "true_false_answer": tfval, "multiple_choice_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers }
+      
+      var nodes = document.getElementById('matching').childNodes;
+    var matching_prompts_answers = [];
+    for (var i = 0; i < nodes.length; i++) {
+      if (nodes[i].nodeName != '#text') {
+        //console.log(nodes[i]);
+        var labelChildNodes = nodes[i].childNodes;
+        var prompt = '';
+        //for each row make dict of left-side with right-side selected.
+        for (var j = 0; j < labelChildNodes.length; j++) {
+
+          if (labelChildNodes[j].nodeName != '#text') {
+            var bothsideNodes = labelChildNodes[j].childNodes;
+            
+
+            for (var k = 0; k < bothsideNodes.length; k++) {
+              //console.log("forloop begin, node: " + bothsideNodes[k].nodeName + " prompt: " + prompt);
+              // child node would be one of left-side or right-side.
+              var matching_prompts_answer = {};
+
+              if (bothsideNodes[k].nodeName != '#text') {
+                // left side.
+                if (bothsideNodes[k].nodeName == 'INPUT') {
+                  //matching_prompts_answer[bothsideNodes[k].value] = ''
+                  //console.log(bothsideNodes[k].value);
+                  prompt = bothsideNodes[k].value;
+                  //console.log(prompt);
+                }
+                if (bothsideNodes[k].nodeName == 'SELECT') {
+                  //console.log(prompt);
+                  matching_prompts_answer[prompt] = bothsideNodes[k].value;
+                  //console.log(matching_prompts_answer);  
+                  matching_prompts_answers.push(matching_prompts_answer);
+                }
+              }
+            }
+          }
+        }
+
+      }
+    }
+
+      var quiz_json = { "true_false_answer": tfval, "multiple_choice_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers, "matching": matching_prompts_answers }
       console.log(JSON.stringify(quiz_json))
 
       //$.post('updateCurrentQuizState', {quiz_json});
