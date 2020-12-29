@@ -3,9 +3,9 @@ from databaseconnect import Connection
 from checkanswers import convert_to_dict, check
 import pdfkit
 import requests
-import fpdf
-class MyPDF(fpdf.FPDF, fpdf.HTMLMixin):
-    pass
+#import fpdf
+# class MyPDF(fpdf.FPDF, fpdf.HTMLMixin):
+#     pass
 
 app = Flask(__name__)
 

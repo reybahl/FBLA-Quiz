@@ -74,6 +74,31 @@
             </select>
             <br>
             <br>
+            {% elif question['type'] == 'matching' %}
+            <label>{{question['question']['content']}}</label>
+            <div id="matching" class="container">
+              {% for prompt in question['question']['left_side'] %}
+              <div class="row">
+                <div class="col-sm">
+                  <input class="form-control" value = "{{prompt}}" readonly></input>
+                </div>
+                <div class="col-sm">
+                  <select class="custom-select" onchange="updatequiz()">
+                    {% for option in question['question']['right_side'] %}
+                      
+                      {% for response in question['answer'] %}
+                        {% if option == response[prompt] %}
+                          <option value="{{option}}" selected>{{option}}</option>
+                        {% endif %}
+                      {% endfor %}
+                      <option value="{{option}}">{{option}}</option>
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              {% endfor %}
+              <br/>
+            </div>
           {% endif %}
           {% endfor %}
           <button type="submit" class="btn btn-primary">Submit</button>
