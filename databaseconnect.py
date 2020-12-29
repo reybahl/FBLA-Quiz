@@ -140,6 +140,24 @@ class Connection():
             training_data.append((doc.to_dict()['text'], doc.to_dict()['label']))
         cl = NaiveBayesClassifier(training_data)
         return cl.classify(question)
+    def get_correct_answers(self, quizqa):
+        data = quizqa['results']
+        correct_answers = []
+        for entry in data:
+            if (entry['type'] == 'matching'):
+                docs = dbref.collection('questions_by_type').document(entry['type']).collection('questions').where('content', '==', entry['question']['content']).get()
+            else:
+                docs = dbref.collection('questions_by_type').document(entry['type']).collection('questions').where('content', '==', entry['question']).get()
+            for doc in docs:
+              returned_doc = doc.to_dict()
+              question = {}
+              correct_answers_entry = {}
+              question['content'] = entry['question']
+              question['answer'] = returned_doc['answer']
+              correct_answers_entry['question'] = question
+              correct_answers_entry['type'] = entry['type']
+              correct_answers.append(correct_answers_entry)
+        return correct_answers
 
 # connection = Connection()
 # connection.get_reports(user)     

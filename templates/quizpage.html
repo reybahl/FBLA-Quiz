@@ -75,7 +75,7 @@
                   <input class="form-control" value = "{{prompt}}" readonly></input>
                 </div>
                 <div class="col-sm">
-                  <select class="custom-select" onchange="updatequiz()">
+                  <select class="custom-select" name="matching_{{prompt}}" onchange="updatequiz()">
                     {% for answer in question['question']['question']['right_side'] %}
                       <option value="{{answer}}">{{answer}}</option>
                     {% endfor %}

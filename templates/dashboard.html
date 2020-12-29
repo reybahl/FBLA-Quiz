@@ -473,6 +473,7 @@
       
       var nodes = document.getElementById('matching').childNodes;
     var matching_prompts_answers = [];
+    var matching_prompts_answer = {};
     for (var i = 0; i < nodes.length; i++) {
       if (nodes[i].nodeName != '#text') {
         //console.log(nodes[i]);
@@ -488,7 +489,7 @@
             for (var k = 0; k < bothsideNodes.length; k++) {
               //console.log("forloop begin, node: " + bothsideNodes[k].nodeName + " prompt: " + prompt);
               // child node would be one of left-side or right-side.
-              var matching_prompts_answer = {};
+              
 
               if (bothsideNodes[k].nodeName != '#text') {
                 // left side.
@@ -502,7 +503,7 @@
                   //console.log(prompt);
                   matching_prompts_answer[prompt] = bothsideNodes[k].value;
                   //console.log(matching_prompts_answer);  
-                  matching_prompts_answers.push(matching_prompts_answer);
+                  //matching_prompts_answers.push(matching_prompts_answer);
                 }
               }
             }
@@ -512,7 +513,7 @@
       }
     }
 
-      var quiz_json = { "true_false_answer": tfval, "multiple_choice_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers, "matching": matching_prompts_answers}
+      var quiz_json = { "true_false_answer": tfval, "multiple_choice_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers, "matching": matching_prompts_answer}
       console.log(JSON.stringify(quiz_json))
 
       //$.post('updateCurrentQuizState', {quiz_json});

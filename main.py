@@ -60,19 +60,19 @@ def dashboard():
         return redirect(url_for('login'))
 @app.route('/quiz', methods= ["GET", "POST"] )
 def quiz():
-
     global questions_answers
     if request.method != "POST":
         #first check if a quiz is in progress, if yes, show that quiz, otherwise show screen to generate a new quiz
         quizqa = connection.get_quiz_in_progress(session['username'])
         if quizqa is not None:
+            #get correct answers from database
+            questions_answers = connection.get_correct_answers(quizqa)
             return render_template('quizinprogress.html', quizqa = quizqa['results'], enumerate = enumerate)
         questions_answers = connection.generate_quiz(session['username'])
         if 'username' in session.keys():
             return render_template('quizpage.html', questions = questions_answers, enumerate = enumerate)
         else:
             return redirect(url_for('login'))
-        
     if request.method == "POST":
         req = request.form
         if questions_answers is not None:

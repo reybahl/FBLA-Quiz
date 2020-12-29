@@ -83,15 +83,17 @@
                   <input class="form-control" value = "{{prompt}}" readonly></input>
                 </div>
                 <div class="col-sm">
-                  <select class="custom-select" onchange="updatequiz()">
+                  <select class="custom-select" name="matching_{{prompt}}" onchange="updatequiz()">
                     {% for option in question['question']['right_side'] %}
-                      
-                      {% for response in question['answer'] %}
-                        {% if option == response[prompt] %}
+                      {%if 'answer' in question.keys()%}
+                        {% if option == question['answer'][prompt] %}
                           <option value="{{option}}" selected>{{option}}</option>
+                        {% else %}
+                          <option value="{{option}}">{{option}}</option>
                         {% endif %}
-                      {% endfor %}
-                      <option value="{{option}}">{{option}}</option>
+                        {% else %}
+                          <option value="{{option}}">{{option}}</option>
+                        {% endif %}
                     {% endfor %}
                   </select>
                 </div>

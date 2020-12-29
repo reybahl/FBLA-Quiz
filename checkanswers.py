@@ -3,11 +3,15 @@ connection = Connection()
 
 def convert_to_dict(_list):
     d = {}
+    matching_dict = {}
     for a, b in _list:
         if b == 'checkbox':
             d.setdefault(b, []).append(a)
+        elif "matching" in a:
+            matching_dict[a.replace('matching_','')] = b
         else:
             d.setdefault(a, []).append(b)
+    d['matching'] = matching_dict
     return d
 
 def check(questions, responses):
@@ -49,7 +53,16 @@ def check(questions, responses):
             'correct' : correct_fixed,
             'boolcorrect' : boolcorrect})
         
-
+        elif x['type'] == 'matching':
+            answer = question['answer']
+            response = responses['matching']
+            shared_items = {k: answer[k] for k in answer if k in response and answer[k] == response[k]}
+            boolcorrect = len(shared_items) == len(answer)
+            results.append({'type': x['type'], 
+            'question': question['content']['content'],
+            'answer': response,
+            'correct' : answer,
+            'boolcorrect' : boolcorrect})
     print(results)
     return results
 
