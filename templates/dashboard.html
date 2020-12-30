@@ -153,7 +153,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#" onclick="populateReports()" data-toggle="tooltip" data-placement="top" title="You can view your historical quiz reports here">
+              <a class="nav-link" href="#results" onclick="populateReports()" data-toggle="tooltip" data-placement="top" title="You can view your historical quiz reports here">
                 <span data-feather="bar-chart-2"></span>
                 Reports
               </a>
@@ -419,6 +419,20 @@
   </script>
 
   <script>
+
+    var hash = location.hash.substr(1);
+    console.log(hash);
+
+    if(hash == 'quiz'){
+      generateQuiz();
+    }
+
+    else if(hash == 'reports'){
+      populateReports();
+    }
+    else if(hash == 'settings'){
+      populateSettings();
+    }
 
     function populateReports() {
       $.get('reports', {},
