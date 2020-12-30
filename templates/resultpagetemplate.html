@@ -15,16 +15,38 @@
     {% if 'show_name' in prefs['checkbox'] %}
         <h1 class="display-4" style="text-align: center;">{{prefs['Name'][0]}}</h6>
     {% endif %}
-    {% for question in results %}
+    {% if 'score' in prefs['checkbox'] %}
+        <h1 class="display-4" style="text-align: center;">Score : {{score}}/5</h6>
+    {% endif %}
+    {% if 'date' in prefs['checkbox'] %}
+        <p class="text-center">Date Submitted : {{date}}</p>
+    {% endif %}
+    
+    {% if 'time' in prefs['checkbox'] %}
+        <p class="text-center">Time submitted : {{time}}</p>
+    {% endif %}
+     
+    {% for num, question in enumerate(results) %}
         {% if question['boolcorrect'] %} 
-            <div style="color:green; font-size: large;">
+            <div font-size = "{{prefs['font'][0]}}" style="color:green; font-size:{{prefs['font'][0]}}px;">
         {% else %}
-            <div style="color:red;font-size: large;">
+            <div style="color:red;font-size:{{prefs['font'][0]}}px;">
         {% endif %}
-            <p>{{question['question']}}</p>
+            {% if 'q_number' in prefs['checkbox'] %}
+                <p>{{num + 1}}. {{question['question']}}</p>
+            {% else %}
+                <p>{{question['question']}}</p>
+            {% endif %}
+
             <p><i>You answered: <b>{{question['answer']}}</b></i></p>
-            {% if not question['boolcorrect'] %}
-            <p><i>Correct answer: <b>{{question['correct']}}</b></i></p>   
+            {% if question['boolcorrect'] %}
+                {% if 'showcorrectanswer' in prefs['checkbox'] %}
+                    <p><i>Correct answer: <b>{{question['correct']}}</b></i></p>
+                {% endif %}     
+            {% else %}
+                {% if 'showwronganswer' in prefs['checkbox'] %}
+                    <p><i>Correct answer: <b>{{question['correct']}}</b></i></p>
+                {% endif %}   
             {% endif %}     
             </div>
 

@@ -45,14 +45,16 @@ class Connection():
         return self.quiz
 
 
-    def save_results(self, user, results):
+    def save_results(self, user, results, score):
 
         now = datetime.now()
         now_formatted = now.strftime('%c')
         users_ref = dbref.collection('users')
         current_user_quizzes_ref = users_ref.document(user).collection('quiz_results').document(now_formatted)
         
-        current_user_quizzes_ref.set({'results':results})
+        current_user_quizzes_ref.set({'results' : results, 'score' : score, 'datetimesubmitted' : now_formatted})
+
+        return now_formatted
 
 
 
@@ -68,7 +70,8 @@ class Connection():
             'settings': {
             'Name': [''],
             'font': ['12'],
-            'Username': [user]
+            'Username': [user],
+            'checkbox' : ['showwronganswer']
             }
         } 
         users_ref = dbref.collection('users')
@@ -87,7 +90,7 @@ class Connection():
         for doc in docs:
             reports.append({
                 'datetime' : doc.id,
-                'score' : 'none'
+                'score' : doc.to_dict()['score']
             })
 
         return reports
@@ -152,7 +155,7 @@ class Connection():
               returned_doc = doc.to_dict()
               question = {}
               correct_answers_entry = {}
-              question['content'] = entry['question']
+              question['content'] = entry['question'] if entry['type'] != 'matching' else entry['question']['content']
               question['answer'] = returned_doc['answer']
               correct_answers_entry['question'] = question
               correct_answers_entry['type'] = entry['type']

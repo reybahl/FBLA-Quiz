@@ -3,6 +3,7 @@ from databaseconnect import Connection
 from checkanswers import convert_to_dict, check
 import pdfkit
 import requests
+from datetime import datetime
 #import fpdf
 # class MyPDF(fpdf.FPDF, fpdf.HTMLMixin):
 #     pass
@@ -76,7 +77,20 @@ def quiz():
     if request.method == "POST":
         req = request.form
         if questions_answers is not None:
-            options = {
+
+            results, score = check(questions_answers, list(req.items()))
+            print(results)
+            date_time = connection.save_results(session['username'], results, score)
+            connection.delete_quiz_in_progress(session['username'])
+
+            return redirect(url_for('generate_report', datetime = date_time))
+
+@app.route('/generateReport',methods=["GET"])
+def generate_report():
+    date_time = request.args['datetime']
+    if request.method == "GET":
+        results = connection.get_report_for_date(session['username'], date_time)
+        options = {
                         'title': 'Quiz Results',
                         'page-size': 'Letter',
                         'margin-top': '1in',
@@ -85,33 +99,12 @@ def quiz():
                         'margin-left': '1in',
                         'encoding': "UTF-8",
                         }
-            results = check(questions_answers, list(req.items()))
-            print(results)
-            connection.save_results(session['username'], results)
-            rendered = render_template('resultpagetemplate.html', results = results, prefs = connection.get_prefs(session['username'])['settings'])
-            pdf = pdfkit.from_string(rendered, False, options)
-
-            # pdf = MyPDF()
-            # # Add a page
-            # pdf.add_page()
-            #
-            # pdf.write_html(rendered)
-            #
-            # response = make_response(pdf.output(dest='S').encode('latin-1'))
-            response = make_response(pdf)
-            response.headers['Content-Type'] = 'application/pdf'
-            response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
-            
-            connection.delete_quiz_in_progress(session['username'])
-            return response
-
-@app.route('/generateReport',methods=["GET"])
-def generate_report():
-    datetime = request.args['datetime']
-    if request.method == "GET":
-        results = connection.get_report_for_date(session['username'], datetime)
-        rendered = render_template('resultpagetemplate.html', results = results['results'], prefs = connection.get_prefs(session['username'])['settings'])
-        pdf = pdfkit.from_string(rendered, False)
+        user_date_time = results['datetimesubmitted']
+        user_date_time = datetime.strptime(user_date_time, '%c')
+        date = user_date_time.date()
+        time = user_date_time.time()
+        rendered = render_template('resultpagetemplate.html', enumerate = enumerate, results = results['results'], score= results['score'], date = date, time = time, prefs = connection.get_prefs(session['username'])['settings'])
+        pdf = pdfkit.from_string(rendered, False, options)
         response = make_response(pdf)
         response.headers['Content-Type'] = 'application/pdf'
         response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
@@ -133,34 +126,28 @@ def logout():
         del session['username'] #deleting 'username' from session
     return redirect(url_for('login'))
 
-@app.route('/settings')
+@app.route('/settings', methods = ['GET', 'POST'])
 def settings():
     if request.method == 'POST':
         prefs = convert_to_dict(request.form.items())
         connection.set_prefs(session['username'], prefs)
         print(prefs)
+        return redirect(url_for('dashboard'))
         
     include_in_quiz_checkbox = {
         'q_number' : 'Question numbers',
         'show_name' : 'Your Name',
+        'date' : 'Date Submitted',
         'time':'Time submitted',
+        'score' : 'Your Score',
         'showcorrectanswer': 'Correct Answers',
         'showwronganswer':'Wrong Answers'
     }
     if 'username' in session.keys():
         return render_template('settings.html', prefs = connection.get_prefs(session['username'])['settings'], include_in_quiz_checkbox =include_in_quiz_checkbox)
-
 @app.route('/reports')
 def reports():
     return render_template("reports.html", reports = connection.get_reports(session['username']))
-
-@app.route('/updatesettings', methods=['POST'])
-def updatesettings():
-    if request.method == 'POST':
-        prefs = convert_to_dict(request.form.items())
-        connection.set_prefs(session['username'], prefs)
-        print(prefs)
-    return "<h1>Settings updated!</h1>"
 
 @app.route('/updateCurrentQuizState', methods=['POST'])
 def updateCurrentQuizState():

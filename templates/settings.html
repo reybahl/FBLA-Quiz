@@ -15,7 +15,7 @@
 <body>
     <h1 class = "display-3">FBLA Quizzer Settings</h1>
       <div class = "col-lg-6">
-        <form action="/updatesettings" method="POST">
+        <form action="/settings" method="POST">
             <div class="form-group">
               <label><p class = "lead">Email</p></label>
               <input type="text" class="form-control-plaintext" name= "Username"  id="exampleInputEmail1" value="{{prefs['Username'][0]}}" readonly>
@@ -31,12 +31,13 @@
                 </label> 
                 {% if 'checkbox' in prefs.keys() %}
                   {% for key, value in include_in_quiz_checkbox.items() %}
-                    {% if key in prefs['checkbox'] %}
-                      {% if key == 'showcorrectanswer' %}
+                  {% if key == 'showcorrectanswer' %}
                       <label>
                         <p3 class = "lead">Include the correct answer for:</p>
                       </label>
-                      {% endif %}       
+                      {% endif %} 
+                    {% if key in prefs['checkbox'] %}
+                            
                       <div class="checkbox">
                           <label class = "btn btn-default active"><input type="checkbox" value="checkbox" name = "{{key}}" checked>{{value}}</label>
                       </div>
@@ -46,13 +47,27 @@
                     </div>
                     {% endif %}
                   {% endfor %}
+
+                  {% else %}
+
+                    {% for key, value in include_in_quiz_checkbox.items() %}
+                      {% if key == 'showcorrectanswer' %}
+                          <label>
+                            <p3 class = "lead">Include the correct answer for:</p>
+                          </label>
+                      {% endif %}
+                       
+                        <div class="checkbox">
+                          <label class = "btn btn-default active"><input type="checkbox" value="checkbox" name = "{{key}}">{{value}}</label>
+                        </div>
+                    {% endfor %}
                 {% endif %}
                 
                 <div>
-                  <input type="number" name="font" min="10" max="20" value="{{prefs['font'][0]}}">
+                  <input type="number" name="font" min="5" max="40" value="{{prefs['font'][0]}}">
                 </div>
           </div>
-            <button type="submit" class="btn btn-primary">Update Settings</button>
+            <button onclick = "alert('Settings Updated!')"type="submit" class="btn btn-primary">Update Settings</button>
         </form>
     </div>
 </body>

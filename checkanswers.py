@@ -59,12 +59,18 @@ def check(questions, responses):
             shared_items = {k: answer[k] for k in answer if k in response and answer[k] == response[k]}
             boolcorrect = len(shared_items) == len(answer)
             results.append({'type': x['type'], 
-            'question': question['content']['content'],
+            'question': question['content'],
             'answer': response,
             'correct' : answer,
             'boolcorrect' : boolcorrect})
+
+    score = 0
+    for result in results:
+        if result['boolcorrect']: #if the answer is correct
+            score += 1 #add one to the score
+
     print(results)
-    return results
+    return results, score
 
 
 #print(convert_to_dict([('checkbox', '0'), ('checkbox', '1'), (' leadership', '2'), ('Question1', '0'), ('Question1', 'True'), ('Answer1', 'fasdf')]))

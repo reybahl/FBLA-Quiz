@@ -15,7 +15,7 @@
   <table class="table">
     <thead>
       <tr>
-        <th>DateTime</th>
+        <th>Date and Time</th>
         <th>Score</th>
         <th>Time Spent</th>
         <th>PDF report</th>
@@ -25,7 +25,7 @@
       {% for report in reports %}
       <tr>
           <td>{{report['datetime']}}</td>
-          <td>{{report['score']}}</td>
+          <td>{{report['score']}}/5</td>
           <td></td>
           <td>
             <a class="nav-link" href="generateReport?datetime={{report['datetime']}}">
