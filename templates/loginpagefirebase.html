@@ -1,5 +1,5 @@
 <head>
-  <title>Bootstrap Example</title>
+  <title>FBLA Quiz Sign-in page</title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="google-signin-client_id"
@@ -86,30 +86,38 @@
 <body class="text-center">
   <div class="container">
     <h2>FBLA Sign In</h2>
-    <form class="form-signin">
-      <!-- Email input -->
+    <div class="row">
+      <div class="col">
+        <form class="form-signin">
+          <!-- Email input -->
 
-      <label for="inputEmail" class="sr-only">Email address</label>
-      <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
-      <label for="inputPassword" class="sr-only">Password</label>
-      <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
+          <label for="inputEmail" class="sr-only">Email address</label>
+          <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
+          <label for="inputPassword" class="sr-only">Password</label>
+          <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
 
-      <!-- Submit button -->
-      <input type="button" onclick="SignInWithEmail()" value="Sign in" class="btn btn-primary btn-block"/>
+          <!-- Submit button -->
+          <input type="button" onclick="SignInWithEmail()" value="Sign in" class="btn btn-primary btn-block" />
 
-      <!-- Register buttons -->
-      <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal"
-        data-whatever="@getbootstrap">Register</button>
-
-      <div class="row">
-
-
-        <div class="col">
-          <!-- Simple link -->
-          <div class="g-signin2" data-onsuccess="onSignIn"></div>
-        </div>
+          <!-- Register buttons -->
+          <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal"
+            data-whatever="@getbootstrap">Register</button>
+        </form>
       </div>
-    </form>
+    </div>
+    <div class="row justify-content-md-center">
+
+          <div class="col"><hr></div>
+          <div class="col-auto">OR</div>
+          <div class="col"><hr></div>
+
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col col-md-auto">
+        <!-- Simple link -->
+        <div class="g-signin2" data-onsuccess="onSignIn"></div>
+      </div>
+    </div>
   </div>
 
   <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
@@ -129,7 +137,8 @@
             <label for="registerPassword" class="sr-only">Password</label>
             <input type="password" id="registerPassword" class="form-control" placeholder="Password" required>
             <label for="registerConfirmPassword" class="sr-only">Confirm Password</label>
-            <input type="password" id="registerConfirmPassword" class="form-control" placeholder="Confirm Password" required>
+            <input type="password" id="registerConfirmPassword" class="form-control" placeholder="Confirm Password"
+              required>
           </form>
         </div>
         <div class="modal-footer">
@@ -149,10 +158,10 @@
     firebase.auth().signInWithEmailAndPassword(email, password)
       .then((user) => {
         console.log(user);
-        $.post('dashboard', { email: email},
-            function(response){
-              document.write(response);
-        });
+        $.post('dashboard', { email: email },
+          function (response) {
+            document.write(response);
+          });
 
       })
       .catch((error) => {
@@ -168,16 +177,16 @@
     firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
       console.log(user);
       //window.location.href = "dashboard.html?email="+email;
-    }).catch(function (error) {      
+    }).catch(function (error) {
       console.log(error.message);
     });
   }
 
   function onSignIn(googleUser) {
-  var profile = googleUser.getBasicProfile();
-  var email = profile.getEmail();
-  console.log('Email: ' + email); // This is null if the 'email' scope is not present.
-  //window.location.href = "dashboard.html?email="+email;
-}
+    var profile = googleUser.getBasicProfile();
+    var email = profile.getEmail();
+    console.log('Email: ' + email); // This is null if the 'email' scope is not present.
+    //window.location.href = "dashboard.html?email="+email;
+  }
 
 </script>
