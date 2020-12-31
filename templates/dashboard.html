@@ -371,8 +371,12 @@
     //console.log(hash);
 
     function make_active(item){
+      //var existing_active = getElementsByClassName("nav-link active")[0];
+      
+      document.getElementsByClassName("nav-link active")[0].style.color ="white"; 
       document.getElementsByClassName("nav-link active")[0].className = "nav-link";
       document.getElementById(item).className = "nav-link active";
+      document.getElementById(item).style.color ="deepskyblue"; 
     }
     if(hash == 'quiz'){
       getQuizInProgress();
