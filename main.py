@@ -55,8 +55,11 @@ def dashboard():
         session['username'] = user
         return render_template('dashboard.html', email=user)
 
+    quiz = connection.get_quiz_in_progress(session['username'])
+    quiz_in_progress = True if quiz is not None else False
+
     if 'username' in session.keys():
-        return render_template('dashboard.html', email=session['username'])
+        return render_template('dashboard.html', email=session['username'], quiz_in_progress=quiz_in_progress)
     else:
         return redirect(url_for('login'))
 @app.route('/quiz', methods= ["GET", "POST"] )
@@ -64,12 +67,16 @@ def quiz():
     global questions_answers
     if request.method != "POST":
         #first check if a quiz is in progress, if yes, show that quiz, otherwise show screen to generate a new quiz
-        quizqa = connection.get_quiz_in_progress(session['username'])
-        if quizqa is not None:
-            #get correct answers from database
-            questions_answers = connection.get_correct_answers(quizqa)
-            return render_template('quizinprogress.html', quizqa = quizqa['results'], enumerate = enumerate)
-        questions_answers = connection.generate_quiz(session['username'])
+        generate_quiz_in_progress = request.args.get('quiz_in_progress')
+        if generate_quiz_in_progress == 'true':
+            quizqa = connection.get_quiz_in_progress(session['username'])
+            if quizqa is not None:
+                #get correct answers from database
+                questions_answers = connection.get_correct_answers(quizqa)
+                return render_template('quizinprogress.html', quizqa = quizqa['results'], enumerate = enumerate)
+        else:
+            connection.delete_quiz_in_progress(session['username'])
+            questions_answers = connection.generate_quiz(session['username'])
         if 'username' in session.keys():
             return render_template('quizpage.html', questions = questions_answers, enumerate = enumerate)
         else:
@@ -159,5 +166,13 @@ def getHelp():
     if request.method == 'POST':
         qa = connection.get_help(request.get_json())
         return jsonify(qa)
+
+@app.route('/quizInProgressExists', methods=['GET'])
+def quizInProgressExists():
+    quiz = connection.get_quiz_in_progress(session['username'])
+    if quiz is None:
+        return "False"
+    else:
+        return "True"
         
 app.run('localhost')
