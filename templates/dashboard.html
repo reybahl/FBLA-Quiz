@@ -129,19 +129,19 @@
         <div class="sidebar-sticky">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link active" href="#quiz" onclick="getQuizInProgress()">
+              <a id = "quizlink" class="nav-link active" href="#quiz" onclick="getQuizInProgress()">
                 <span data-feather="file"></span>
                 Take a Quiz
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#reports" onclick="populateReports()" data-toggle="tooltip" data-placement="top" title="You can view your historical quiz reports here">
+              <a id = "reportslink" class="nav-link" href="#reports" onclick="populateReports()" data-toggle="tooltip" data-placement="top" title="You can view your historical quiz reports here">
                 <span data-feather="bar-chart-2"></span>
                 Reports
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#settings" onclick="populateSettings()">
+              <a id = "settingslink" class="nav-link" href="#settings" onclick="populateSettings()">
                 <span data-feather="settings"></span>
                 Settings
               </a>
@@ -366,10 +366,14 @@
 
   <script>
 
-    var hash = location.hash.substr(1);
+    var hash = window.location.href.split('#').pop();
     //var originalHTML = document.getElementById("dynamicContent").innerHTML;
     //console.log(hash);
 
+    function make_active(item){
+      document.getElementsByClassName("nav-link active")[0].className = "nav-link";
+      document.getElementById(item).className = "nav-link active";
+    }
     if(hash == 'quiz'){
       getQuizInProgress();
     }
@@ -388,6 +392,7 @@
         });
     }
     function populateQuizStartPage(quizexists){
+    make_active('quizlink');
      if (quizexists == 'True'){
       var html = '<p style="align-items:center;" class= "lead">You have an existing quiz</p> \r\n \
             <button class = "btn btn-outline-primary btn-block" onclick="generateQuiz(true)">Resume your previous quiz</button> \r\n \
@@ -400,6 +405,7 @@
     }
 
     function populateReports() {
+      make_active('reportslink');
       $.get('reports', {},
         function (response) {
           document.getElementById("dynamicContent").innerHTML = response
@@ -423,6 +429,7 @@
     }
 
     function populateSettings() {
+      make_active('settingslink');
       $.get('settings', {},
         function (response) {
           document.getElementById("dynamicContent").innerHTML = response
