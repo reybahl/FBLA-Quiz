@@ -166,6 +166,9 @@
       })
       .catch((error) => {
         console.log(error.code);
+        if(error.code == 'auth/wrong-password'){
+          alert("Please enter a valid email and password");
+        }
         console.log(error.message);
       });
   }
@@ -176,8 +179,18 @@
 
     firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
       console.log(user);
+      $('#exampleModal').modal('hide');
       //window.location.href = "dashboard.html?email="+email;
     }).catch(function (error) {
+      console.log(error.code);
+      if (error.code == "auth/invalid-email"){
+        alert("Please enter a valid email");
+      }
+      if (error.code == "auth/email-already-in-use"){
+        alert("That email address is already in use");
+      }
+      
+
       console.log(error.message);
     });
   }

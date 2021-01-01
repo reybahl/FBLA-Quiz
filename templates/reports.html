@@ -9,15 +9,14 @@
 <body>
 
 <div class="container">
-  <h2>Table</h2>
-  <p>The .table-responsive class creates a responsive table which will scroll horizontally on small devices (under 768px). When viewing on anything larger than 768px wide, there is no difference:</p>
+  <h2>Reports</h2>
+  <p>In this table, you can see your results on previous quizzes. Clicking on "Generate Report" will generate a PDF report with your results. These reports can be customized in settings.</p>
   <div class="table-responsive">
   <table class="table">
     <thead>
       <tr>
         <th>Date and Time</th>
         <th>Score</th>
-        <th>Time Spent</th>
         <th>PDF report</th>
       </tr>
     </thead>
@@ -26,10 +25,8 @@
       <tr>
           <td>{{report['datetime']}}</td>
           <td>{{report['score']}}/5</td>
-          <td></td>
           <td>
             <a class="nav-link" href="generateReport?datetime={{report['datetime']}}">
-              <span data-feather="bar-chart-2"></span>
               Generate Report
             </a>
           </td>
