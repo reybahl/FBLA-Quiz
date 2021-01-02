@@ -4,6 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../../../../favicon.ico">
@@ -13,18 +14,29 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css">
   <!-- Custom styles for this template -->
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
-
-  <script src="https://apis.google.com/js/platform.js" async defer></script>
+  <meta name="google-signin-client_id" content="617126747783-9ag356g7b04sn88ibo59ccie741h9ikt.apps.googleusercontent.com">
+  
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
-  <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
   <script>
+    function signOut() {
+      console.log('inside signout');
+      var auth2 = gapi.auth2.getAuthInstance();
+
+      auth2.signOut().then(function () {
+        console.log('User signed out.');
+      });
+      window.location.href = "logout";
+    }
+
     function onLoad() {
-      gapi.load('auth2', function () {
+      gapi.load('auth2', function() {
         gapi.auth2.init();
       });
     }
@@ -100,14 +112,19 @@
     .open-button:hover {
       opacity: 1;
     }
+
+    .quiz-options {
+    width: 100%;
+    max-width: 330px;
+    padding: 15px;
+    margin: auto;
+  }
     
   </style>
-  <meta name="google-signin-client_id"
-    content="617126747783-9ag356g7b04sn88ibo59ccie741h9ikt.apps.googleusercontent.com">
 </head>
 
 <body>
-  <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+  <nav class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
     <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">FBLA Dashboard</a>
     <form class="form-inline my-2 my-lg-0">
       <ul class="navbar-nav px-3">
@@ -117,37 +134,37 @@
       </ul>
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
-          <a class="nav-link" href="/logout">Sign out</a>
+          <a class="nav-link" href="#" onclick="signOut()">Sign out</a>
         </li>
       </ul>
     </form>
   </nav>
-
-  <div class="container-fluid">
-    <div class="row">
-      <nav class="col-md-2 d-none d-md-block bg-dark sidebar">
+  <!-- <div class="container-fluid"> -->
+    <!-- <div class="row"> -->
+      <div class="wrapper">
+        <nav id="sidebar">
         <div class="sidebar-sticky">
-          <ul class="nav flex-column">
+          <ul class="nav flex-column sidebar">
             <li class="nav-item">
-              <a style="color:deepskyblue;" id = "quizlink" class="nav-link active" href="#quiz" onclick="getQuizInProgress()">
+              <a id = "quizlink" class="nav-link active" href="#quiz" onclick="populateQuizStartPage()">
                 <span data-feather="file"></span>
                 Take a Quiz
               </a>
             </li>
             <li class="nav-item">
-              <a style="color:white;" id = "reportslink" class="nav-link" href="#reports" onclick="populateReports()" data-toggle="tooltip" data-placement="top" title="You can view your historical quiz reports here">
+              <a id = "reportslink" class="nav-link" href="#reports" onclick="populateReports()" data-toggle="tooltip" data-placement="top" title="You can view your historical quiz reports here">
                 <span data-feather="bar-chart-2"></span>
                 Reports
               </a>
             </li>
             <li class="nav-item">
-              <a style="color:white;" id = "settingslink" class="nav-link" href="#settings" onclick="populateSettings()">
+              <a  id = "settingslink" class="nav-link" href="#settings" onclick="populateSettings()">
                 <span data-feather="settings"></span>
                 Settings
               </a>
             </li>
             <li class="nav-item">
-              <a style="color:white;" id = "settingslink" class="nav-link" href="#settings" onclick="populateSettings()">
+              <a  id = "settingslink" class="nav-link" href="#settings" onclick="populateSettings()">
                 <span data-feather="help-circle"></span>
                 About
               </a>
@@ -157,150 +174,43 @@
         </div>
       </nav>
 
-      <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+      <!-- <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"> -->
+        <div id="content">
+
+          <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
+              <div class="container-fluid">
+        <button type="button" id="sidebarCollapse" class="btn btn-info">
+          <i class="fas fa-align-left"></i>
+          <span>Toggle Sidebar</span>
+      </button>
+              </div>
+      <div class="container-fluid">
         <div id="dynamicContent" class="d-flex flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
+          <div class="container quiz-options">
           {% if quiz_in_progress == True %}
-            <p style="align-items:center;" class= "lead">You have an existing quiz</p>
+          <div class="row">
+            <div class="col">
             <button class = "btn btn-outline-primary btn-block" onclick="generateQuiz(true)">Resume your previous quiz</button>
-            <p style="align-items:center;" class= "lead">Or</p>
+            </div>
+          </div>
+          <div class="row justify-content-md-center">
+
+            <div class="col"><hr></div>
+            <div class="col-auto">OR</div>
+            <div class="col"><hr></div>    
+          </div>
           {% endif %}
           <button class = "btn btn-outline-primary btn-block" onclick="generateQuiz(false)">Start a New Quiz</button>
+        </div>
           <br>
         </div>
-
-        <!-- <canvas class="my-4" id="myChart" width="900" height="380"></canvas>
-
-          <h2>Section title</h2>
-          <div class="table-responsive">
-            <table class="table table-striped table-sm">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>Integer</td>
-                  <td>nec</td>
-                  <td>odio</td>
-                  <td>Praesent</td>
-                </tr>
-                <tr>
-                  <td>1,003</td>
-                  <td>libero</td>
-                  <td>Sed</td>
-                  <td>cursus</td>
-                  <td>ante</td>
-                </tr>
-                <tr>
-                  <td>1,004</td>
-                  <td>dapibus</td>
-                  <td>diam</td>
-                  <td>Sed</td>
-                  <td>nisi</td>
-                </tr>
-                <tr>
-                  <td>1,005</td>
-                  <td>Nulla</td>
-                  <td>quis</td>
-                  <td>sem</td>
-                  <td>at</td>
-                </tr>
-                <tr>
-                  <td>1,006</td>
-                  <td>nibh</td>
-                  <td>elementum</td>
-                  <td>imperdiet</td>
-                  <td>Duis</td>
-                </tr>
-                <tr>
-                  <td>1,007</td>
-                  <td>sagittis</td>
-                  <td>ipsum</td>
-                  <td>Praesent</td>
-                  <td>mauris</td>
-                </tr>
-                <tr>
-                  <td>1,008</td>
-                  <td>Fusce</td>
-                  <td>nec</td>
-                  <td>tellus</td>
-                  <td>sed</td>
-                </tr>
-                <tr>
-                  <td>1,009</td>
-                  <td>augue</td>
-                  <td>semper</td>
-                  <td>porta</td>
-                  <td>Mauris</td>
-                </tr>
-                <tr>
-                  <td>1,010</td>
-                  <td>massa</td>
-                  <td>Vestibulum</td>
-                  <td>lacinia</td>
-                  <td>arcu</td>
-                </tr>
-                <tr>
-                  <td>1,011</td>
-                  <td>eget</td>
-                  <td>nulla</td>
-                  <td>Class</td>
-                  <td>aptent</td>
-                </tr>
-                <tr>
-                  <td>1,012</td>
-                  <td>taciti</td>
-                  <td>sociosqu</td>
-                  <td>ad</td>
-                  <td>litora</td>
-                </tr>
-                <tr>
-                  <td>1,013</td>
-                  <td>torquent</td>
-                  <td>per</td>
-                  <td>conubia</td>
-                  <td>nostra</td>
-                </tr>
-                <tr>
-                  <td>1,014</td>
-                  <td>per</td>
-                  <td>inceptos</td>
-                  <td>himenaeos</td>
-                  <td>Curabitur</td>
-                </tr>
-                <tr>
-                  <td>1,015</td>
-                  <td>sodales</td>
-                  <td>ligula</td>
-                  <td>in</td>
-                  <td>libero</td>
-                </tr>
-              </tbody>
-            </table>
-          </div> -->
-      </main>
-    </div>
-  </div>
+              </div>
+          <!-- </nav> -->
+        </div>
+      <!-- </main> -->
+      </div>
+    <!-- </div> -->
+  <!-- </div> -->
 
   <button class="open-button" onclick="openForm()">Chat</button>
 
@@ -356,19 +266,6 @@
       }
     });
   </script>
-  <script>
-    function signOut() {
-      var auth2 = gapi.auth2.getAuthInstance();
-      auth2.signOut().then(function () {
-        console.log('User signed out.');
-        window.location.href = "loginpagesimple.html";
-      });
-    }
-  </script>
-  <script>
-
-
-  </script>
 
   <script>
 
@@ -379,13 +276,13 @@
     function make_active(item){
       //var existing_active = getElementsByClassName("nav-link active")[0];
       
-      document.getElementsByClassName("nav-link active")[0].style.color ="white"; 
+      // document.getElementsByClassName("nav-link active")[0].style.color ="white"; 
       document.getElementsByClassName("nav-link active")[0].className = "nav-link";
       document.getElementById(item).className = "nav-link active";
-      document.getElementById(item).style.color ="deepskyblue"; 
+      // document.getElementById(item).style.color ="deepskyblue";
     }
     if(hash == 'quiz'){
-      getQuizInProgress();
+      populateQuizStartPage();
     }
 
     if(hash == 'reports'){
@@ -395,23 +292,9 @@
       populateSettings();
     }
 
-    function getQuizInProgress(){
-      $.get('quizInProgressExists', {},
-        function (response) {
-          populateQuizStartPage(response)
-        });
-    }
-    function populateQuizStartPage(quizexists){
-    make_active('quizlink');
-     if (quizexists == 'True'){
-      var html = '<p style="align-items:center;" class= "lead">You have an existing quiz</p> \r\n \
-            <button class = "btn btn-outline-primary btn-block" onclick="generateQuiz(true)">Resume your previous quiz</button> \r\n \
-            <p style="align-items:center;" class= "lead">Or</p> \r\n \
-          <button class = "btn btn-outline-primary btn-block" onclick="generateQuiz(false)">Start a New Quiz</button>';
-     } else {
-      var html = '<button class = "btn btn-outline-primary btn-block" onclick="generateQuiz(false)">Start a New Quiz</button>';
-     }
-     document.getElementById("dynamicContent").innerHTML = html;
+    function populateQuizStartPage(){
+      location.hash = "";
+      location.reload();
     }
 
     function populateReports() {
@@ -570,7 +453,13 @@
 
     }
 
+    $(document).ready(function () {
+            $('#sidebarCollapse').on('click', function () {
+                $('#sidebar').toggleClass('active');
+            });
+        });
   </script>
+<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
 </body>
 

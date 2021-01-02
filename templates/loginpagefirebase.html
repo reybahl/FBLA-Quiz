@@ -95,7 +95,7 @@
           <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
           <label for="inputPassword" class="sr-only">Password</label>
           <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
-
+          <div id="errorMessage" class="alert alert-danger" role="alert"></div>
           <!-- Submit button -->
           <input type="button" onclick="SignInWithEmail()" value="Sign in" class="btn btn-primary btn-block" />
 
@@ -141,6 +141,7 @@
               required>
           </form>
         </div>
+        <div id="registerErrorMessage" class="alert alert-danger" role="alert"></div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
           <button type="button" class="btn btn-primary" onclick="RegisterWithEmail()">Register</button>
@@ -161,15 +162,14 @@
         $.post('dashboard', { email: email },
           function (response) {
             document.write(response);
+            window.location.href = 'dashboard';
           });
 
       })
       .catch((error) => {
-        console.log(error.code);
-        if(error.code == 'auth/wrong-password'){
-          alert("Please enter a valid email and password");
-        }
         console.log(error.message);
+        $("#errorMessage").html(error.message);
+        $("#errorMessage").show();
       });
   }
 
@@ -180,17 +180,14 @@
     firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
       console.log(user);
       $('#exampleModal').modal('hide');
-      //window.location.href = "dashboard.html?email="+email;
+      $.post('dashboard', { email: email },
+          function (response) {
+            document.write(response);
+            window.location.href = 'dashboard';
+          });
     }).catch(function (error) {
-      console.log(error.code);
-      if (error.code == "auth/invalid-email"){
-        alert("Please enter a valid email");
-      }
-      if (error.code == "auth/email-already-in-use"){
-        alert("That email address is already in use");
-      }
-      
-
+      $("#registerErrorMessage").html(error.message);
+      $("#registerErrorMessage").show();
       console.log(error.message);
     });
   }
@@ -198,8 +195,15 @@
   function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     var email = profile.getEmail();
-    console.log('Email: ' + email); // This is null if the 'email' scope is not present.
-    //window.location.href = "dashboard.html?email="+email;
+    $.post('dashboard', { email: email },
+          function (response) {
+            document.write(response);
+            window.location.href = 'dashboard';
+          });
   }
 
+  $(document).ready(function(){
+    $("#errorMessage").hide();
+    $("#registerErrorMessage").hide();
+  });
 </script>

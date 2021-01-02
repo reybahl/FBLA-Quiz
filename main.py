@@ -53,11 +53,12 @@ def dashboard():
         print(req)
         user = req['email']
         session['username'] = user
-        return render_template('dashboard.html', email=user)
-
+        quiz = connection.get_quiz_in_progress(session['username'])
+        quiz_in_progress = True if quiz is not None else False
+        return render_template('dashboard.html', email=session['username'], quiz_in_progress=quiz_in_progress)
+    
     quiz = connection.get_quiz_in_progress(session['username'])
     quiz_in_progress = True if quiz is not None else False
-
     if 'username' in session.keys():
         return render_template('dashboard.html', email=session['username'], quiz_in_progress=quiz_in_progress)
     else:
@@ -139,7 +140,7 @@ def settings():
         prefs = convert_to_dict(request.form.items())
         connection.set_prefs(session['username'], prefs)
         print(prefs)
-        return redirect(url_for('dashboard'))
+        return redirect('/dashboard#settings')
         
     include_in_quiz_checkbox = {
         'q_number' : 'Question numbers',

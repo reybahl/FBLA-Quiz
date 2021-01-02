@@ -10,30 +10,38 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script type = "text/javascript" src ="{{url_for('static', filename = 'validation.js')}}"></script>
+  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
 </head>
 
 <body>
-    <h1 class = "display-3">FBLA Quizzer Settings</h1>
-      <div class = "col-lg-6 offset-lg-2">
+  <div class="container">
+  <div class="row">
+    <div class = "col">
+    <h2>FBLA Quizzer Settings</h2><br/>
+  </div>
+  </div>
+  
+  <div class="row">
+      <div class = "col">
         <form action="/settings" method="POST">
-            <div class="form-group">
-              <label><p class = "lead">Email</p></label>
-              <input type="text" class="form-control-plaintext" name= "Username"  id="exampleInputEmail1" value="{{prefs['Username'][0]}}" readonly>
-            </div>
-            <div class="form-group">
-            <label><p class="lead">Name: What you want your name to show as</p></label>
-            <input type="text" class="form-control" name= "Name" value="{{prefs['Name'][0]}}">
-            </div>
+            
+              <label><p>Email: <b>{{prefs['Username'][0]}}</b></p></label> 
+              <!-- <input type="text" class="form-control-plaintext" name= "Username"  id="exampleInputEmail1" value="{{prefs['Username'][0]}}" readonly> -->
+            <br/>
+            <label>Name: What you want your name to show as</label>
+            <input type="text" name= "Name" value="{{prefs['Name'][0]}}">
+            <br/>
+            <br/>
             <div class="form-group">
                 <label>
-                    <p class = "lead">Quiz reports:
+                    <p>Quiz reports:
                     Check below what to include in quiz reports.</p>
                 </label> 
                 {% if 'checkbox' in prefs.keys() %}
                   {% for key, value in include_in_quiz_checkbox.items() %}
                   {% if key == 'showcorrectanswer' %}
                       <label>
-                        <p3 class = "lead">Include the correct answer for:</p>
+                        <p3 >Include the correct answer for:</p>
                       </label>
                       {% endif %} 
                     {% if key in prefs['checkbox'] %}
@@ -53,7 +61,7 @@
                     {% for key, value in include_in_quiz_checkbox.items() %}
                       {% if key == 'showcorrectanswer' %}
                           <label>
-                            <p3 class = "lead">Include the correct answer for:</p>
+                            <p3 >Include the correct answer for:</p>
                           </label>
                       {% endif %}
                        
@@ -70,4 +78,6 @@
             <button onclick = "alert('Settings Updated!')"type="submit" class="btn btn-primary">Update Settings</button>
         </form>
     </div>
+    </div>
+  </div>
 </body>
