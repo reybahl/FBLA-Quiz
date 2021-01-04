@@ -31,5 +31,5 @@ This repository contains code for FBLA coding and programming competitive events
 The application can be run locally by using a python interpreter. Once python is installed on the local machine, please run below command.  
 * python3 main.py.
 
-The above command will start a local flask server on port 5000.Once the server starts, we can navigate to the link: http://localhost:5000 and we will reach the login page.  
-New users can register using an email and password or alternately they can use Google sign-in and login by using their gmail account.
+The above command will start a local flask server on port 5000. Once the server starts, we can navigate to the link: http://localhost:5000 and we will reach the login page.  
+New users can register using an email and password or alternately they can use Google sign-in and login by using their Google account.
