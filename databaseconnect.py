@@ -1,4 +1,3 @@
-import mysql.connector
 import random
 import firebase_admin
 import random

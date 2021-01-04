@@ -28,7 +28,7 @@
 <!--    </ul>-->
 <!--  </nav>-->
   <br> 
-  <div class = "col-lg-6 offset-lg-2">
+  <div class = "container-fluid w-100">
     <form class = "needs-validation" action="/quiz" method="POST">
       {% for question in questions %}
         {% if question['type'] == 'multiple_choice' %}
