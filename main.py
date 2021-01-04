@@ -15,51 +15,37 @@ app.secret_key = "FBLA"
 connection = Connection() 
 questions_answers = None
 
-@app.route('/')
+@app.route('/') 
 def start():
-    return redirect(url_for('login'))
-
-@app.route('/home')
-def home():
-    
-    if 'username' in session.keys():
-        user= session['username']
-    else:
-        user = 'None'
-    return render_template('homepage.html', user = user)
+    return redirect(url_for('login')) #Redirecting to login on start
 
 @app.route('/login',  methods=["GET", "POST"])
 def login():
-    if request.method == "POST":
-        req = request.form
-        print(req)
-        user = req['email']
-
-        # if user is None:
-        #     return render_template('loginpagefirebase.html', message = "Please enter a valid username and password!")
-
-        session['username'] = user
-        
+    # if request.method == "POST":
+    #     req = request.form
+    #     print(req)
+    #     user = req['email']
+    #     session['username'] = user
 
     if 'username' in session.keys():
-        return redirect(url_for('dashboard'))
+        return redirect(url_for('dashboard')) #If the user is already logged in --> Send them to the dashboard
 
-    return render_template('loginpagefirebase.html', message = "")
+    return render_template('loginpagefirebase.html') #Shows the login html page
 
-@app.route('/dashboard',  methods=["GET", "POST"])
+@app.route('/dashboard',  methods=["GET", "POST"]) #When this url is called, it invokes the dashboard function
 def dashboard():
-    if request.method == "POST":
+    if request.method == "POST": #Checks if it got a post request
         req = request.form
-        print(req)
         user = req['email']
         session['username'] = user
         quiz = connection.get_quiz_in_progress(session['username'])
         quiz_in_progress = True if quiz is not None else False
         return render_template('dashboard.html', email=session['username'], quiz_in_progress=quiz_in_progress)
     
-    quiz = connection.get_quiz_in_progress(session['username'])
-    quiz_in_progress = True if quiz is not None else False
+    
     if 'username' in session.keys():
+        quiz = connection.get_quiz_in_progress(session['username'])
+        quiz_in_progress = True if quiz is not None else False
         return render_template('dashboard.html', email=session['username'], quiz_in_progress=quiz_in_progress)
     else:
         return redirect(url_for('login'))
@@ -159,8 +145,11 @@ def reports():
 
 @app.route('/updateCurrentQuizState', methods=['POST'])
 def updateCurrentQuizState():
-    if request.method == 'POST':
-        connection.update_quiz_in_progress(session['username'], request.get_json())
+    try:
+        if request.method == 'POST':
+            connection.update_quiz_in_progress(session['username'], request.get_json())
+    except TypeError:
+        pass
 
 @app.route('/getHelp', methods=['POST'])
 def getHelp():
@@ -175,5 +164,8 @@ def quizInProgressExists():
         return "False"
     else:
         return "True"
+@app.route('/about', methods = ['GET'])
+def aboutPage():
+    return render_template('aboutpage.html')
         
 app.run('localhost')

@@ -125,7 +125,7 @@
 
 <body>
   <nav class="navbar navbar-dark sticky-top flex-md-nowrap p-0">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0" href="#">FBLA Dashboard</a>
+    <a class="navbar-brand col-sm-3 col-md-2 mr-0">FBLA Dashboard</a>
     <form class="form-inline my-2 my-lg-0">
       <ul class="navbar-nav px-3">
         <li class="nav-item text-nowrap">
@@ -146,7 +146,7 @@
         <div class="sidebar-sticky">
           <ul class="nav flex-column sidebar">
             <li class="nav-item">
-              <a id = "quizlink" class="nav-link active" href="#quiz" onclick="populateQuizStartPage()">
+              <a id = "quizlink" class="nav-link active" href="#quiz" onclick="populateQuizStartPage()" data-toggle="tooltip" data-placement="top" title="Take a quiz. Resume a previous saved quiz, or start a new one.">
                 <span data-feather="file"></span>
                 Take a Quiz
               </a>
@@ -158,13 +158,13 @@
               </a>
             </li>
             <li class="nav-item">
-              <a  id = "settingslink" class="nav-link" href="#settings" onclick="populateSettings()">
+              <a  id = "settingslink" class="nav-link" href="#settings" onclick="populateSettings()" data-toggle="tooltip" data-placement="top" title="Set your preferences and customize your reports">
                 <span data-feather="settings"></span>
                 Settings
               </a>
             </li>
             <li class="nav-item">
-              <a  id = "settingslink" class="nav-link" href="#settings" onclick="populateSettings()">
+              <a id = "aboutlink" class="nav-link" href="#about" onclick="populateAboutPage()" data-toggle="tooltip" data-placement="top" title="About FBLA Quiz">
                 <span data-feather="help-circle"></span>
                 About
               </a>
@@ -179,7 +179,7 @@
 
           <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
               <div class="container-fluid">
-        <button type="button" id="sidebarCollapse" class="btn btn-info">
+        <button type="button" id="sidebarCollapse" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Toggle Sidebar">
           <span>&#60;</span>
           <i class="fas fa-align-left"></i>
       </button>
@@ -285,11 +285,14 @@
       populateQuizStartPage();
     }
 
-    if(hash == 'reports'){
+    else if(hash == 'reports'){
       populateReports();
     }
     else if(hash == 'settings'){
       populateSettings();
+    }
+    else if(hash == 'about'){
+      populateAboutPage();
     }
 
     function populateQuizStartPage(){
@@ -324,6 +327,14 @@
     function populateSettings() {
       make_active('settingslink');
       $.get('settings', {},
+        function (response) {
+          document.getElementById("dynamicContent").innerHTML = response
+        });
+    }
+
+    function populateAboutPage(){
+      make_active('aboutlink');
+      $.get('about', {},
         function (response) {
           document.getElementById("dynamicContent").innerHTML = response
         });
