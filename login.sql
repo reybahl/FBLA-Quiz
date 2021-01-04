@@ -1,1 +1,0 @@
-SELECT * from FBLA_2021.users where username = %s and password = %s;
