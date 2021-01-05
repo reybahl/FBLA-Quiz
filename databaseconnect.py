@@ -160,6 +160,18 @@ class Connection():
               correct_answers_entry['type'] = entry['type']
               correct_answers.append(correct_answers_entry)
         return correct_answers
+    def get_frequently_asked_questions(self):
+        questions = []
+        qa = dbref.collection('help')
+        docs = qa.stream()
+        for doc in docs:
+            category = doc.id
+            questions_of_category = qa.document(category).collection('Q&A').stream()
+            for question in questions_of_category:
+                questions.append({'question' : question.to_dict()['question'],
+                                  'answer' : question.to_dict()['answer']})
+        return questions
 
-# connection = Connection()
-# connection.get_reports(user)     
+
+connection = Connection()
+print(connection.get_frequently_asked_questions())

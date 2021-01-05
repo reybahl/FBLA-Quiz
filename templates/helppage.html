@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+</head>
+
+<body>
+    <div class = "container">
+        <div class="row">
+            <h1>Frequently Asked Questions</h1>
+            <br>
+        </div>
+        {% for faq in faqs %}
+        <div class="row">
+            <h3>{{faq['question']}}</h1>
+            <br>
+        </div>
+
+        <div class="row">
+            <p>{{faq['answer']}}</p>
+            <br>    
+        </div>
+        {% endfor %}
+    </div>
+    
+</body>

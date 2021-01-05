@@ -165,8 +165,14 @@
             </li>
             <li class="nav-item">
               <a id = "aboutlink" class="nav-link" href="#about" onclick="populateAboutPage()" data-toggle="tooltip" data-placement="top" title="About FBLA Quiz">
-                <span data-feather="help-circle"></span>
+                <span data-feather="info"></span>
                 About
+              </a>
+            </li>
+            <li class="nav-item">
+              <a id = "helplink" class="nav-link" href="#about" onclick="populateHelpPage()" data-toggle="tooltip" data-placement="top" title="Get help and frequently asked questions">
+                <span data-feather="help-circle"></span>
+                Help
               </a>
             </li>
           </ul>
@@ -215,13 +221,12 @@
   <button class="open-button" onclick="openForm()">Chat</button>
 
   <div class="chat-popup" id="myForm">
-    <form class="form-container">
+    <form onsubmit = "return false;" class="form-container">
       <h1>Chat</h1>
 
-      <label for="msg"><b>Message</b></label>
-      <textarea id='chatwindow' name="msg" required readonly></textarea>
-      <input type="text" class="form-control" id='typedmessage' placeholder="Type message.." name="msg"
-        required></input>
+      <label><b>Message</b></label>
+      <textarea id='chatwindow' required readonly></textarea>
+      <input type="text" class="form-control" id='typedmessage' placeholder="Type message.." required></input>
 
       <button type="button" onclick="responsemessage()" class="btn">Send</button>
       <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
@@ -294,6 +299,9 @@
     else if(hash == 'about'){
       populateAboutPage();
     }
+    else if(hash == 'help'){
+      populateHelpPage();
+    }
 
     function populateQuizStartPage(){
       location.hash = "";
@@ -338,6 +346,13 @@
         function (response) {
           document.getElementById("dynamicContent").innerHTML = response
         });
+    }
+    function populateHelpPage(){
+      make_active('helplink')
+      $.get('help', {},
+      function (response) {
+        document.getElementById("dynamicContent").innerHTML = response
+      })
     }
 
 

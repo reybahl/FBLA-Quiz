@@ -167,5 +167,9 @@ def quizInProgressExists():
 @app.route('/about', methods = ['GET'])
 def aboutPage():
     return render_template('aboutpage.html')
+
+@app.route('/help', methods = ['GET'])
+def help():
+    return render_template('helppage.html', faqs = connection.get_frequently_asked_questions())
         
 app.run('localhost')
