@@ -5,18 +5,47 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from datetime import datetime
 from textblob.classifiers import NaiveBayesClassifier
+import asyncio
 
 cred = credentials.Certificate("serviceAccountKey.json")
-firebase_admin.initialize_app(cred, {
+app1= firebase_admin.initialize_app(cred, {
             'projectId': 'fir-demo-537d0',
-        })
-dbref=firestore.client()
+        }, name='app1')
+dbref=firestore.client(app1)
+
+cred2 = credentials.Certificate("serviceAccountKey2.json")
+app2= firebase_admin.initialize_app(cred2, {
+            'projectId': 'firestoredemo-2',
+        }, name='app2')
+dbref2=firestore.client(app2)
 
 class Connection():
+    async def update_dbref_1(self, ref, ref_type, task, data = None):
+        if task == 'write':
+            if ref_type == 'doc':
+                ref.set(data)
+        if task == 'del':
+            if ref_type == 'doc':
+                ref.delete()
+
+    async def update_dbref_2(self, ref, ref_type, task, data = None):
+        if task == 'write':
+            if ref_type == 'doc':
+                ref.set(data)
+        if task == 'del':
+            if ref_type == 'doc':
+                ref.delete()
+
+    async def update_both_databases(self, db1ref, db2ref, ref_type, task, data):
+        #Updates both databases
+        await asyncio.gather(self.update_dbref_1(db1ref, ref_type, task, data), self.update_dbref_2(db2ref, ref_type, task, data))
+        
+
     def generate_quiz(self, user):
 
         questions_by_type_ref = dbref.collection('questions_by_type')
         currentstate_ref = dbref.collection('users').document(user).collection('quizinprogress').document('currentstate')
+        currentstate_ref2 = dbref2.collection('users').document(user).collection('quizinprogress').document('currentstate')
 
         self.question_types = ['multiple_choice', 'checkbox', 'fill_in_the_blank', 'true_false', 'matching']
         self.quiz = []
@@ -40,7 +69,7 @@ class Connection():
                 else:
                     currentstate_question = {'type': question_type, 'question': doc_dict['content']}
                 currentstate_results.append(currentstate_question)
-        currentstate_ref.set({'results': currentstate_results})
+        asyncio.run(self.update_both_databases(db1ref = currentstate_ref, db2ref = currentstate_ref2, ref_type = 'doc', task = 'write', data = {'results': currentstate_results}))
         return self.quiz
 
 
@@ -49,19 +78,23 @@ class Connection():
         now = datetime.now()
         now_formatted = now.strftime('%c')
         users_ref = dbref.collection('users')
+        users_ref2 = dbref2.collection('users')
         current_user_quizzes_ref = users_ref.document(user).collection('quiz_results').document(now_formatted)
+        current_user_quizzes_ref2 = users_ref2.document(user).collection('quiz_results').document(now_formatted)
         
-        current_user_quizzes_ref.set({'results' : results, 'score' : score, 'datetimesubmitted' : now_formatted})
+        asyncio.run(self.update_both_databases(db1ref= current_user_quizzes_ref, db2ref =current_user_quizzes_ref2, ref_type='doc', task='write', data={'results' : results, 'score' : score, 'datetimesubmitted' : now_formatted}))
 
-        return now_formatted
+        return now_formatted #Returns the time it was saved
 
 
 
     def set_prefs(self, user, settings):
         users_ref = dbref.collection('users')
+        users_ref2 = dbref2.collection('users')
         current_user_settings_ref = users_ref.document(user).collection('settings').document('settings')
+        current_user_settings_ref2 = users_ref2.document(user).collection('settings').document('settings')
 
-        current_user_settings_ref.set({'settings': settings})
+        asyncio.run(self.update_both_databases(db1ref= current_user_settings_ref, db2ref =current_user_settings_ref2, ref_type='doc', task='write', data={'settings': settings}))
 
     def get_prefs(self, user):
 
@@ -104,10 +137,12 @@ class Connection():
         return dbref.collection('users').document(user).collection('quizinprogress').document(
             'currentstate').get().to_dict()
     def update_quiz_in_progress(self, user, quiz_json):
-        doc_ref = dbref.collection('users').document(user).collection('quizinprogress').document(
+        doc_ref1 = dbref.collection('users').document(user).collection('quizinprogress').document(
             'currentstate')
+        doc_ref2 = dbref2.collection('users').document(user).collection('quizinprogress').document(
+        'currentstate')
 
-        questions = doc_ref.get().to_dict()['results']
+        questions = doc_ref1.get().to_dict()['results']
         for question in questions:
             if(question['type'] == 'fill_in_the_blank'):
                 question['answer'] = quiz_json['fillblank_answer']
@@ -120,11 +155,13 @@ class Connection():
             elif (question['type'] == 'matching'):
                 question['answer'] = quiz_json['matching']
         updatedquiz = {'results': questions}
-        doc_ref.set(updatedquiz)
-        #print(updatedquiz)
+        asyncio.run(self.update_both_databases(db1ref=doc_ref1, db2ref=doc_ref2, ref_type='doc', task='write', data= updatedquiz))
     
     def delete_quiz_in_progress(self, user):
-        dbref.collection('users').document(user).collection('quizinprogress').document('currentstate').delete()
+        docref1 = dbref.collection('users').document(user).collection('quizinprogress').document('currentstate')
+        docref2 = dbref2.collection('users').document(user).collection('quizinprogress').document('currentstate')
+
+        asyncio.run(self.update_both_databases(db1ref = docref1, db2ref= docref2, ref_type='doc', task='delete', data=None))
 
     def get_help(self, question_json):
         classification = self.classify(question_json['question'])
