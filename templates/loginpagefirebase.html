@@ -156,40 +156,66 @@
 
     var email = document.getElementById("inputEmail").value;//"myemail@email.com";
     var password = document.getElementById("inputPassword").value;//"mypassword";
-    firebase.auth().signInWithEmailAndPassword(email, password)
-      .then((user) => {
-        console.log(user);
-        $.post('dashboard', { email: email },
-          function (response) {
-            document.write(response);
-            window.location.href = 'dashboard';
-          });
+    if (email != "" && password != ""){
+      firebase.auth().signInWithEmailAndPassword(email, password)
+        .then((user) => {
+          console.log(user);
+          $.post('dashboard', { email: email },
+            function (response) {
+              document.write(response);
+              window.location.href = 'dashboard';
+            });
 
-      })
-      .catch((error) => {
-        console.log(error.message);
-        $("#errorMessage").html(error.message);
-        $("#errorMessage").show();
-      });
+        })
+        .catch((error) => {
+          //console.log(error.message);
+          $("#errorMessage").html(error.message);
+          $("#errorMessage").show();
+        });
+    }
+
+    else if (email == ""){
+      $("#errorMessage").html("Please enter your email");
+      $("#errorMessage").show();
+    }
+    else if (password == ""){
+      $("#errorMessage").html("Please enter your password");
+      $("#errorMessage").show();
+    }
+
   }
 
   function RegisterWithEmail() {
     var email = document.getElementById("registerEmail").value;//"myemail@email.com";
     var password = document.getElementById("registerPassword").value;//"mypassword";
-
-    firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
-      console.log(user);
-      $('#exampleModal').modal('hide');
-      $.post('dashboard', { email: email },
-          function (response) {
-            document.write(response);
-            window.location.href = 'dashboard';
-          });
-    }).catch(function (error) {
-      $("#registerErrorMessage").html(error.message);
+    var confirm_password = document.getElementById("registerConfirmPassword").value;
+    if (email != "" && password != "" && password == confirm_password){
+      firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
+        console.log(user);
+        $('#exampleModal').modal('hide');
+        $.post('dashboard', { email: email },
+            function (response) {
+              document.write(response);
+              window.location.href = 'dashboard';
+            });
+      }).catch(function (error) {
+        $("#registerErrorMessage").html(error.message);
+        $("#registerErrorMessage").show();
+        console.log(error.message);
+      });
+    }
+    else if (email == ""){
+      $("#registerErrorMessage").html("Please enter your email");
       $("#registerErrorMessage").show();
-      console.log(error.message);
-    });
+    }
+    else if(password == ""){
+      $("#registerErrorMessage").html("Please enter your password!");
+      $("#registerErrorMessage").show();
+    }
+    else if(password != confirm_password){
+      $("#registerErrorMessage").html("Passwords don't match");
+      $("#registerErrorMessage").show();
+    }
   }
 
   function onSignIn(googleUser) {
