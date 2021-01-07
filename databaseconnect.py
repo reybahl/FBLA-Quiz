@@ -161,7 +161,7 @@ class Connection():
         docref1 = dbref.collection('users').document(user).collection('quizinprogress').document('currentstate')
         docref2 = dbref2.collection('users').document(user).collection('quizinprogress').document('currentstate')
 
-        asyncio.run(self.update_both_databases(db1ref = docref1, db2ref= docref2, ref_type='doc', task='delete', data=None))
+        asyncio.run(self.update_both_databases(db1ref = docref1, db2ref= docref2, ref_type='doc', task='del', data=None))
 
     def get_help(self, question_json):
         classification = self.classify(question_json['question'])

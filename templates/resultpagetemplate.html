@@ -33,19 +33,40 @@
             <div style="color:red;font-size:{{prefs['font'][0]}}px;">
         {% endif %}
             {% if 'q_number' in prefs['checkbox'] %}
-                <p>{{num + 1}}. {{question['question']}}</p>
+                <p><b>{{num + 1}}. {{question['question']}}</b></p>
             {% else %}
-                <p>{{question['question']}}</p>
+                <p><b>{{question['question']}}</b></p>
+            {% endif %}
+            {% if question['type'] == 'matching' %}
+            <p><i><b>You answered:</b></i></p>
+            {% for key, value in question['answer'].items() %}
+                <p>{{key}} --> {{value}}</p>
+            {% endfor %}
+            {% else %}
+                <p><i>You answered: <b>{{question['answer']}}</b></i></p>
             {% endif %}
 
-            <p><i>You answered: <b>{{question['answer']}}</b></i></p>
             {% if question['boolcorrect'] %}
                 {% if 'showcorrectanswer' in prefs['checkbox'] %}
-                    <p><i>Correct answer: <b>{{question['correct']}}</b></i></p>
+                    {% if question['type'] == 'matching' %}
+                        <p><i><b>Correct answer:</b></i></p>
+                        {% for key, value in question['correct'].items() %}
+                            <p>{{key}} --> {{value}}</p>
+                        {% endfor %}
+                    {% else %}
+                        <p><i>Correct answer: <b>{{question['correct']}}</b></i></p>
+                    {% endif %}   
                 {% endif %}     
             {% else %}
                 {% if 'showwronganswer' in prefs['checkbox'] %}
-                    <p><i>Correct answer: <b>{{question['correct']}}</b></i></p>
+                    {% if question['type'] == 'matching' %}
+                        <p><i><b>Correct answer:</b></i></p>
+                        {% for key, value in question['correct'].items() %}
+                            <p>{{key}} --> {{value}}</p>
+                        {% endfor %}
+                    {% else %}
+                        <p><i>Correct answer: <b>{{question['correct']}}</b></i></p>
+                    {% endif %}
                 {% endif %}   
             {% endif %}     
             </div>
