@@ -207,8 +207,16 @@
           </div>
           {% endif %}
           <button class = "btn btn-outline-primary btn-block" onclick="generateQuiz(false)">Start a New Quiz</button>
+          <br>
+          <div class="row justify-content-md-center">
+              <div id = "loading" class="spinner-border" role="status">
+                <span class="sr-only">Loading...</span>
+              </div>
+          </div>
+          
         </div>
           <br>
+          
         </div>
               </div>
           <!-- </nav> -->
@@ -273,6 +281,7 @@
   </script>
 
   <script>
+    var $loading = $('#loading').hide();
     if(performance.navigation.type == 2){
       location.reload(true);
     }
@@ -317,9 +326,11 @@
     }
 
     function generateQuiz(quiz_in_progress) {
+      $loading.show();
       if (quiz_in_progress) {
         $.get('quiz?quiz_in_progress=true', {},
         function (response) {
+          $loading.hide();
           document.getElementById("dynamicContent").innerHTML = response
         });
       }
