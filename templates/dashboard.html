@@ -493,6 +493,13 @@
     $(document).ready(function () {
             $('#sidebarCollapse').on('click', function () {
                 $('#sidebar').toggleClass('active');
+                if ($(this).find('span').text() == ">"){
+                  $(this).find('span').text("<");
+                }
+                else {
+                  $(this).find('span').text(">");
+                }
+                
             });
         });
   </script>
