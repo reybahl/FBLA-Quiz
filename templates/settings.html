@@ -25,8 +25,7 @@
       <div class = "col">
         <form action="/settings" method="POST">
             
-              <label><p>Email: <b>{{prefs['Username'][0]}}</b></p></label> 
-              <!-- <input type="text" class="form-control-plaintext" name= "Username"  id="exampleInputEmail1" value="{{prefs['Username'][0]}}" readonly> -->
+              <label>Email: <b>{{user}}</b></label> 
             <br/>
             <label>Name: What you want your name to show as</label>
             <input type="text" name= "Name" value="{{prefs['Name'][0]}}">
@@ -34,8 +33,8 @@
             <br/>
             <div class="form-group">
                 <label>
-                    <p>Quiz reports:
-                    Check below what to include in quiz reports.</p>
+                    Quiz reports:
+                    Check below what to include in quiz reports.
                 </label> 
                 {% if 'checkbox' in prefs.keys() %}
                   {% for key, value in include_in_quiz_checkbox.items() %}
@@ -71,9 +70,10 @@
                     {% endfor %}
                 {% endif %}
                 
-                <div>
-                  <input type="number" name="font" min="5" max="40" value="{{prefs['font'][0]}}">
-                </div>
+                      <div>
+                        <label>Font size in Reports</label>
+                        <input type="number" name="font" min="5" max="40" value="{{prefs['font'][0]}}">
+                      </div>
           </div>
             <button onclick = "alert('Settings Updated!')"type="submit" class="btn btn-primary">Update Settings</button>
         </form>

@@ -138,7 +138,7 @@ def settings():
         'showwronganswer':'Wrong Answers'
     }
     if 'username' in session.keys():
-        return render_template('settings.html', prefs = connection.get_prefs(session['username'])['settings'], include_in_quiz_checkbox =include_in_quiz_checkbox)
+        return render_template('settings.html', prefs = connection.get_prefs(session['username'])['settings'], user = session['username'], include_in_quiz_checkbox =include_in_quiz_checkbox)
 @app.route('/reports')
 def reports():
     return render_template("reports.html", reports = connection.get_reports(session['username']))
