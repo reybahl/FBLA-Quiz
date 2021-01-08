@@ -213,7 +213,3 @@ class Connection():
                 questions.append({'question' : question.to_dict()['question'],
                                   'answer' : question.to_dict()['answer']})
         return questions
-
-
-connection = Connection()
-print("done")

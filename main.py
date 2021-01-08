@@ -15,75 +15,73 @@ app.secret_key = "FBLA"
 connection = Connection() 
 questions_answers = None
 
-@app.route('/') 
+@app.route('/') #Main route -- Invoked when user visits domain
 def start():
     return redirect(url_for('login')) #Redirecting to login on start
 
 @app.route('/login',  methods=["GET", "POST"])
 def login():
-    # if request.method == "POST":
-    #     req = request.form
-    #     print(req)
-    #     user = req['email']
-    #     session['username'] = user
-
     if 'username' in session.keys():
-        return redirect(url_for('dashboard')) #If the user is already logged in --> Send them to the dashboard
+        return redirect(url_for('dashboard')) #If the user is already logged in --> Redirect them to the dashboard
 
     return render_template('loginpagefirebase.html') #Shows the login html page
 
 @app.route('/dashboard',  methods=["GET", "POST"]) #When this url is called, it invokes the dashboard function
 def dashboard():
     if request.method == "POST": #Checks if it got a post request
-        req = request.form
-        user = req['email']
-        session['username'] = user
-        quiz = connection.get_quiz_in_progress(session['username'])
+        req = request.form #Gets form data
+        user = req['email']#Gets email from the form
+        session['username'] = user #Creates a session
+        quiz = connection.get_quiz_in_progress(session['username']) #Gets a quiz in progress
+        quiz_in_progress = True if quiz is not None else False #Checks if a quiz in progress exists
+        return render_template('dashboard.html', email=session['username'], quiz_in_progress=quiz_in_progress)#Shows dashboard and specifies if the user has a quiz in progress
+    
+    if 'username' in session.keys(): #If the user comes directly to the dashboard without the login page, it checks the session to check if the user is signed in
+        quiz = connection.get_quiz_in_progress(session['username']) 
         quiz_in_progress = True if quiz is not None else False
         return render_template('dashboard.html', email=session['username'], quiz_in_progress=quiz_in_progress)
-    
-    
-    if 'username' in session.keys():
-        quiz = connection.get_quiz_in_progress(session['username'])
-        quiz_in_progress = True if quiz is not None else False
-        return render_template('dashboard.html', email=session['username'], quiz_in_progress=quiz_in_progress)
-    else:
+    else: #If the user is not signed in, then redirects them back to the sign in page
         return redirect(url_for('login'))
-@app.route('/quiz', methods= ["GET", "POST"] )
+@app.route('/quiz', methods= ["GET", "POST"] ) #Quiz generation route
 def quiz():
     global questions_answers
+
     if request.method != "POST":
-        #first check if a quiz is in progress, if yes, show that quiz, otherwise show screen to generate a new quiz
-        generate_quiz_in_progress = request.args.get('quiz_in_progress')
+
+        generate_quiz_in_progress = request.args.get('quiz_in_progress') #Gets url argument specifying if the user wants a quiz in progress or wants to start a new one.
         if generate_quiz_in_progress == 'true':
             quizqa = connection.get_quiz_in_progress(session['username'])
             if quizqa is not None:
-                #get correct answers from database
+                #get correct answers of the quiz progress from the database
                 questions_answers = connection.get_correct_answers(quizqa)
                 return render_template('quizinprogress.html', quizqa = quizqa['results'], enumerate = enumerate)
-        else:
-            connection.delete_quiz_in_progress(session['username'])
-            questions_answers = connection.generate_quiz(session['username'])
+        else: #If the user wants a new quiz
+            connection.delete_quiz_in_progress(session['username'])#Deletes any existing quiz
+            questions_answers = connection.generate_quiz(session['username']) #Generates new quiz
         if 'username' in session.keys():
             return render_template('quizpage.html', questions = questions_answers, enumerate = enumerate)
-        else:
-            return redirect(url_for('login'))
+       
+        else: #If user is not logged in
+            return redirect(url_for('login')) #Redirect them to login
+    
     if request.method == "POST":
         req = request.form
         if questions_answers is not None:
 
             results, score = check(questions_answers, list(req.items()))
             print(results)
-            date_time = connection.save_results(session['username'], results, score)
-            connection.delete_quiz_in_progress(session['username'])
+            date_time = connection.save_results(session['username'], results, score) #saves results and returns the datetime
+            connection.delete_quiz_in_progress(session['username']) #Deletes the quiz in progress
 
-            return redirect(url_for('generate_report', datetime = date_time))
+            return redirect(url_for('generate_report', datetime = date_time)) #Sends them to the report generation page with the date and time the quiz was submitted as the url argument
 
 @app.route('/generateReport',methods=["GET"])
 def generate_report():
     date_time = request.args['datetime']
     if request.method == "GET":
         results = connection.get_report_for_date(session['username'], date_time)
+        #These are some options for the PDF report generator
+
         options = {
                         'title': 'Quiz Results',
                         'page-size': 'Letter',
@@ -109,16 +107,15 @@ def generate_report():
 def register():
     if request.method == "POST":
         req = request.form
-        #print(req['Username'])
-        
         connection.create_account(req['Username'], req['Password'])
+
     return render_template('register.html', message = "")
 
 @app.route('/logout')
 def logout():
     if 'username' in session.keys():
-        del session['username'] #deleting 'username' from session
-    return redirect(url_for('login'))
+        del session['username'] #deleting 'username' from session to logout
+    return redirect(url_for('login')) #Sends them back to login screen
 
 @app.route('/settings', methods = ['GET', 'POST'])
 def settings():
