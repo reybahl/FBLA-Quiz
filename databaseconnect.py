@@ -5,6 +5,8 @@ from firebase_admin import credentials
 from firebase_admin import firestore
 from datetime import datetime
 from textblob.classifiers import NaiveBayesClassifier
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
 import asyncio
 
 cred = credentials.Certificate("serviceAccountKey.json")
@@ -178,7 +180,10 @@ class Connection():
         for doc in docs:
             training_data.append((doc.to_dict()['text'], doc.to_dict()['label']))
         cl = NaiveBayesClassifier(training_data)
-        return cl.classify(question)
+        text_tokens = word_tokenize(question)
+        tokens_without_sw = [word for word in text_tokens if not word in stopwords.words()]
+        filtered_question = (" ").join(tokens_without_sw)
+        return cl.classify(filtered_question)
     def get_correct_answers(self, quizqa):
         data = quizqa['results']
         correct_answers = []
@@ -211,4 +216,4 @@ class Connection():
 
 
 connection = Connection()
-print(connection.get_frequently_asked_questions())
+print("done")

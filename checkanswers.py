@@ -69,8 +69,4 @@ def check(questions, responses):
         if result['boolcorrect']: #if the answer is correct
             score += 1 #add one to the score
 
-    print(results)
     return results, score
-
-
-#print(convert_to_dict([('checkbox', '0'), ('checkbox', '1'), (' leadership', '2'), ('Question1', '0'), ('Question1', 'True'), ('Answer1', 'fasdf')]))
