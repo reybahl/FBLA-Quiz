@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css">
@@ -7,36 +8,39 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script> -->
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
 </head>
+
 <body>
 
-<div class="container">
-  <h2>Reports</h2>
-  <p>In this table, you can see your results on previous quizzes. Clicking on "Generate Report" will generate a PDF report with your results. These reports can be customized in settings.</p>
-  <div class="table-responsive">
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Date and Time</th>
-        <th>Score</th>
-        <th>PDF report</th>
-      </tr>
-    </thead>
-    <tbody>
-      {% for report in reports %}
-      <tr>
-          <td>{{report['datetime']}}</td>
-          <td>{{report['score']}}/5</td>
-          <td>
-            <a class="nav-link" href="generateReport?datetime={{report['datetime']}}">
-              Generate Report
-            </a>
-          </td>
-      </tr>
-      {% endfor %}
-    </tbody>
-  </table>
+  <div class="container">
+    <h2>Reports</h2>
+    <p>In this table, you can see your results on previous quizzes. Clicking on "Generate Report" will generate a PDF
+      report with your results. These reports can be customized in settings.</p>
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Date and Time</th>
+            <th>Score</th>
+            <th>PDF report</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for report in reports %}
+          <tr>
+            <td>{{report['datetime']}}</td>
+            <td>{{report['score']}}/5</td>
+            <td>
+              <a class="nav-link" href="generateReport?datetime={{report['datetime']}}">
+                Generate Report
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
-</div>
 
 </body>
+
 </html>

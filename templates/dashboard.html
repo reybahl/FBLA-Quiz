@@ -4,7 +4,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  
+
   <meta name="description" content="">
   <meta name="author" content="">
   <link rel="icon" href="../../../../favicon.ico">
@@ -14,16 +14,21 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css">
   <!-- Custom styles for this template -->
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
-  <meta name="google-signin-client_id" content="617126747783-9ag356g7b04sn88ibo59ccie741h9ikt.apps.googleusercontent.com">
-  
+  <meta name="google-signin-client_id"
+    content="617126747783-9ag356g7b04sn88ibo59ccie741h9ikt.apps.googleusercontent.com">
+
   <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js" integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ" crossorigin="anonymous"></script>
-  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js" integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY" crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
+    integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
+    crossorigin="anonymous"></script>
+  <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
   <script>
     function signOut() {
       console.log('inside signout');
@@ -36,7 +41,7 @@
     }
 
     function onLoad() {
-      gapi.load('auth2', function() {
+      gapi.load('auth2', function () {
         gapi.auth2.init();
       });
     }
@@ -44,7 +49,7 @@
   <style>
     /* Button used to open the chat form - fixed at the bottom of the page */
     .open-button {
-      background-color:#406278;
+      background-color: #406278;
       color: white;
       padding: 16px 20px;
       border: none;
@@ -92,7 +97,7 @@
 
     /* Set a style for the submit/send button */
     .form-container .btn {
-      background-color:#406278;
+      background-color: #406278;
       color: white;
       padding: 16px 20px;
       border: none;
@@ -114,12 +119,11 @@
     }
 
     .quiz-options {
-    width: 100%;
-    max-width: 330px;
-    padding: 15px;
-    margin: auto;
-  }
-    
+      width: 100%;
+      max-width: 330px;
+      padding: 15px;
+      margin: auto;
+    }
   </style>
 </head>
 
@@ -140,96 +144,107 @@
     </form>
   </nav>
   <!-- <div class="container-fluid"> -->
-    <!-- <div class="row"> -->
-      <div class="wrapper">
-        <nav id="sidebar">
-        <div class="sidebar-sticky">
-          <ul class="nav flex-column sidebar">
-            <li class="nav-item">
-              <a id = "quizlink" class="nav-link active" href="#" onclick="populateQuizStartPage()" data-toggle="tooltip" data-placement="top" title="Take a quiz. Resume a previous saved quiz, or start a new one.">
-                <span data-feather="file"></span>
-                Take a Quiz
-              </a>
-            </li>
-            <li class="nav-item">
-              <a id = "reportslink" class="nav-link" href="#reports" onclick="populateReports()" data-toggle="tooltip" data-placement="top" title="You can view your historical quiz reports here">
-                <span data-feather="bar-chart-2"></span>
-                Reports
-              </a>
-            </li>
-            <li class="nav-item">
-              <a  id = "settingslink" class="nav-link" href="#settings" onclick="populateSettings()" data-toggle="tooltip" data-placement="top" title="Set your preferences and customize your reports">
-                <span data-feather="settings"></span>
-                Settings
-              </a>
-            </li>
-            <li class="nav-item">
-              <a id = "aboutlink" class="nav-link" href="#about" onclick="populateAboutPage()" data-toggle="tooltip" data-placement="top" title="About FBLA Quiz">
-                <span data-feather="info"></span>
-                About
-              </a>
-            </li>
-            <li class="nav-item">
-              <a id = "helplink" class="nav-link" href="#help" onclick="populateHelpPage()" data-toggle="tooltip" data-placement="top" title="Get help and frequently asked questions">
-                <span data-feather="help-circle"></span>
-                Help
-              </a>
-            </li>
-          </ul>
+  <!-- <div class="row"> -->
+  <div class="wrapper">
+    <nav id="sidebar">
+      <div class="sidebar-sticky">
+        <ul class="nav flex-column sidebar">
+          <li class="nav-item">
+            <a id="quizlink" class="nav-link active" href="#" onclick="populateQuizStartPage()" data-toggle="tooltip"
+              data-placement="top" title="Take a quiz. Resume a previous saved quiz, or start a new one.">
+              <span data-feather="file"></span>
+              Take a Quiz
+            </a>
+          </li>
+          <li class="nav-item">
+            <a id="reportslink" class="nav-link" href="#reports" onclick="populateReports()" data-toggle="tooltip"
+              data-placement="top" title="You can view your historical quiz reports here">
+              <span data-feather="bar-chart-2"></span>
+              Reports
+            </a>
+          </li>
+          <li class="nav-item">
+            <a id="settingslink" class="nav-link" href="#settings" onclick="populateSettings()" data-toggle="tooltip"
+              data-placement="top" title="Set your preferences and customize your reports">
+              <span data-feather="settings"></span>
+              Settings
+            </a>
+          </li>
+          <li class="nav-item">
+            <a id="helplink" class="nav-link" href="#help" onclick="populateHelpPage()" data-toggle="tooltip"
+              data-placement="top" title="Get help and frequently asked questions">
+              <span data-feather="help-circle"></span>
+              FAQs
+            </a>
+          </li>
+          <li class="nav-item">
+            <a id="aboutlink" class="nav-link" href="#about" onclick="populateAboutPage()" data-toggle="tooltip"
+              data-placement="top" title="About FBLA Quiz">
+              <span data-feather="info"></span>
+              About
+            </a>
+          </li>
+        </ul>
 
-        </div>
-      </nav>
+      </div>
+    </nav>
 
-      <!-- <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"> -->
-        <div id="content">
+    <!-- <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"> -->
+    <div id="content">
 
-          <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
-              <div class="container-fluid">
-        <button type="button" id="sidebarCollapse" class="btn btn-info" data-toggle="tooltip" data-placement="top" title="Toggle Sidebar">
+      <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
+      <div class="container-fluid">
+        <button type="button" id="sidebarCollapse" class="btn btn-info" data-toggle="tooltip" data-placement="top"
+          title="Toggle Sidebar">
           <span>&#60;</span>
           <i class="fas fa-align-left"></i>
-      </button>
-              </div>
+        </button>
+      </div>
       <div class="container-fluid">
         <div id="dynamicContent" class="d-flex flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">
           <div class="container quiz-options">
-          {% if quiz_in_progress == True %}
-          <div class="row">
-            <div class="col">
-            <button class = "btn btn-outline-primary btn-block" onclick="generateQuiz(true)">Resume your previous quiz</button>
+            {% if quiz_in_progress == True %}
+            <div class="row">
+              <div class="col">
+                <button class="btn btn-outline-primary btn-block" onclick="generateQuiz(true)">Resume your previous
+                  quiz</button>
+              </div>
             </div>
-          </div>
-          <div class="row justify-content-md-center">
+            <div class="row justify-content-md-center">
 
-            <div class="col"><hr></div>
-            <div class="col-auto">OR</div>
-            <div class="col"><hr></div>    
-          </div>
-          {% endif %}
-          <button class = "btn btn-outline-primary btn-block" onclick="generateQuiz(false)">Start a New Quiz</button>
-          <br>
-          <div class="row justify-content-md-center">
-              <div id = "loading" class="spinner-border" role="status">
+              <div class="col">
+                <hr>
+              </div>
+              <div class="col-auto">OR</div>
+              <div class="col">
+                <hr>
+              </div>
+            </div>
+            {% endif %}
+            <button class="btn btn-outline-primary btn-block" onclick="generateQuiz(false)">Start a New Quiz</button>
+            <br>
+            <div class="row justify-content-md-center">
+              <div id="loading" class="spinner-border" role="status">
                 <span class="sr-only">Loading...</span>
               </div>
+            </div>
+
           </div>
-          
-        </div>
           <br>
-          
+
         </div>
-              </div>
-          <!-- </nav> -->
-        </div>
-      <!-- </main> -->
       </div>
-    <!-- </div> -->
+      <!-- </nav> -->
+    </div>
+    <!-- </main> -->
+  </div>
+  <!-- </div> -->
   <!-- </div> -->
 
   <button class="open-button" onclick="openForm()">Chat</button>
 
   <div class="chat-popup" id="myForm">
-    <form onsubmit = "return false;" class="form-container">
+    <form onsubmit="return false;" class="form-container">
       <h1>Get Help</h1>
 
       <label><b>Type a question</b></label>
@@ -282,37 +297,37 @@
 
   <script>
     var $loading = $('#loading').hide();
-    if(performance.navigation.type == 2){
+    if (performance.navigation.type == 2) {
       location.reload(true);
     }
-    
+
     var hash = window.location.href.split('#').pop();
     //var originalHTML = document.getElementById("dynamicContent").innerHTML;
     //console.log(hash);
 
-    function make_active(item){
+    function make_active(item) {
       //var existing_active = getElementsByClassName("nav-link active")[0];
-      
+
       // document.getElementsByClassName("nav-link active")[0].style.color ="white"; 
       document.getElementsByClassName("nav-link active")[0].className = "nav-link";
       document.getElementById(item).className = "nav-link active";
       // document.getElementById(item).style.color ="deepskyblue";
     }
-  
-    if(hash == 'reports'){
+
+    if (hash == 'reports') {
       populateReports();
     }
-    else if(hash == 'settings'){
+    else if (hash == 'settings') {
       populateSettings();
     }
-    else if(hash == 'about'){
+    else if (hash == 'about') {
       populateAboutPage();
     }
-    else if(hash == 'help'){
+    else if (hash == 'help') {
       populateHelpPage();
     }
 
-    function populateQuizStartPage(){
+    function populateQuizStartPage() {
       location.hash = "";
       location.reload();
     }
@@ -329,17 +344,17 @@
       $loading.show();
       if (quiz_in_progress) {
         $.get('quiz?quiz_in_progress=true', {},
-        function (response) {
-          $loading.hide();
-          document.getElementById("dynamicContent").innerHTML = response
-        });
+          function (response) {
+            $loading.hide();
+            document.getElementById("dynamicContent").innerHTML = response
+          });
       }
-      
-      else{
+
+      else {
         $.get('quiz?quiz_in_progress=false', {},
-        function (response) {
-          document.getElementById("dynamicContent").innerHTML = response
-        });
+          function (response) {
+            document.getElementById("dynamicContent").innerHTML = response
+          });
       }
     }
 
@@ -351,19 +366,19 @@
         });
     }
 
-    function populateAboutPage(){
+    function populateAboutPage() {
       make_active('aboutlink');
       $.get('about', {},
         function (response) {
           document.getElementById("dynamicContent").innerHTML = response
         });
     }
-    function populateHelpPage(){
+    function populateHelpPage() {
       make_active('helplink')
       $.get('help', {},
-      function (response) {
-        document.getElementById("dynamicContent").innerHTML = response
-      })
+        function (response) {
+          document.getElementById("dynamicContent").innerHTML = response
+        })
     }
 
 
@@ -395,50 +410,50 @@
         }
       }
 
-      
+
       var nodes = document.getElementById('matching').childNodes;
-    var matching_prompts_answers = [];
-    var matching_prompts_answer = {};
-    for (var i = 0; i < nodes.length; i++) {
-      if (nodes[i].nodeName != '#text') {
-        //console.log(nodes[i]);
-        var labelChildNodes = nodes[i].childNodes;
-        var prompt = '';
-        //for each row make dict of left-side with right-side selected.
-        for (var j = 0; j < labelChildNodes.length; j++) {
+      var matching_prompts_answers = [];
+      var matching_prompts_answer = {};
+      for (var i = 0; i < nodes.length; i++) {
+        if (nodes[i].nodeName != '#text') {
+          //console.log(nodes[i]);
+          var labelChildNodes = nodes[i].childNodes;
+          var prompt = '';
+          //for each row make dict of left-side with right-side selected.
+          for (var j = 0; j < labelChildNodes.length; j++) {
 
-          if (labelChildNodes[j].nodeName != '#text') {
-            var bothsideNodes = labelChildNodes[j].childNodes;
-            
+            if (labelChildNodes[j].nodeName != '#text') {
+              var bothsideNodes = labelChildNodes[j].childNodes;
 
-            for (var k = 0; k < bothsideNodes.length; k++) {
-              //console.log("forloop begin, node: " + bothsideNodes[k].nodeName + " prompt: " + prompt);
-              // child node would be one of left-side or right-side.
-              
 
-              if (bothsideNodes[k].nodeName != '#text') {
-                // left side.
-                if (bothsideNodes[k].nodeName == 'INPUT') {
-                  //matching_prompts_answer[bothsideNodes[k].value] = ''
-                  //console.log(bothsideNodes[k].value);
-                  prompt = bothsideNodes[k].value;
-                  //console.log(prompt);
-                }
-                if (bothsideNodes[k].nodeName == 'SELECT') {
-                  //console.log(prompt);
-                  matching_prompts_answer[prompt] = bothsideNodes[k].value;
-                  //console.log(matching_prompts_answer);  
-                  //matching_prompts_answers.push(matching_prompts_answer);
+              for (var k = 0; k < bothsideNodes.length; k++) {
+                //console.log("forloop begin, node: " + bothsideNodes[k].nodeName + " prompt: " + prompt);
+                // child node would be one of left-side or right-side.
+
+
+                if (bothsideNodes[k].nodeName != '#text') {
+                  // left side.
+                  if (bothsideNodes[k].nodeName == 'INPUT') {
+                    //matching_prompts_answer[bothsideNodes[k].value] = ''
+                    //console.log(bothsideNodes[k].value);
+                    prompt = bothsideNodes[k].value;
+                    //console.log(prompt);
+                  }
+                  if (bothsideNodes[k].nodeName == 'SELECT') {
+                    //console.log(prompt);
+                    matching_prompts_answer[prompt] = bothsideNodes[k].value;
+                    //console.log(matching_prompts_answer);  
+                    //matching_prompts_answers.push(matching_prompts_answer);
+                  }
                 }
               }
             }
           }
+
         }
-
       }
-    }
 
-      var quiz_json = { "true_false_answer": tfval, "multiple_choice_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers, "matching": matching_prompts_answer}
+      var quiz_json = { "true_false_answer": tfval, "multiple_choice_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers, "matching": matching_prompts_answer }
       console.log(JSON.stringify(quiz_json))
 
       //$.post('updateCurrentQuizState', {quiz_json});
@@ -491,19 +506,19 @@
     }
 
     $(document).ready(function () {
-            $('#sidebarCollapse').on('click', function () {
-                $('#sidebar').toggleClass('active');
-                if ($(this).find('span').text() == ">"){
-                  $(this).find('span').text("<");
-                }
-                else {
-                  $(this).find('span').text(">");
-                }
-                
-            });
-        });
+      $('#sidebarCollapse').on('click', function () {
+        $('#sidebar').toggleClass('active');
+        if ($(this).find('span').text() == ">") {
+          $(this).find('span').text("<");
+        }
+        else {
+          $(this).find('span').text(">");
+        }
+
+      });
+    });
   </script>
-<script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+  <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 
 </body>
 

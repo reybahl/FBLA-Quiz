@@ -9,75 +9,75 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script type = "text/javascript" src ="{{url_for('static', filename = 'validation.js')}}"></script>
+  <script type="text/javascript" src="{{url_for('static', filename = 'validation.js')}}"></script>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
 </head>
 
 <body>
   <div class="container">
-  <div class="row">
-    <div class = "col">
-    <h2>FBLA Quizzer Settings</h2><br/>
-  </div>
-  </div>
-  
-  <div class="row">
-      <div class = "col">
-        <form action="/settings" method="POST">
-            
-              <label>Email: <b>{{user}}</b></label> 
-            <br/>
-            <label>Name: What you want your name to show as</label>
-            <input type="text" name= "Name" value="{{prefs['Name'][0]}}">
-            <br/>
-            <br/>
-            <div class="form-group">
-                <label>
-                    Quiz reports:
-                    Check below what to include in quiz reports.
-                </label> 
-                {% if 'checkbox' in prefs.keys() %}
-                  {% for key, value in include_in_quiz_checkbox.items() %}
-                  {% if key == 'showcorrectanswer' %}
-                      <label>
-                        <p3 >Include the correct answer for:</p>
-                      </label>
-                      {% endif %} 
-                    {% if key in prefs['checkbox'] %}
-                            
-                      <div class="checkbox">
-                          <label class = "btn btn-default active"><input type="checkbox" value="checkbox" name = "{{key}}" checked>{{value}}</label>
-                      </div>
-                    {% else %}
-                    <div class="checkbox">
-                      <label class = "btn btn-default active"><input type="checkbox" value="checkbox" name = "{{key}}">{{value}}</label>
-                    </div>
-                    {% endif %}
-                  {% endfor %}
-
-                  {% else %}
-
-                    {% for key, value in include_in_quiz_checkbox.items() %}
-                      {% if key == 'showcorrectanswer' %}
-                          <label>
-                            <p3 >Include the correct answer for:</p>
-                          </label>
-                      {% endif %}
-                       
-                        <div class="checkbox">
-                          <label class = "btn btn-default active"><input type="checkbox" value="checkbox" name = "{{key}}">{{value}}</label>
-                        </div>
-                    {% endfor %}
-                {% endif %}
-                
-                      <div>
-                        <label>Font size in Reports</label>
-                        <input type="number" name="font" min="5" max="40" value="{{prefs['font'][0]}}">
-                      </div>
-          </div>
-            <button onclick = "alert('Settings Updated!')"type="submit" class="btn btn-primary">Update Settings</button>
-        </form>
+    <div class="row">
+      <div class="col">
+        <h2>FBLA Quizzer Settings</h2><br />
+      </div>
     </div>
+
+    <div class="row">
+      <div class="col">
+        <form action="/settings" method="POST">
+
+          <label>Email: <b>{{user}}</b></label>
+          <br />
+          <label>Name: What you want your name to show as</label>
+          <input type="text" name="Name" value="{{prefs['Name'][0]}}">
+          <br />
+          <br />
+          <div class="form-group">
+            <label>
+              Quiz reports:
+              Check below what to include in quiz reports.
+            </label>
+            {% if 'checkbox' in prefs.keys() %}
+            {% for key, value in include_in_quiz_checkbox.items() %}
+            {% if key == 'showcorrectanswer' %}
+            <br />
+            <label>
+              Include the correct answer for:
+            </label>
+            {% endif %}
+            {% if key in prefs['checkbox'] %}
+            <div class="checkbox form-check">
+              <label class="form-check-label active"><input type="checkbox" class="form-check-input" value="checkbox"
+                  name="{{key}}" checked>{{value}}</label>
+            </div>
+            {% else %}
+            <div class="checkbox form-check">
+              <label class="form-check-label active"><input type="checkbox" class="form-check-input" value="checkbox"
+                  name="{{key}}">{{value}}</label>
+            </div>
+            {% endif %}
+            {% endfor %}
+            {% else %}
+            {% for key, value in include_in_quiz_checkbox.items() %}
+            {% if key == 'showcorrectanswer' %}
+            <label>
+              Include the correct answer for:
+            </label>
+            {% endif %}
+            <div class="checkbox form-check">
+              <label class="form-check-label active"><input type="checkbox" class="form-check-input" value="checkbox"
+                  name="{{key}}">{{value}}</label>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <br />
+            <div>
+              <label>Font size in Reports</label>
+              <input type="number" name="font" min="5" max="40" value="{{prefs['font'][0]}}">
+            </div>
+          </div>
+          <button onclick="alert('Settings Updated!')" type="submit" class="btn btn-primary">Update Settings</button>
+        </form>
+      </div>
     </div>
   </div>
 </body>

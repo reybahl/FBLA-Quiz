@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    <div class = "container">
+    <div class="container">
         <div class="row">
             <h1>Frequently Asked Questions</h1>
             <br>
@@ -14,14 +14,14 @@
         {% for faq in faqs %}
         <div class="row">
             <h3>{{faq['question']}}</h1>
-            <br>
+                <br>
         </div>
 
         <div class="row">
             <p>{{faq['answer']}}</p>
-            <br>    
+            <br>
         </div>
         {% endfor %}
     </div>
-    
+
 </body>
