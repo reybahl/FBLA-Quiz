@@ -4,10 +4,6 @@ This repository contains code for FBLA coding and programming competitive events
 * Python
 * HTML/css
 * Javascript
-* Cloud Firestore - A document oriented NoSQL database by Google.
-* Firebase Authentication - Application uses firebase authentication and provides 2 options to login
-  * By using email id and password
-  * By using google sign-in with google account.
 * Flask - A Python web app framework.
 
 ## Pre-requisites
