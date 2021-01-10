@@ -1,6 +1,7 @@
 import asyncio
 from databaseconnect import Connection
 
+
 class Settings:
     def set_prefs(self, user, settings):
         connection = Connection.Instance()
@@ -9,9 +10,9 @@ class Settings:
         current_user_settings_ref = users_ref.document(user).collection('settings').document('settings')
         current_user_settings_ref2 = users_ref2.document(user).collection('settings').document('settings')
 
-        asyncio.run(connection.update_both_databases(db1ref=current_user_settings_ref, db2ref=current_user_settings_ref2,
-                                               ref_type='doc', task='write', data={'settings': settings}))
-
+        asyncio.run(
+            connection.update_both_databases(db1ref=current_user_settings_ref, db2ref=current_user_settings_ref2,
+                                             ref_type='doc', task='write', data={'settings': settings}))
 
     def get_prefs(self, user):
         connection = Connection.Instance()

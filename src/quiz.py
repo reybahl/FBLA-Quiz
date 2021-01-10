@@ -107,10 +107,12 @@ class Quiz:
         connection = Connection.Instance()
         for entry in data:
             if (entry['type'] == 'matching'):
-                docs = connection.getPrimaryDatabase().collection('questions_by_type').document(entry['type']).collection(
+                docs = connection.getPrimaryDatabase().collection('questions_by_type').document(
+                    entry['type']).collection(
                     'questions').where('content', '==', entry['question']['content']).get()
             else:
-                docs = connection.getPrimaryDatabase().collection('questions_by_type').document(entry['type']).collection(
+                docs = connection.getPrimaryDatabase().collection('questions_by_type').document(
+                    entry['type']).collection(
                     'questions').where('content', '==', entry['question']).get()
             for doc in docs:
                 returned_doc = doc.to_dict()

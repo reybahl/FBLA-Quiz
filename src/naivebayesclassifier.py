@@ -3,6 +3,7 @@ from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from databaseconnect import Connection
 
+
 class IntelligentHelpNaiveBayesClassifier:
     def classify(self, question):
         connection = Connection.Instance()

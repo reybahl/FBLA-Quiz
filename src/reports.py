@@ -1,6 +1,7 @@
 import asyncio
 from databaseconnect import Connection
 
+
 class Reports:
     def get_reports(self, user):
         connection = Connection.Instance()
