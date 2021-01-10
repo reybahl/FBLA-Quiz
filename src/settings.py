@@ -19,10 +19,12 @@ class Settings:
         default_settings = {
             'settings': {
                 'Name': [''],
-                'font': ['12'],
+                'font': ['18'],
                 'Username': [user],
-                'checkbox': ['showwronganswer']
+                'checkbox': ['showwronganswer', 'score', 'q_number']
             }
+        
+        #By default, reports will have 18 px font, and will include the correct answer for incorrectly answered questions, the score, and question numbers
         }
         users_ref = connection.getPrimaryDatabase().collection('users')
         current_user_settings_ref = users_ref.document(user).collection('settings').document('settings')

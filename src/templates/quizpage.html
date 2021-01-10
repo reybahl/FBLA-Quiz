@@ -31,10 +31,10 @@
   <br>
   <div class="container-fluid w-100">
     <form class="needs-validation" action="/quiz" method="POST">
-      {% for question in questions %}
+      {% for num, question in enumerate(questions) %}
       {% if question['type'] == 'multiple_choice' %}
       <div class="form-group">
-        <label>{{question['question']['content']}}</label>
+        <label>{{num+1}}. {{question['question']['content']}}</label>
         <select select id="multiple_choice" class="custom-select" name="multiple_choice" required
           onchange="updatequiz()">
           <option value="">Choose an answer</option>
@@ -45,13 +45,13 @@
       </div>
       {% elif question['type'] == 'fill_in_the_blank' %}
       <div class="form-group">
-        <label>{{question['question']['content']}}</label>
+        <label>{{num+1}}. {{question['question']['content']}}</label>
         <input id="fill" type="text" class="form-control" name="fill_in_the_blank" placeholder="Fill in the blank"
           onchange="updatequiz()" required>
       </div>
       {% elif question['type'] == 'checkbox' %}
       <div class="form-group">
-        <label>{{question['question']['content']}}</label>
+        <label>{{num+1}}. {{question['question']['content']}} Select all that apply.</label>
         <div id="checkbox_options" class="form-check">
           {% for i, option in enumerate(question['question']['options']) %}
 
@@ -63,7 +63,7 @@
         </div>
       </div>
       {% elif question['type'] == 'true_false' %}
-      <label>{{question['question']['content']}}</label>
+      <label>{{num+1}}. {{question['question']['content']}}</label>
       <select id="true_false" class="custom-select" name="true_false" required onchange="updatequiz()">
         <option value="">True or False?</option>
         <option value="True">True</option>
@@ -72,7 +72,7 @@
       <br>
       <br>
       {% elif question['type'] == 'matching' %}
-      <label>{{question['question']['question']['content']}}</label>
+      <label>{{num+1}}. {{question['question']['question']['content']}}</label>
       <br />
       <div id="matching" class="container-fluid">
         {% for prompt in question['question']['question']['left_side'] %}

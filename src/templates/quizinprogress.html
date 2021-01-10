@@ -25,10 +25,10 @@
   <br>
   <div class="container-fluid w-100">
     <form class="needs-validation" action="/quiz" method="POST">
-      {% for question in quizqa %}
+      {% for num, question in enumerate(quizqa) %}
       {% if question['type'] == 'multiple_choice' %}
       <div class="form-group">
-        <label>{{question['question']}}</label>
+        <label>{{num+1}}. {{question['question']}}</label>
         <select id="multiple_choice" class="custom-select" name="multiple_choice" onchange="updatequiz()" required>
           <option value="">Choose an answer</option>
           {% for option in question['options'] %}
@@ -42,13 +42,13 @@
       </div>
       {% elif question['type'] == 'fill_in_the_blank' %}
       <div class="form-group">
-        <label>{{question['question']}}</label>
+        <label>{{num+1}}. {{question['question']}}</label>
         <input id="fill" type="text" class="form-control" name="fill_in_the_blank" onchange="updatequiz()"
           placeholder="Fill in the blank" value="{{question['answer']}}" required>
       </div>
       {% elif question['type'] == 'checkbox' %}
       <div class="form-group">
-        <label>{{question['question']}}</label>
+        <label>{{num+1}}. {{question['question']}} Select all that apply.</label>
         <div id="checkbox_options" class="form-check">
           {% for i, option in enumerate(question['options']) %}
           {% if option in question['answer'] %}
@@ -64,7 +64,7 @@
 
       </div>
       {% elif question['type'] == 'true_false' %}
-      <label>{{question['question']}}</label>
+      <label>{{num+1}}. {{question['question']}}</label>
       <select id="true_false" class="custom-select" name="true_false" required onchange="updatequiz()">>
         <option value="">True or False?</option>
         {% if question['answer'] == 'True'%}
@@ -81,7 +81,7 @@
       <br>
       <br>
       {% elif question['type'] == 'matching' %}
-      <label>{{question['question']['content']}}</label>
+      <label>{{num+1}}. {{question['question']['content']}}</label>
       <br />
       <div id="matching" class="container-fluid">
         {% for prompt in question['question']['left_side'] %}
@@ -90,7 +90,7 @@
             <input class="form-control" value="{{prompt}}" readonly></input>
           </div>
           <div class="col">
-            <select class="custom-select" name="matching_{{prompt}}" onchange="updatequiz()">
+            <select class="custom-select" name="matching_{{prompt}}" onchange="updatequiz()" required>
               <option value="" selected>Match</option>
               {% for option in question['question']['right_side'] %}
               {%if 'answer' in question.keys()%}

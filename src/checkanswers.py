@@ -25,11 +25,12 @@ def check(questions, responses):
     for x in questions:
         question = x['question']
         if x['type'] == 'fill_in_the_blank':
+            lowered_correct_answer = [answer.lower() for answer in question['answer']] 
             results.append({'type': x['type'],
                             'question': question['content'],
                             'answer': responses['fill_in_the_blank'][0],
                             'correct': question['answer'],
-                            'boolcorrect': responses[x['type']][0] in question['answer']})
+                            'boolcorrect': responses[x['type']][0].lower() in lowered_correct_answer})
 
         elif x['type'] == 'checkbox':
 
