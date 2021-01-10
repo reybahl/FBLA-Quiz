@@ -1,5 +1,5 @@
 from databaseconnect import Connection
-connection = Connection()
+connection = Connection.Instance()
 
 def convert_to_dict(_list):
     d = {}

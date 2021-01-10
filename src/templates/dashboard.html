@@ -22,6 +22,7 @@
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
     integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
@@ -97,7 +98,7 @@
 
     /* Set a style for the submit/send button */
     .form-container .btn {
-      background-color: #406278;
+      background-color: #085824;
       color: white;
       padding: 16px 20px;
       border: none;
@@ -109,7 +110,7 @@
 
     /* Add a red background color to the cancel button */
     .form-container .cancel {
-      background-color: #406278;
+      background-color: #bb1e1e;
     }
 
     /* Add some hover effects to buttons */
@@ -241,14 +242,14 @@
   <!-- </div> -->
   <!-- </div> -->
 
-  <button class="open-button" onclick="openForm()">Chat</button>
+  <button class="open-button" onclick="openForm()">Need help ?</button>
 
   <div class="chat-popup" id="myForm">
     <form onsubmit="return false;" class="form-container">
-      <h1>Get Help</h1>
+      <h4>Intelligent Q&A</h4>
 
-      <label><b>Type a question</b></label>
-      <textarea id='chatwindow' required readonly></textarea>
+      <label>Begin by typing any question</label>
+      <textarea style="font-size: 9pt" id='chatwindow' required readonly></textarea>
       <input type="text" class="form-control" id='typedmessage' placeholder="Type message.." required></input>
 
       <button type="button" onclick="responsemessage()" class="btn">Send</button>
@@ -363,6 +364,7 @@
       $.get('settings', {},
         function (response) {
           document.getElementById("dynamicContent").innerHTML = response
+          $("#settingsResponse").hide();
         });
     }
 
@@ -495,7 +497,7 @@
             "Your question: " + document.getElementById("typedmessage").value + '\r\n' + '\r\n' + 'We found below help for your question' + '\r\n' + qastring + '\r\n';
           document.getElementById("typedmessage").value = '';
           var textarea = document.getElementById('chatwindow');
-
+          
           textarea.scrollTop = textarea.scrollHeight;
 
         },
@@ -517,6 +519,18 @@
 
       });
     });
+
+    function updateSettings() {
+    $("#settingsResponse").hide();
+    $('#settingsform')
+    .ajaxForm({
+        url : 'settings', // or whatever
+        success : function (response) {
+          $("#settingsResponse").html("Settings updated")
+          $("#settingsResponse").show();
+        }
+    });
+    }
   </script>
   <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
 

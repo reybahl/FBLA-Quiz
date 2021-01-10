@@ -23,7 +23,7 @@
 
     <div class="row">
       <div class="col">
-        <form action="/settings" method="POST">
+        <form id="settingsform" method="POST">
 
           <label>Email: <b>{{user}}</b></label>
           <br />
@@ -75,8 +75,10 @@
               <input type="number" name="font" min="5" max="40" value="{{prefs['font'][0]}}">
             </div>
           </div>
-          <button onclick="alert('Settings Updated!')" type="submit" class="btn btn-primary">Update Settings</button>
+          <button onclick="updateSettings()" type="submit" class="btn btn-primary">Update Settings</button>
         </form>
+        <br/>
+          <div id="settingsResponse" class="alert alert-success center-block" role="alert"></div>
       </div>
     </div>
   </div>
