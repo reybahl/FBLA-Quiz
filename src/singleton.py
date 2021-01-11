@@ -6,7 +6,7 @@ class Singleton:
     """This is a singleton file used as a decorator for :class:`Connection`
     so as to disable creation of multiple instances of the :class:`Connection` object.
     We do not need to create the instance again and again and this helps in saving memory
-    and time of database connection object.
+    and time of creation of a database connection object.
     """
     def __init__(self, cls):
         """init method

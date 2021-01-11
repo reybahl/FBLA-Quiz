@@ -230,7 +230,7 @@ def getHelp():
     it returns the corrresponding help related to that category. The
     categories and corresponding help is stored in the database.
     Example::
-            User types in: How can I customize font in reports
+            User types a question: How can I customize font in reports ?
             Category: reportgeneration
     
     :return: List of questions and answers corresponding to category of the 

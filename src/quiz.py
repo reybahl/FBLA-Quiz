@@ -97,6 +97,10 @@ class Quiz:
         
         :param user: user email for which we want to get quiz in progress.
         :type user: string
+        
+        :param quiz_json: contains the quiz object populated from the UI based upon 
+                          user selection
+        :type quiz_json: JSON string
         """
         connection = Connection.Instance()
         doc_ref1 = connection.getPrimaryDatabase().collection('users').document(user).collection(
