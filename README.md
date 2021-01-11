@@ -48,6 +48,7 @@ The application uses below technologies
   * *More details on firebase authentication: https://firebase.google.com/products/auth*
 * Flask - A Python web app framework. (https://palletsprojects.com/p/flask/)
 * Sphinx for code API documentation. (https://www.sphinx-doc.org/en/master/)
+* Heroku for cloud deployment. (https://www.heroku.com/)
 
 ## Local installation Pre-requisites
 ### In order to run the application locally, below are the pre-requisites
@@ -79,7 +80,10 @@ There are 2 options to install packages.
 * *For Windows, there's an additional step needed because the wkhtmltopdf installer for windows does not update path.*
     * For windows, please go to the project directory: wkhtmltopdfWindows and run batch file: wkhtmltopdfWindows.bat. This file will update the path.
 
-## Deployment
+### Deployment
+#### Cloud
+Application has been deployed to the heroku cloud and can be accessed here: https://rey-fbla-quiz.herokuapp.com/
+#### Local deployment
 The code internally connects to the firestore database and for that a service account key is needed. Service Account keys (for primary and backup database have been included in this repository).
 
 Below is the format of a service account key
