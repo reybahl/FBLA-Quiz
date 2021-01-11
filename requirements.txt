@@ -1,0 +1,4 @@
+firebase-admin
+textblob
+pdfkit
+flask

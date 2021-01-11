@@ -225,7 +225,7 @@ def updateCurrentQuizState():
 @app.route('/getHelp', methods=['POST'])
 def getHelp():
     """Intelligent Q&A feature: This gets called when user types a
-    question in get help chat window. It uses Naives Bayes algorithm
+    question in get help chat window. It uses Naive Bayes algorithm
     to classify what category the question falls in and based upon that
     it returns the corrresponding help related to that category. The
     categories and corresponding help is stored in the database.

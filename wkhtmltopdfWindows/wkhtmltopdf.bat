@@ -1,0 +1,1 @@
+setx PATH "%PATH%;C:\Program Files\wkhtmltopdf\bin"

@@ -7,7 +7,7 @@ from databaseconnect import Connection
 
 
 class IntelligentQA:
-    """Contains all the functionality related to quiz. 
+    """Contains all the functionality related to intelligent help. 
     Contains dynamic backup feature: It writes data to firestore database as the backend
     and stores data in primary as well as backup database instance.
     """
@@ -18,7 +18,7 @@ class IntelligentQA:
 
     def get_help(self, question_json):
         """Intelligent Q&A feature: This gets called when user types a
-        question in get help chat window. It uses Naives Bayes algorithm
+        question in get help chat window. It uses Naive Bayes algorithm
         to classify what category the question falls in and based upon that
         it returns the corrresponding help related to that category. The
         categories and corresponding help is stored in the database.

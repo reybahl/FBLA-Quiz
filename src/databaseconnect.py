@@ -37,12 +37,12 @@ from singleton import Singleton
 @Singleton
 class Connection:
     def __init__(self):
-        primaryCredentials = credentials.Certificate("serviceAccountKey2.json")
+        primaryCredentials = credentials.Certificate("src/serviceAccountKey.json")
         primaryApp = firebase_admin.initialize_app(primaryCredentials, {
             'projectId': 'firestoredemo-2',
         }, name='primaryApp')
         self.primaryDBref = firestore.client(primaryApp)
-        backupCredentials = credentials.Certificate("serviceAccountKey.json")
+        backupCredentials = credentials.Certificate("src/serviceAccountKeyBackup.json")
         backupApp = firebase_admin.initialize_app(backupCredentials, {
             'projectId': 'fir-demo-537d0',
         }, name='backupApp')
