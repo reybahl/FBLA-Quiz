@@ -25,7 +25,7 @@ Data storage is secure and protected by firestore IAM policies. No user of the a
 #### Application Usage
 * At login screen, users first need to register (if not already registered) and then enter their email and password. Alternatively they can also use their Google Account to sign-in. They can also reset their password in case they forget. For reset, they will need to enter the email id that was used to register and on clicking reset, an email will be sent to the user where they can click on a link and reset their password.
 * When user logs in, there is a help page that gives instructions on how to get started and navigate
-* Users can then continue to "Take a quiz tab". The application keeps track of the users' quiz progress and saves it in database. Users may leave to another tab or even close the browser and when they come back and if they have a quiz in progress, they resume existing quiz or take a new quiz.
+* Users can then continue to "Take a quiz tab". The application keeps track of the users' quiz progress and saves it in the database. Users may leave to another tab or even close the browser and when they come back and if they have a quiz in progress, they can resume existing quiz or take a new quiz.
 * Reports tab shows the past quiz taken by the user and also provides links to generate report for each quiz.
    * Reports are generated in PDF file format using wkhtmltopdf library
    * Output reports are customizable and users can set their preferences in Settings tab
