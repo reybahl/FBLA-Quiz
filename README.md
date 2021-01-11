@@ -1,28 +1,46 @@
 # FBLA Coding and Programming 2020-2021
 ## FBLA Randomized Quiz
-This repository contains code for FBLA coding and programming competitive events 2020-2021. The application uses below technologies
+*(No local installation required)*  
+The application has been deployed to cloud and can be accessed directly using below link  
+https://rey-fbla-quiz.herokuapp.com/
+
+
+The application uses below technologies
 * Python
 * HTML/css
 * Javascript
-* Cloud Firestore - A document oriented NoSQL database by Google.	
+* Cloud Firestore - A document oriented NoSQL database by Google (https://firebase.google.com/products/firestore).	
 * Firebase Authentication - Application uses firebase authentication and provides 2 options to login	
   * By using email id and password	
   * By using google sign-in with google account.
-* Flask - A Python web app framework.
+  * *More details on firebase authentication: https://firebase.google.com/products/auth*
+* Flask - A Python web app framework. (https://palletsprojects.com/p/flask/)
 
-## Pre-requisites
-### In order to run the application, below are the pre-requisites
+## Local installation Pre-requisites
+### In order to run the application locally, below are the pre-requisites
 #### Softwares / Framework
-* Python 3
+* Python 3 (Python can be downloaded from here: https://www.python.org/downloads/)
 * Web browser (Google chrome / Microsoft Edge / Safari (Mac OS), Mozilla Firefox
 
 
 #### Python packages. (Use pip install to install the packages. Below are the commands)
-* pip install firebase-admin
-* pip install textblob
-* pip install pdfkit
-* pip install flask
-
+There are 2 options to install packages.  
+1. Using requirements.txt in this github repository. For that, please clone the project and then  
+    * Go to the code root directory and run below command.
+      ```
+      pip install -r requirements.txt
+      ```
+        
+      Or  
+        
+2. Manually install all the python packages. Use below commands
+   ```
+    pip install firebase-admin
+    pip install textblob
+    pip install pdfkit
+    pip install flask
+   ```
+   
 #### Additional dependencies
 ##### PDF report generation
 * https://wkhtmltopdf.org/downloads.html
