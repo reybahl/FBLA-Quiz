@@ -5,19 +5,18 @@ The application has been deployed to cloud and can be accessed directly using be
 https://rey-fbla-quiz.herokuapp.com/
 
 
-This repository contains code for FBLA coding and programming competitive events 2020-2021.
-
 The application uses below technologies
 * Python
 * HTML/css
 * Javascript
-* Cloud Firestore - A document oriented NoSQL database by Google.	
+* Cloud Firestore - A document oriented NoSQL database by Google (https://firebase.google.com/products/firestore).	
 * Firebase Authentication - Application uses firebase authentication and provides 2 options to login	
   * By using email id and password	
   * By using google sign-in with google account.
-* Flask - A Python web app framework.
+  * *More details on firebase authentication: https://firebase.google.com/products/auth*
+* Flask - A Python web app framework. (https://palletsprojects.com/p/flask/)
 
-## Pre-requisites
+## Local installation Pre-requisites
 ### In order to run the application, below are the pre-requisites
 #### Softwares / Framework
 * Python 3 (Python can be downloaded from here: https://www.python.org/downloads/)
