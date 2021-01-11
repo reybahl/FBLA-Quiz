@@ -1,6 +1,13 @@
 # FBLA Coding and Programming 2020-2021
 ## FBLA Randomized Quiz
-This repository contains code for FBLA coding and programming competitive events 2020-2021. The application uses below technologies
+*(No local installation required)*
+The application has been deployed to cloud and can be accessed directly using below link
+https://rey-fbla-quiz.herokuapp.com/
+
+
+This repository contains code for FBLA coding and programming competitive events 2020-2021.
+
+The application uses below technologies
 * Python
 * HTML/css
 * Javascript
@@ -13,7 +20,7 @@ This repository contains code for FBLA coding and programming competitive events
 ## Pre-requisites
 ### In order to run the application, below are the pre-requisites
 #### Softwares / Framework
-* Python 3
+* Python 3 (Python can be downloaded from here: https://www.python.org/downloads/)
 * Web browser (Google chrome / Microsoft Edge / Safari (Mac OS), Mozilla Firefox
 
 
