@@ -5,6 +5,10 @@ The application has been deployed to the heroku cloud and can be accessed direct
 https://rey-fbla-quiz.herokuapp.com/  
 *Supported Web browsers: Google chrome, Microsoft Edge, Safari (Mac OS), Mozilla Firefox*
 
+### Application Code API documentation
+The project API has been fully documented and uploaded to below location.
+https://rey-fbla-quiz-docs.herokuapp.com
+
 ### About the application
 #### Overview
 The FBLA Quizzer application allows users to take a randomly generated quiz from a set of more than 50 questions with 5 different question types. It also stores past history of the quiz taken by any user and users can generate reports for the same.
@@ -31,9 +35,6 @@ The application features an intelligent help feature which users can use at any 
 ##### FAQs and Tooltip
 * In the application portal, when users hover over the UI elements, there are tooltips available that provide information about the element.
 * There's a tab for FAQs as well, which contains question and answers on most frequently asked questions.
-
-### Code API documentation
-The code has been fully documented and documentation for the functions and classes has been documented using Sphinx and uploaded to below location.
 
 ### Technologies used
 The application uses below technologies
