@@ -17,18 +17,30 @@ The application uses below technologies
 * Flask - A Python web app framework. (https://palletsprojects.com/p/flask/)
 
 ## Local installation Pre-requisites
-### In order to run the application, below are the pre-requisites
+### In order to run the application locally, below are the pre-requisites
 #### Softwares / Framework
 * Python 3 (Python can be downloaded from here: https://www.python.org/downloads/)
 * Web browser (Google chrome / Microsoft Edge / Safari (Mac OS), Mozilla Firefox
 
 
 #### Python packages. (Use pip install to install the packages. Below are the commands)
-* pip install firebase-admin
-* pip install textblob
-* pip install pdfkit
-* pip install flask
-
+There are 2 options to install packages.  
+1. Using requirements.txt in this github repository. For that, please clone the project and then  
+    * Go to the code root directory and run below command.
+      ```
+      pip install -r requirements.txt
+      ```
+        
+      Or  
+        
+2. Manually install all the python packages. Use below commands
+   ```
+    pip install firebase-admin
+    pip install textblob
+    pip install pdfkit
+    pip install flask
+   ```
+   
 #### Additional dependencies
 ##### PDF report generation
 * https://wkhtmltopdf.org/downloads.html
