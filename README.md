@@ -26,7 +26,7 @@ Data storage is secure and protected by firestore IAM policies. No user of the a
    * Output reports are customizable and users can set their preferences in Settings tab
 #### Futher Application Help
 ##### Intelligent Q&A
-The application features and intelligent help feature which users can use at any time while they are on the portal. Its a chat feature where users can type a question and gets answers instantly. Application internally uses Naives Bayes algorithm to classify what category the question falls in and based upon that it returns the corrresponding help related to that category. The categories and corresponding help is stored in the database.
+The application features an intelligent help feature which users can use at any time while they are on the portal. Its a chat feature where users can type a question and get answers instantly. Application internally uses Naive Bayes classifier using textblob to classify what category the question falls in and based upon that it returns the corrresponding help related to that category. The categories and corresponding help is stored in the database. Further details on Naive Bayes Classifier can be found here: https://textblob.readthedocs.io/en/dev/classifiers.html
 ##### FAQs and Tooltip
 * In the application portal, when users hover over the UI elements, there are tooltips available that provide information about the element.
 * There's a tab for FAQs as well, which contains question and answers on most frequently asked questions.
