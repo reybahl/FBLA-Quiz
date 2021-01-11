@@ -1,7 +1,7 @@
 # FBLA Coding and Programming 2020-2021
 ## FBLA Randomized Quiz
-*(No local installation required)*
-The application has been deployed to cloud and can be accessed directly using below link
+*(No local installation required)*  
+The application has been deployed to cloud and can be accessed directly using below link  
 https://rey-fbla-quiz.herokuapp.com/
 
 
