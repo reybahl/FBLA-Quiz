@@ -7,8 +7,7 @@ https://rey-fbla-quiz.herokuapp.com/
 
 
 #### Project API documentation
-The project API has been fully documented and uploaded to below location.
-https://rey-fbla-quiz-docs.herokuapp.com
+The project API has been fully documented and uploaded to the location: https://rey-fbla-quiz-docs.herokuapp.com
 
 ### About the application
 #### Overview
