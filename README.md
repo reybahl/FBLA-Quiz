@@ -3,7 +3,7 @@
 *(No local installation required)*  
 The application has been deployed to cloud and can be accessed directly using below link  
 https://rey-fbla-quiz.herokuapp.com/  
-*Supported Web browsers: Google chrome, Microsoft Edge, Safari (Mac OS), Mozilla Firefox
+*Supported Web browsers: Google chrome, Microsoft Edge, Safari (Mac OS), Mozilla Firefox*
 
 ### About the application
 #### Overview
@@ -76,7 +76,7 @@ There are 2 options to install packages.
    
 #### Additional dependency for PDF report generation
 * https://wkhtmltopdf.org/downloads.html
-* *For Windows, there's an additional step needed because the wkhtmltopdf installer for windows does not update path.
+* *For Windows, there's an additional step needed because the wkhtmltopdf installer for windows does not update path.*
     * For windows, please go to the project directory: wkhtmltopdfWindows and run batch file: wkhtmltopdfWindows.bat. This file will update the path.
 
 ## Deployment
