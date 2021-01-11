@@ -191,10 +191,9 @@
       firebase.auth().signInWithEmailAndPassword(email, password)
         .then((user) => {
           console.log(user);
-          $.post('dashboard', { email: email },
+          $.post('login', { email: email },
             function (response) {
-              document.write(response);
-              window.location.href = 'dashboard';
+              window.location.href = 'dashboard#getStarted';
             });
 
         })
@@ -225,10 +224,9 @@
       firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
         console.log(user);
         $('#exampleModal').modal('hide');
-        $.post('dashboard', { email: email },
+        $.post('login', { email: email },
           function (response) {
-            document.write(response);
-            window.location.href = 'dashboard';
+            window.location.href = 'dashboard#getStarted';
           });
       }).catch(function (error) {
         $("#registerErrorMessage").html(error.message);
@@ -270,10 +268,9 @@
   function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     var email = profile.getEmail();
-    $.post('dashboard', { email: email },
+    $.post('login', { email: email },
       function (response) {
-        document.write(response);
-        window.location.href = 'dashboard';
+        window.location.href = 'dashboard#getStarted';
       });
   }
 

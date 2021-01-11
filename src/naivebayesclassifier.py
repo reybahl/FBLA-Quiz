@@ -3,6 +3,7 @@
 """
 
 from textblob.classifiers import NaiveBayesClassifier
+import nltk
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 from databaseconnect import Connection
@@ -12,6 +13,20 @@ class IntelligentHelpNaiveBayesClassifier:
     """Classifies the question category for question asked by the user
     in Get Help chat window.
     """
+    def __init__(self):
+        """Checks if the required NLTK(Natural Language Toolkit) 
+        data is downloaded, and if not, downloads them
+        """
+        try:
+            nltk.data.find('tokenizers/punkt')
+        except LookupError:
+            nltk.download('punkt')
+        
+        try:
+            nltk.data.find('stopwords')
+        except LookupError:
+            nltk.download('stopwords')
+
     def classify(self, question):
         """Gets all the training data from the database and uses that to train
         the model using :class:`textblob.classifiers.NaiveBayesClassifier` to classify the category

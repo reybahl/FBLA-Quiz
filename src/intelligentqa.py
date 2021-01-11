@@ -11,6 +11,11 @@ class IntelligentQA:
     Contains dynamic backup feature: It writes data to firestore database as the backend
     and stores data in primary as well as backup database instance.
     """
+    def __init__(self):
+        """Initializes object and creates a Naive Bayes Classifier object
+        """
+        self.intelligentHelpNaivebayesclassifier = IntelligentHelpNaiveBayesClassifier()
+
     def get_help(self, question_json):
         """Intelligent Q&A feature: This gets called when user types a
         question in get help chat window. It uses Naives Bayes algorithm
@@ -24,8 +29,7 @@ class IntelligentQA:
         :return: List of questions and answers corresponding to category of the 
                 question that user has asked.
         """
-        intelligentHelpNaivebayesclassifier = IntelligentHelpNaiveBayesClassifier()
-        classification = intelligentHelpNaivebayesclassifier.classify(question_json['question'])
+        classification = self.intelligentHelpNaivebayesclassifier.classify(question_json['question'])
         connection = Connection.Instance()
         qas = connection.getPrimaryDatabase().collection('help').document(classification).collection('Q&A').stream()
         qaarr = []

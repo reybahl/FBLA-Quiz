@@ -43,6 +43,16 @@ def login():
     :return: Response object as a result of redirecting to the dashboard if 
              user is already logged in, other response object for loginpagefirebase.html
     """
+    # Checks if it got a post request
+    if request.method == "POST":
+        # Gets form data
+        req = request.form
+        # Gets email from the form
+        user = req['email']
+        # Creates a session
+        session['username'] = user
+        return "Logged in"
+        
     if 'username' in session.keys():
         return redirect(url_for('dashboard'))
 
@@ -58,21 +68,13 @@ def dashboard():
 
     :return: Response object which contains dashboard html with quiz tab selected.
     """
-    # Checks if it got a post request
-    if request.method == "POST":
-        # Gets form data
-        req = request.form
-        # Gets email from the form
-        user = req['email']
-        # Creates a session
-        session['username'] = user
-        # Gets a quiz in progress
-        quiz = quiz_ref.get_quiz_in_progress(session['username'])
-        # Checks if a quiz in progress exists
-        quiz_in_progress = True if quiz is not None else False
-        # Shows dashboard and specifies if the user has a quiz in progress
-        return render_template('dashboard.html', email=session['username'],
-                               quiz_in_progress=quiz_in_progress)
+    # Gets a quiz in progress
+    quiz = quiz_ref.get_quiz_in_progress(session['username'])
+    # Checks if a quiz in progress exists
+    quiz_in_progress = True if quiz is not None else False
+    # Shows dashboard and specifies if the user has a quiz in progress
+    return render_template('dashboard.html', email=session['username'],
+                            quiz_in_progress=quiz_in_progress)
 
     # If the user comes directly to the dashboard without the login page, it checks the session to check if the user is signed in
     if 'username' in session.keys():
@@ -269,7 +271,14 @@ def help():
     """
     return render_template('helppage.html', faqs=intelligent_qa_ref.get_frequently_asked_questions())
 
+@app.route('/getStarted', methods=['GET'])
+def getStarted():
+    """Shows a list of instructions to get started using FBLA Quiz
 
+    :return: Response object that contains Get Started HTML page
+    """
+
+    return render_template("getstarted.html")
 connection = Connection.Instance()
 questions_answers = None
 quiz_ref = Quiz()

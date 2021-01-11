@@ -151,6 +151,13 @@
       <div class="sidebar-sticky">
         <ul class="nav flex-column sidebar">
           <li class="nav-item">
+            <a id="getstartedlink" class="nav-link" href="#getStarted" onclick="populateGetStartedPage()" data-toggle="tooltip"
+              data-placement="top" title="View a list of instructions on how to use FBLA Quiz">
+              <span data-feather="play"></span>
+              Get Started
+            </a>
+          </li>
+          <li class="nav-item">
             <a id="quizlink" class="nav-link active" href="#" onclick="populateQuizStartPage()" data-toggle="tooltip"
               data-placement="top" title="Take a quiz. Resume a previous saved quiz, or start a new one.">
               <span data-feather="file"></span>
@@ -242,7 +249,7 @@
   <!-- </div> -->
   <!-- </div> -->
 
-  <button class="open-button" onclick="openForm()">Need help ?</button>
+  <button class="open-button" onclick="openForm()">Need help?</button>
 
   <div class="chat-popup" id="myForm">
     <form onsubmit="return false;" class="form-container">
@@ -327,6 +334,9 @@
     else if (hash == 'help') {
       populateHelpPage();
     }
+    else if(hash == "getStarted"){
+      populateGetStartedPage();
+    }
 
     function populateQuizStartPage() {
       location.hash = "";
@@ -378,6 +388,14 @@
     function populateHelpPage() {
       make_active('helplink')
       $.get('help', {},
+        function (response) {
+          document.getElementById("dynamicContent").innerHTML = response
+        })
+    }
+
+    function populateGetStartedPage(){
+      make_active('getstartedlink')
+      $.get('getStarted', {},
         function (response) {
           document.getElementById("dynamicContent").innerHTML = response
         })

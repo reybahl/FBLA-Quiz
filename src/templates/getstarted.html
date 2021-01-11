@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+</head>
+
+<body>
+<div class="table-responsive">
+    <table class="table">
+        <tbody>
+            <!-- <tr>
+                <td>To get started, you must register for FBLA Quiz with your email and password, by clicking <button class="btn btn-primary">Register</button> on the login screen or alternatively, you can sign in with Google.</td>
+            </tr> -->
+            <tr>
+                <td>After logging in, you will be redirected to the home page, where you can take a 5 question randomized FBLA quiz by clicking <button class = "btn btn-outline-primary">Take a new quiz</button></td>
+            </tr>
+            <tr>
+                <td>You can leave this quiz and return anytime by clicking <button class = "btn btn-outline-primary">Resume your previous quiz</button> , and your progress will be saved</td>
+            </tr>
+            <tr>
+                <td>On the quiz page, when you click <button class = "btn btn-primary">Submit</button> , you will be taken to a page where you can see your downloadable/printable quiz report</td>
+            </tr>
+            <tr>
+                <td>On the navigation bar, when you click on <b>Reports</b>, you will see a list of historial quiz reports, including date and time taken, your score, and the link to generate your PDF report.</td>
+            </tr>
+            <tr>
+                <td>These reports can be customized in the <b>Settings</b> tab on the navigation sidebar. You can choose what to include in your score report, and you can customize other things like font size</td>
+            </tr>
+            <tr>
+                <td>This application includes an intelligent help feature powered by natural language processing. Click on <button style = "background-color: #406278;" class="btn btn-primary">Need Help?</button> in the bottom right corner of the screen, ask it a question, and it will respond with a list of questions and answers that match it.</td>
+            </tr>
+            <tr>
+                <td>You can view a list of frequently asked questions in the <b>FAQs</b> tab</td>
+            </tr>
+        <tbody>
+    </table>
+    <br>    
+        <div class="text-center">
+            <button class="btn btn-primary" onclick="populateQuizStartPage()">Click here to continue and take a quiz. >></button>
+        </div>
+</div>
+</body>
