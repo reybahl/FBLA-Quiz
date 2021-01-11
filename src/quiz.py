@@ -1,3 +1,7 @@
+"""FBLA Quiz
+.. moduleauthor:: Reyansh Bahl <https://github.com/reybahl>
+"""
+
 import random
 import asyncio
 from datetime import datetime
@@ -6,7 +10,23 @@ from databaseconnect import Connection
 
 
 class Quiz:
+    """Contains all the functionality related to quiz. 
+    Contains dynamic backup feature: It writes data to firestore database as the backend
+    and stores data in primary as well as backup database instance.
+    """
     def generate_quiz(self, user):
+        """Generates a new quiz. There are 5 types of questions and in all more than 50 questions 
+        that are stored in firestore database, which is a NoSQL document oriented 
+        database. Questions are stored in the database in a tree form with a question
+        type being a parent node. Each question in each question type contains an id.
+        This function uses python class :class:`random.Random` to generate a random id
+        and then uses that id to fetch a question.
+
+        :param user: user email for which we want to generate a new quiz. The quiz then gets associated
+                    with that user
+        :type user: string
+        :return: A complete Quiz object which contains 5 different types of randomly generated questions
+        """
         connection = Connection.Instance()
         questions_by_type_ref = connection.getPrimaryDatabase().collection('questions_by_type')
         currentstate_ref = connection.getPrimaryDatabase().collection('users').document(user).collection(
@@ -60,11 +80,24 @@ class Quiz:
         return now_formatted  # Returns the time it was saved
 
     def get_quiz_in_progress(self, user):
+        """Gets a quiz in progress for the user email passed in as a param from the primary database
+        instance.
+
+        :param user: user email for which we want to get quiz in progress.
+        :type user: string
+        :return: A complete current Quiz in progress object
+        """
         connection = Connection.Instance()
         return connection.getPrimaryDatabase().collection('users').document(user).collection('quizinprogress').document(
             'currentstate').get().to_dict()
 
     def update_quiz_in_progress(self, user, quiz_json):
+        """Updates quiz in progress for the user email passed in as a param to both primary
+        and backup database instances.
+        
+        :param user: user email for which we want to get quiz in progress.
+        :type user: string
+        """
         connection = Connection.Instance()
         doc_ref1 = connection.getPrimaryDatabase().collection('users').document(user).collection(
             'quizinprogress').document(
@@ -90,6 +123,13 @@ class Quiz:
                                                      data=updatedquiz))
 
     def delete_quiz_in_progress(self, user):
+        """Deletes quiz in progress for the user email passed in as a param from both primary
+        and backup database instances. This function gets called when user has submitted a quiz
+        and completed. At that point there would be no quiz in progress associated with a user.
+        
+        :param user: user email for which we want to get quiz in progress.
+        :type user: string
+        """
         connection = Connection.Instance()
         docref1 = connection.getPrimaryDatabase().collection('users').document(user).collection(
             'quizinprogress').document(
@@ -102,6 +142,12 @@ class Quiz:
             connection.update_both_databases(db1ref=docref1, db2ref=docref2, ref_type='doc', task='del', data=None))
 
     def get_correct_answers(self, quizqa):
+        """Matches answers submitted by the user with the correct answers stored in the database.
+        
+        :param quizqa: contains answers submitted by the user.
+        :type quizqa: dictionary
+        :return: Questions that were answered correctly by the user.
+        """
         data = quizqa['results']
         correct_answers = []
         connection = Connection.Instance()

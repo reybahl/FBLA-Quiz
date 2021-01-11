@@ -1,9 +1,23 @@
+"""FBLA Settings
+.. moduleauthor:: Reyansh Bahl <https://github.com/reybahl>
+"""
+
 import asyncio
 from databaseconnect import Connection
 
 
 class Settings:
+    """Update user settings for the purpose of report generation.
+    It includes various options like font size, and content to include.
+    """
     def set_prefs(self, user, settings):
+        """Updates all the settings for a user asynchronously to both primary and backup database.
+        
+        :param user: email corresponding to which the settings need to be updated.
+        :type user: string
+        :param settings: settings object dictionary that contains the settings from UI.
+        :type settings: dictionary
+        """
         connection = Connection.Instance()
         users_ref = connection.getPrimaryDatabase().collection('users')
         users_ref2 = connection.getBackupDatabase().collection('users')
@@ -15,6 +29,12 @@ class Settings:
                                              ref_type='doc', task='write', data={'settings': settings}))
 
     def get_prefs(self, user):
+        """Gets all the settings for a user from the primary database.
+        
+        :param user: email corresponding to which the settings need to be retrieved.
+        :type user: string
+        :return: Settings corresponding to the user
+        """
         connection = Connection.Instance()
         default_settings = {
             'settings': {

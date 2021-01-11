@@ -1,0 +1,632 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Welcome to Reyansh Bahl’s FBLA Quizzer 2021’s documentation! &#8212; Reyansh Bahl&#39;s FBLA Quizzer 2021 1.0 documentation</title>
+    <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="welcome-to-reyansh-bahl-s-fbla-quizzer-2021-s-documentation">
+<h1>Welcome to Reyansh Bahl’s FBLA Quizzer 2021’s documentation!<a class="headerlink" href="#welcome-to-reyansh-bahl-s-fbla-quizzer-2021-s-documentation" title="Permalink to this headline">¶</a></h1>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="module-main">
+<span id="fbla-main"></span><h1>FBLA Main<a class="headerlink" href="#module-main" title="Permalink to this headline">¶</a></h1>
+<p>FBLA Main
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="function">
+<dt id="main.aboutPage">
+<code class="descclassname">main.</code><code class="descname">aboutPage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#aboutPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.aboutPage" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows About Page with the links to this documentation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object that contains about page.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.dashboard">
+<code class="descclassname">main.</code><code class="descname">dashboard</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#dashboard"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.dashboard" title="Permalink to this definition">¶</a></dt>
+<dd><p>Dashboard page, redirected from login screen. This page presents options to the 
+user to take a quiz, view reports etc. By default the selection option is to take
+a quiz. If user already has a quiz in progress, user can see buttons to resume
+existing quiz or take a new quiz.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object which contains dashboard html with quiz tab selected.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.generate_report">
+<code class="descclassname">main.</code><code class="descname">generate_report</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#generate_report"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.generate_report" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates report when a quiz is submitted or user clicks on generate report
+in the reports tab.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object that contains a generated report in PDF file format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.getHelp">
+<code class="descclassname">main.</code><code class="descname">getHelp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#getHelp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.getHelp" title="Permalink to this definition">¶</a></dt>
+<dd><p>Intelligent Q&amp;A feature: This gets called when user types a
+question in get help chat window. It uses Naives Bayes algorithm
+to classify what category the question falls in and based upon that
+it returns the corrresponding help related to that category. The
+categories and corresponding help is stored in the database.
+Example:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">User</span> <span class="n">types</span> <span class="ow">in</span><span class="p">:</span> <span class="n">How</span> <span class="n">can</span> <span class="n">I</span> <span class="n">customize</span> <span class="n">font</span> <span class="ow">in</span> <span class="n">reports</span>
+<span class="n">Category</span><span class="p">:</span> <span class="n">reportgeneration</span>
+</pre></div>
+</div>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of questions and answers corresponding to category of the 
+question that user has asked.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.help">
+<code class="descclassname">main.</code><code class="descname">help</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#help"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows FAQs</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object that contains FAQs page.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.login">
+<code class="descclassname">main.</code><code class="descname">login</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#login"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.login" title="Permalink to this definition">¶</a></dt>
+<dd><p>Login page, redirected from main. If the user is already logged in
+it redirects them straight to the dashboard, otherwise show the login page.
+At login screen, users first need to register (if not already registered)
+and then enter their email and password. Alternatively they can also
+use their Google Account to sign-in. They can also reset their password
+in case they forget. For reset, they will need to enter the email id
+that was used to register and on clicking reset, an email will be sent
+to the user where they can click on a link and reset their password.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object as a result of redirecting to the dashboard if 
+user is already logged in, other response object for loginpagefirebase.html</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.logout">
+<code class="descclassname">main.</code><code class="descname">logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#logout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.logout" title="Permalink to this definition">¶</a></dt>
+<dd><p>Logs out a user out of the session and removes the username from the 
+session object and sens them back to the login screen.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object that contains main login screen.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.quiz">
+<code class="descclassname">main.</code><code class="descname">quiz</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#quiz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.quiz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Quiz page, redirected from dashboard. Here code first checks to see if the 
+user already has a quiz in progress, if yes, it get the current state of the quiz
+from the database. If the user clicked on start a new quiz, this method generates
+a new quiz.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object of quiz in progress or a new quiz based upon what user selected.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.quizInProgressExists">
+<code class="descclassname">main.</code><code class="descname">quizInProgressExists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#quizInProgressExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.quizInProgressExists" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks if there’s a current quiz in progress for the user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">True if the user has a quiz in progress, False otherwise</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.reports">
+<code class="descclassname">main.</code><code class="descname">reports</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#reports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.reports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Show the historical quiz that the user has taken. It also presents
+an option to generate PDF report for each run.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object that contains historical reports screen.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.settings">
+<code class="descclassname">main.</code><code class="descname">settings</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Presents users with a settings screen for the purpose of report generation.
+It includes various options like font size, and content to include.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object that contains settings screen.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.start">
+<code class="descclassname">main.</code><code class="descname">start</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#start"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.start" title="Permalink to this definition">¶</a></dt>
+<dd><p>Main route – Invoked when user visits domain
+When this function is invoked, the user is redirected to a login
+screen where users can login via email/password or Google sign-in.
+Users can also reset their password on login page.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object as a result of redirecting to the login page</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.updateCurrentQuizState">
+<code class="descclassname">main.</code><code class="descname">updateCurrentQuizState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#updateCurrentQuizState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.updateCurrentQuizState" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates user’s current quiz in progress as and when user changes 
+anything. This function updates the quiz state in the database.</p>
+</dd></dl>
+
+</div>
+<div class="section" id="module-quiz">
+<span id="fbla-quiz"></span><h1>FBLA Quiz<a class="headerlink" href="#module-quiz" title="Permalink to this headline">¶</a></h1>
+<p>FBLA Quiz
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="quiz.Quiz">
+<em class="property">class </em><code class="descclassname">quiz.</code><code class="descname">Quiz</code><a class="reference internal" href="_modules/quiz.html#Quiz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiz.Quiz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains all the functionality related to quiz. 
+Contains dynamic backup feature: It writes data to firestore database as the backend
+and stores data in primary as well as backup database instance.</p>
+<dl class="method">
+<dt id="quiz.Quiz.delete_quiz_in_progress">
+<code class="descname">delete_quiz_in_progress</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quiz.html#Quiz.delete_quiz_in_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiz.Quiz.delete_quiz_in_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Deletes quiz in progress for the user email passed in as a param from both primary
+and backup database instances. This function gets called when user has submitted a quiz
+and completed. At that point there would be no quiz in progress associated with a user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>string</em>) – user email for which we want to get quiz in progress.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quiz.Quiz.generate_quiz">
+<code class="descname">generate_quiz</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quiz.html#Quiz.generate_quiz"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiz.Quiz.generate_quiz" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates a new quiz. There are 5 types of questions and in all more than 50 questions 
+that are stored in firestore database, which is a NoSQL document oriented 
+database. Questions are stored in the database in a tree form with a question
+type being a parent node. Each question in each question type contains an id.
+This function uses python class <a class="reference external" href="https://docs.python.org/3/library/random.html#random.Random" title="(in Python v3.9)"><code class="xref py py-class docutils literal notranslate"><span class="pre">random.Random</span></code></a> to generate a random id
+and then uses that id to fetch a question.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>string</em>) – user email for which we want to generate a new quiz. The quiz then gets associated
+with that user</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A complete Quiz object which contains 5 different types of randomly generated questions</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quiz.Quiz.get_correct_answers">
+<code class="descname">get_correct_answers</code><span class="sig-paren">(</span><em>quizqa</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quiz.html#Quiz.get_correct_answers"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiz.Quiz.get_correct_answers" title="Permalink to this definition">¶</a></dt>
+<dd><p>Matches answers submitted by the user with the correct answers stored in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>quizqa</strong> (<em>dictionary</em>) – contains answers submitted by the user.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Questions that were answered correctly by the user.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quiz.Quiz.get_quiz_in_progress">
+<code class="descname">get_quiz_in_progress</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quiz.html#Quiz.get_quiz_in_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiz.Quiz.get_quiz_in_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets a quiz in progress for the user email passed in as a param from the primary database
+instance.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>string</em>) – user email for which we want to get quiz in progress.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A complete current Quiz in progress object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quiz.Quiz.update_quiz_in_progress">
+<code class="descname">update_quiz_in_progress</code><span class="sig-paren">(</span><em>user</em>, <em>quiz_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quiz.html#Quiz.update_quiz_in_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiz.Quiz.update_quiz_in_progress" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates quiz in progress for the user email passed in as a param to both primary
+and backup database instances.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>string</em>) – user email for which we want to get quiz in progress.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-databaseconnect">
+<span id="fbla-database-connection"></span><h1>FBLA Database Connection<a class="headerlink" href="#module-databaseconnect" title="Permalink to this headline">¶</a></h1>
+<p>FBLA Database Singleton
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<p>Singleton Connection - Only one instance exists throughout the lifecycle
+of the application.</p>
+<p>Contains all the functionality related to database interaction. It connects
+to firestore database <a class="reference external" href="https://firebase.google.com/docs/firestore">https://firebase.google.com/docs/firestore</a>
+and implements a dynamic database backup feature by asynchronously
+writing to two database instance, one being primary and other one being
+backup.</p>
+<p>Contains dynamic backup feature: It writes data to firestore database as the backend
+and stores data in primary as well as backup database instance.</p>
+<p>getPrimaryDatabase gets a reference to the primary database.
+Returns reference to primary database</p>
+<p>getBackupDatabase gets a reference to the backup database.
+Returns reference to backup database</p>
+<p>update_dbref_1 updates primary database.</p>
+<p>update_dbref_2 updates backup database.</p>
+<p>update_both_databases asynchronously updates primary and backup databases.</p>
+</div>
+<div class="section" id="module-reports">
+<span id="fbla-user-past-reports"></span><h1>FBLA User Past Reports<a class="headerlink" href="#module-reports" title="Permalink to this headline">¶</a></h1>
+<p>FBLA Reports
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="reports.Reports">
+<em class="property">class </em><code class="descclassname">reports.</code><code class="descname">Reports</code><a class="reference internal" href="_modules/reports.html#Reports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#reports.Reports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains all the functionality related to getting past quiz history
+for a user to be used for the purpose of report generation.</p>
+<dl class="method">
+<dt id="reports.Reports.get_report_for_date">
+<code class="descname">get_report_for_date</code><span class="sig-paren">(</span><em>user</em>, <em>datetime</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reports.html#Reports.get_report_for_date"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#reports.Reports.get_report_for_date" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the past quiz results for a user for a particular date 
+from the database to be used for the purpose of report generation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>string</em>) – user email for which we want to get the data.</li>
+<li><strong>datetime</strong> (<em>string.</em>) – date time for when we want to get the data.</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A list of all the quiz results to be used for reporting purpose.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="reports.Reports.get_reports">
+<code class="descname">get_reports</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/reports.html#Reports.get_reports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#reports.Reports.get_reports" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the past quiz results for a user from the database to be used for 
+the purpose of report generation.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>string</em>) – user email for which we want to get the data</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A list of all the quiz results to be used for reporting purpose.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-intelligentqa">
+<span id="fbla-intelligentqa"></span><h1>FBLA IntelligentQA<a class="headerlink" href="#module-intelligentqa" title="Permalink to this headline">¶</a></h1>
+<p>FBLA IntelligentQA
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="intelligentqa.IntelligentQA">
+<em class="property">class </em><code class="descclassname">intelligentqa.</code><code class="descname">IntelligentQA</code><a class="reference internal" href="_modules/intelligentqa.html#IntelligentQA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#intelligentqa.IntelligentQA" title="Permalink to this definition">¶</a></dt>
+<dd><p>Contains all the functionality related to quiz. 
+Contains dynamic backup feature: It writes data to firestore database as the backend
+and stores data in primary as well as backup database instance.</p>
+<dl class="method">
+<dt id="intelligentqa.IntelligentQA.get_frequently_asked_questions">
+<code class="descname">get_frequently_asked_questions</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/intelligentqa.html#IntelligentQA.get_frequently_asked_questions"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#intelligentqa.IntelligentQA.get_frequently_asked_questions" title="Permalink to this definition">¶</a></dt>
+<dd><p>Get the list of all the faqs from the database.
+:return: List of questions and answers.</p>
+</dd></dl>
+
+<dl class="method">
+<dt id="intelligentqa.IntelligentQA.get_help">
+<code class="descname">get_help</code><span class="sig-paren">(</span><em>question_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/intelligentqa.html#IntelligentQA.get_help"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#intelligentqa.IntelligentQA.get_help" title="Permalink to this definition">¶</a></dt>
+<dd><p>Intelligent Q&amp;A feature: This gets called when user types a
+question in get help chat window. It uses Naives Bayes algorithm
+to classify what category the question falls in and based upon that
+it returns the corrresponding help related to that category. The
+categories and corresponding help is stored in the database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>question_json</strong> (<em>JSON string</em>) – question asked by the user in get help chat window</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">List of questions and answers corresponding to category of the 
+question that user has asked.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-naivebayesclassifier">
+<span id="fbla-naivebayesclassifier"></span><h1>FBLA NaiveBayesClassifier<a class="headerlink" href="#module-naivebayesclassifier" title="Permalink to this headline">¶</a></h1>
+<p>FBLA IntelligentHelp NaiveBayesClassifier
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="naivebayesclassifier.IntelligentHelpNaiveBayesClassifier">
+<em class="property">class </em><code class="descclassname">naivebayesclassifier.</code><code class="descname">IntelligentHelpNaiveBayesClassifier</code><a class="reference internal" href="_modules/naivebayesclassifier.html#IntelligentHelpNaiveBayesClassifier"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#naivebayesclassifier.IntelligentHelpNaiveBayesClassifier" title="Permalink to this definition">¶</a></dt>
+<dd><p>Classifies the question category for question asked by the user
+in Get Help chat window.</p>
+<dl class="method">
+<dt id="naivebayesclassifier.IntelligentHelpNaiveBayesClassifier.classify">
+<code class="descname">classify</code><span class="sig-paren">(</span><em>question</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/naivebayesclassifier.html#IntelligentHelpNaiveBayesClassifier.classify"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#naivebayesclassifier.IntelligentHelpNaiveBayesClassifier.classify" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the training data from the database and uses that to train
+the model using <code class="xref py py-class docutils literal notranslate"><span class="pre">textblob.classifiers.NaiveBayesClassifier</span></code> to classify the category
+of the question.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>question</strong> (<em>string</em>) – question asked by the user in get help chat window</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Question category</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-settings">
+<span id="fbla-settings"></span><h1>FBLA Settings<a class="headerlink" href="#module-settings" title="Permalink to this headline">¶</a></h1>
+<p>FBLA Settings
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="settings.Settings">
+<em class="property">class </em><code class="descclassname">settings.</code><code class="descname">Settings</code><a class="reference internal" href="_modules/settings.html#Settings"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#settings.Settings" title="Permalink to this definition">¶</a></dt>
+<dd><p>Update user settings for the purpose of report generation.
+It includes various options like font size, and content to include.</p>
+<dl class="method">
+<dt id="settings.Settings.get_prefs">
+<code class="descname">get_prefs</code><span class="sig-paren">(</span><em>user</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/settings.html#Settings.get_prefs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#settings.Settings.get_prefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets all the settings for a user from the primary database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>string</em>) – email corresponding to which the settings need to be retrieved.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Settings corresponding to the user</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="settings.Settings.set_prefs">
+<code class="descname">set_prefs</code><span class="sig-paren">(</span><em>user</em>, <em>settings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/settings.html#Settings.set_prefs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#settings.Settings.set_prefs" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates all the settings for a user asynchronously to both primary and backup database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<em>string</em>) – email corresponding to which the settings need to be updated.</li>
+<li><strong>settings</strong> (<em>dictionary</em>) – settings object dictionary that contains the settings from UI.</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-singleton">
+<span id="fbla-singleton"></span><h1>FBLA Singleton<a class="headerlink" href="#module-singleton" title="Permalink to this headline">¶</a></h1>
+<p>FBLA Singleton
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="singleton.Singleton">
+<em class="property">class </em><code class="descclassname">singleton.</code><code class="descname">Singleton</code><span class="sig-paren">(</span><em>cls</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/singleton.html#Singleton"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#singleton.Singleton" title="Permalink to this definition">¶</a></dt>
+<dd><p>This is a singleton file used as a decorator for <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code>
+so as to disable creation of multiple instances of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code> object.
+We do not need to create the instance again and again and this helps in saving memory
+and time of database connection object.</p>
+<dl class="method">
+<dt id="singleton.Singleton.Instance">
+<code class="descname">Instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/singleton.html#Singleton.Instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#singleton.Singleton.Instance" title="Permalink to this definition">¶</a></dt>
+<dd><p>Creates a single instance. If there’s already an instance, it returns
+that instance.</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="indices-and-tables">
+<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li><a class="reference internal" href="genindex.html"><span class="std std-ref">Index</span></a></li>
+<li><a class="reference internal" href="py-modindex.html"><span class="std std-ref">Module Index</span></a></li>
+<li><a class="reference internal" href="search.html"><span class="std std-ref">Search Page</span></a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">Welcome to Reyansh Bahl’s FBLA Quizzer 2021’s documentation!</a></li>
+<li><a class="reference internal" href="#module-main">FBLA Main</a></li>
+<li><a class="reference internal" href="#module-quiz">FBLA Quiz</a></li>
+<li><a class="reference internal" href="#module-databaseconnect">FBLA Database Connection</a></li>
+<li><a class="reference internal" href="#module-reports">FBLA User Past Reports</a></li>
+<li><a class="reference internal" href="#module-intelligentqa">FBLA IntelligentQA</a></li>
+<li><a class="reference internal" href="#module-naivebayesclassifier">FBLA NaiveBayesClassifier</a></li>
+<li><a class="reference internal" href="#module-settings">FBLA Settings</a></li>
+<li><a class="reference internal" href="#module-singleton">FBLA Singleton</a></li>
+<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
+</ul>
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="#">Documentation overview</a><ul>
+  </ul></li>
+</ul>
+</div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Reyansh Bahl.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+      |
+      <a href="_sources/index.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
