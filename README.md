@@ -2,7 +2,8 @@
 ## FBLA Randomized Quiz
 *(No local installation required)*  
 The application has been deployed to cloud and can be accessed directly using below link  
-https://rey-fbla-quiz.herokuapp.com/
+https://rey-fbla-quiz.herokuapp.com/  
+*Supported Web browsers: Google chrome, Microsoft Edge, Safari (Mac OS), Mozilla Firefox
 
 ### About the application
 #### Overview
