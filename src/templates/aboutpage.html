@@ -8,13 +8,47 @@
 <body>
     <div class="container">
         <div class="row">
+            <h1>About Me</h1>
+            <br />
+        </div>
+
+        <div class="row">
+            <p> My name is Reyansh Bahl, and I am a freshman at Green Level High School in Cary, North Carolina.
+                I am very passionate about Computer Science and coding, which is why I chose the Coding & Programming FBLA event.
+            </p>
+        </div>
+
+        <div class="row">
             <h1>About FBLA Quiz</h1>
             <br />
         </div>
 
         <div class="row">
-            <p>FBLA Quiz is a web application that was developed by Reyansh for the FBLA coding and programming event.
+            <p>FBLA Quizzer is a web application that was developed for the FBLA coding and programming event.
             </p>
+        </div>
+
+        <div class="row">
+            <p>The FBLA Quizzer application allows users to take a randomly generated quiz from a set of more than 50 questions with 5 different question types. 
+            It also stores past history of the quiz taken by any user and users can generate reports for the same.</p>
+
+            <h4 class="h4">Login Security</h4> 
+        </div>
+        <div class="row">
+            <p>The application has been written keeping security in mind and all the data is protected.</p>
+            <ul>
+                <li>There are 2 ways to sign-in (Using email-id/password and Google sign-in). Both are very secure ways to sign-in</li>
+                <li>For email-id/password, the application uses <a style = "color:rgb(0, 195, 255);" href="https://firebase.google.com/products/auth">Firebase Authentication</a> and passwords are not visible to any user or administrator of the application. The passwords are stored in firebase internally and are encrypted.</li>
+                <li>Google Sign-in is provided by Google and users can use their Google Account to sign-in and that's very secure. Users' google account password is not visible to any user or administrator of the application.</li>
+            </ul>
+        </div>
+        <div class="row">
+            <h4 class="h4">Data Storage</h4>
+            <p>Data storage is done on Cloud Firestore - A document oriented NoSQL database by Google <a style = "color:rgb(0, 195, 255);" href="https://firebase.google.com/products/firestore">Firestore Database</a>. The application supports dynamic backup feature where data is written asynchronously to a primary database instance and a backup database instance.</p>
+        </div>
+        <div class="row">
+            <h5 class="h5">Security</h5>
+            <p>Data storage is secure and protected by firestore IAM policies. No user of the application can directly modify the data and has access only to the data that belongs to the user. Only a service account or an admin can make changes to the data. Further details for the firestore IAM policies can be found here: <a style = "color:rgb(0, 195, 255);" href="https://cloud.google.com/firestore/docs/security/iam">Firestore IAM</a></p>
         </div>
     </div>
 </body>

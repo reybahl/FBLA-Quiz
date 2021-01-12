@@ -8,16 +8,12 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/js/bootstrap.min.js"></script>
   <script src="https://apis.google.com/js/platform.js" async defer></script>
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
-
-  <!-- TODO: Add SDKs for Firebase products that you want to use
-     https://firebase.google.com/docs/web/setup#available-libraries -->
-
+  <script type=text/javascript src="{{url_for('static', filename='login.js') }}"></script>
   <script>
-    // Your web app's Firebase configuration
+    // Firebase configuration
     var firebaseConfig = {
       apiKey: "AIzaSyBtwXtdiOpGQpU806OTt1VuL_uceWDzO1k",
       authDomain: "firestoredemo-2.firebaseapp.com",
@@ -89,20 +85,22 @@
     <div class="row">
       <div class="col">
         <form class="form-signin">
-          <!-- Email input -->
-
+          <!-- Email and Password input -->
           <label for="inputEmail" class="sr-only">Email address</label>
           <input type="email" id="inputEmail" class="form-control" placeholder="Email address" required autofocus>
           <label for="inputPassword" class="sr-only">Password</label>
           <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>
           <div id="errorMessage" class="alert alert-danger" role="alert"></div>
+
           <!-- Submit button -->
           <input type="button" onclick="SignInWithEmail()" value="Sign in" class="btn btn-primary btn-block" />
 
-          <!-- Register buttons -->
+          <!-- Register button -->
           <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#exampleModal"
             data-whatever="@getbootstrap">Register</button>
-            <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#resetPassword"
+
+          <!-- Reset password button -->
+          <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#resetPassword"
             data-whatever="@getbootstrap">Reset Password</button>
         </form>
       </div>
@@ -120,8 +118,21 @@
     </div>
     <div class="row justify-content-md-center">
       <div class="col col-md-auto">
-        <!-- Simple link -->
         <div class="g-signin2" data-onsuccess="onSignIn"></div>
+      </div>
+    </div>
+    <br />
+    <div class="row justify-content-md-center">
+      <div class="col col-md-auto">
+        <input type="button" onclick="signInAsGuest()" value="Continue as a Guest" class="btn btn-warning btn-block" />
+      </div>
+    </div>
+    <div class="row justify-content-md-center">
+      <div class="col col-md-auto">
+        <span class="badge"><i>*Please note, for guest, quiz progress and other features are shared. </i></span>
+        <br />
+        <span class="badge"><i>For exclusive access, please register above using email-id and password or use Google
+            Sign-in </i></span>
       </div>
     </div>
   </div>
@@ -168,7 +179,8 @@
         <div class="modal-body">
           <form>
             <label for="registerEmail" class="sr-only">Email address</label>
-            <input type="email" id="resetPasswordEmail" class="form-control" placeholder="Email address" required autofocus>
+            <input type="email" id="resetPasswordEmail" class="form-control" placeholder="Email address" required
+              autofocus>
           </form>
         </div>
         <div id="resetPasswordSuccess" class="alert alert-success" role="alert"></div>
@@ -183,97 +195,6 @@
 </body>
 
 <script>
-  function SignInWithEmail() {
-
-    var email = document.getElementById("inputEmail").value;//"myemail@email.com";
-    var password = document.getElementById("inputPassword").value;//"mypassword";
-    if (email != "" && password != "") {
-      firebase.auth().signInWithEmailAndPassword(email, password)
-        .then((user) => {
-          console.log(user);
-          $.post('login', { email: email },
-            function (response) {
-              window.location.href = 'dashboard#getStarted';
-            });
-
-        })
-        .catch((error) => {
-          //console.log(error.message);
-          $("#errorMessage").html(error.message);
-          $("#errorMessage").show();
-        });
-    }
-
-    else if (email == "") {
-      $("#errorMessage").html("Please enter your email");
-      $("#errorMessage").show();
-    }
-    else if (password == "") {
-      $("#errorMessage").html("Please enter your password");
-      $("#errorMessage").show();
-    }
-
-  }
-
-  function RegisterWithEmail() {
-    var email = document.getElementById("registerEmail").value;//"myemail@email.com";
-    var password = document.getElementById("registerPassword").value;//"mypassword";
-    var confirm_password = document.getElementById("registerConfirmPassword").value;
-    if (email != "" && password != "" && password == confirm_password) {
-
-      firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
-        console.log(user);
-        $('#exampleModal').modal('hide');
-        $.post('login', { email: email },
-          function (response) {
-            window.location.href = 'dashboard#getStarted';
-          });
-      }).catch(function (error) {
-        $("#registerErrorMessage").html(error.message);
-        $("#registerErrorMessage").show();
-        console.log(error.message);
-      });
-    }
-    else if (email == "") {
-      $("#registerErrorMessage").html("Please enter your email");
-      $("#registerErrorMessage").show();
-    }
-    else if (password == "") {
-      $("#registerErrorMessage").html("Please enter your password!");
-      $("#registerErrorMessage").show();
-    }
-    else if (password != confirm_password) {
-      $("#registerErrorMessage").html("Passwords don't match");
-      $("#registerErrorMessage").show();
-    }
-  }
-
-  function ResetPassword()
-  {
-    var auth = firebase.auth();
-    var emailAddress = document.getElementById("resetPasswordEmail").value;
-    console.log(emailAddress)
-    auth.sendPasswordResetEmail(emailAddress).then(function() {
-      // Email sent.
-      $("#resetPasswordSuccess").html("Email sent, please check your email for details.");
-      $("#resetPasswordErrorMessage").hide();
-      $("#resetPasswordSuccess").show();     
-    }).catch(function(error) {
-      $("#resetPasswordErrorMessage").html(error.message);
-      $("#resetPasswordSuccess").hide();
-      $("#resetPasswordErrorMessage").show();
-    });
-  }
-  
-  function onSignIn(googleUser) {
-    var profile = googleUser.getBasicProfile();
-    var email = profile.getEmail();
-    $.post('login', { email: email },
-      function (response) {
-        window.location.href = 'dashboard#getStarted';
-      });
-  }
-
   $(document).ready(function () {
     $("#errorMessage").hide();
     $("#registerErrorMessage").hide();

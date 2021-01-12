@@ -4,20 +4,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <meta name="description" content="">
-  <meta name="author" content="">
-  <link rel="icon" href="../../../../favicon.ico">
-
-  <title>Dashboard Template for Bootstrap</title>
+  <title>FBLA Quiz</title>
 
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.1/css/bootstrap.min.css">
-  <!-- Custom styles for this template -->
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
   <meta name="google-signin-client_id"
     content="617126747783-9ag356g7b04sn88ibo59ccie741h9ikt.apps.googleusercontent.com">
-
-  <!-- The core Firebase JS SDK is always required and must be listed first -->
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-app.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-auth.js"></script>
   <script src="https://www.gstatic.com/firebasejs/8.2.1/firebase-firestore.js"></script>
@@ -32,11 +24,8 @@
     crossorigin="anonymous"></script>
   <script>
     function signOut() {
-      console.log('inside signout');
       var auth2 = gapi.auth2.getAuthInstance();
-
       auth2.signOut().then(function () {
-        console.log('User signed out.');
       });
       window.location.href = "logout";
     }
@@ -47,85 +36,7 @@
       });
     }
   </script>
-  <style>
-    /* Button used to open the chat form - fixed at the bottom of the page */
-    .open-button {
-      background-color: #406278;
-      color: white;
-      padding: 16px 20px;
-      border: none;
-      cursor: pointer;
-      opacity: 0.8;
-      position: fixed;
-      bottom: 23px;
-      right: 28px;
-      width: 280px;
-    }
-
-    /* The popup chat - hidden by default */
-    .chat-popup {
-      display: none;
-      position: fixed;
-      bottom: 0;
-      right: 15px;
-      border: 3px solid #f1f1f1;
-      z-index: 9;
-    }
-
-    /* Add styles to the form container */
-    .form-container {
-      max-width: 300px;
-      padding: 10px;
-      background-color: white;
-    }
-
-    /* Full-width textarea */
-    .form-container textarea {
-      width: 100%;
-      padding: 15px;
-      margin: 5px 0 22px 0;
-      border: none;
-      background: #f1f1f1;
-      resize: none;
-      min-height: 400px;
-    }
-
-    /* When the textarea gets focus, do something */
-    .form-container textarea:focus {
-      background-color: #ddd;
-      outline: none;
-    }
-
-    /* Set a style for the submit/send button */
-    .form-container .btn {
-      background-color: #085824;
-      color: white;
-      padding: 16px 20px;
-      border: none;
-      cursor: pointer;
-      width: 100%;
-      margin-bottom: 10px;
-      opacity: 0.8;
-    }
-
-    /* Add a red background color to the cancel button */
-    .form-container .cancel {
-      background-color: #bb1e1e;
-    }
-
-    /* Add some hover effects to buttons */
-    .form-container .btn:hover,
-    .open-button:hover {
-      opacity: 1;
-    }
-
-    .quiz-options {
-      width: 100%;
-      max-width: 330px;
-      padding: 15px;
-      margin: auto;
-    }
-  </style>
+  <script type=text/javascript src="{{url_for('static', filename='dashboard.js') }}"></script>
 </head>
 
 <body>
@@ -144,8 +55,6 @@
       </ul>
     </form>
   </nav>
-  <!-- <div class="container-fluid"> -->
-  <!-- <div class="row"> -->
   <div class="wrapper">
     <nav id="sidebar">
       <div class="sidebar-sticky">
@@ -153,8 +62,8 @@
           <li class="nav-item">
             <a id="getstartedlink" class="nav-link" href="#getStarted" onclick="populateGetStartedPage()" data-toggle="tooltip"
               data-placement="top" title="View a list of instructions on how to use FBLA Quiz">
-              <span data-feather="play"></span>
-              Get Started
+              <span data-feather="navigation"></span>
+              Navigation Help
             </a>
           </li>
           <li class="nav-item">
@@ -167,7 +76,7 @@
           <li class="nav-item">
             <a id="reportslink" class="nav-link" href="#reports" onclick="populateReports()" data-toggle="tooltip"
               data-placement="top" title="You can view your historical quiz reports here">
-              <span data-feather="bar-chart-2"></span>
+              <span data-feather="save"></span>
               Reports
             </a>
           </li>
@@ -186,6 +95,13 @@
             </a>
           </li>
           <li class="nav-item">
+            <a id="projectDocumentation" class="nav-link" href="https://rey-fbla-quiz-docs.herokuapp.com/" data-toggle="tooltip"
+              data-placement="top" title="FBLA Quiz Project API documentation" target="blank">
+              <span data-feather="book-open"></span>
+              API documentation
+            </a>
+          </li>
+          <li class="nav-item">
             <a id="aboutlink" class="nav-link" href="#about" onclick="populateAboutPage()" data-toggle="tooltip"
               data-placement="top" title="About FBLA Quiz">
               <span data-feather="info"></span>
@@ -197,10 +113,8 @@
       </div>
     </nav>
 
-    <!-- <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4"> -->
-    <div id="content">
 
-      <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light"> -->
+    <div id="content">
       <div class="container-fluid">
         <button type="button" id="sidebarCollapse" class="btn btn-info" data-toggle="tooltip" data-placement="top"
           title="Toggle Sidebar">
@@ -242,12 +156,8 @@
 
         </div>
       </div>
-      <!-- </nav> -->
     </div>
-    <!-- </main> -->
   </div>
-  <!-- </div> -->
-  <!-- </div> -->
 
   <button class="open-button" onclick="openForm()">Need help?</button>
 
@@ -264,45 +174,10 @@
     </form>
   </div>
 
-  <!-- Icons -->
   <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
   <script>
     feather.replace()
   </script>
-
-
-  <!-- Graphs -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.1/Chart.min.js"></script>
-  <script>
-    var ctx = document.getElementById("myChart");
-    var myChart = new Chart(ctx, {
-      type: 'line',
-      data: {
-        labels: ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-        datasets: [{
-          data: [15339, 21345, 18483, 24003, 23489, 24092, 12034],
-          lineTension: 0,
-          backgroundColor: 'transparent',
-          borderColor: '#007bff',
-          borderWidth: 4,
-          pointBackgroundColor: '#007bff'
-        }]
-      },
-      options: {
-        scales: {
-          yAxes: [{
-            ticks: {
-              beginAtZero: false
-            }
-          }]
-        },
-        legend: {
-          display: false,
-        }
-      }
-    });
-  </script>
-
   <script>
     var $loading = $('#loading').hide();
     if (performance.navigation.type == 2) {
@@ -310,16 +185,10 @@
     }
 
     var hash = window.location.href.split('#').pop();
-    //var originalHTML = document.getElementById("dynamicContent").innerHTML;
-    //console.log(hash);
 
     function make_active(item) {
-      //var existing_active = getElementsByClassName("nav-link active")[0];
-
-      // document.getElementsByClassName("nav-link active")[0].style.color ="white"; 
       document.getElementsByClassName("nav-link active")[0].className = "nav-link";
       document.getElementById(item).className = "nav-link active";
-      // document.getElementById(item).style.color ="deepskyblue";
     }
 
     if (hash == 'reports') {
@@ -336,218 +205,6 @@
     }
     else if(hash == "getStarted"){
       populateGetStartedPage();
-    }
-
-    function populateQuizStartPage() {
-      location.hash = "";
-      location.reload();
-    }
-
-    function populateReports() {
-      make_active('reportslink');
-      $.get('reports', {},
-        function (response) {
-          document.getElementById("dynamicContent").innerHTML = response
-        });
-    }
-
-    function generateQuiz(quiz_in_progress) {
-      $loading.show();
-      if (quiz_in_progress) {
-        $.get('quiz?quiz_in_progress=true', {},
-          function (response) {
-            $loading.hide();
-            document.getElementById("dynamicContent").innerHTML = response
-          });
-      }
-
-      else {
-        $.get('quiz?quiz_in_progress=false', {},
-          function (response) {
-            document.getElementById("dynamicContent").innerHTML = response
-          });
-      }
-    }
-
-    function populateSettings() {
-      make_active('settingslink');
-      $.get('settings', {},
-        function (response) {
-          document.getElementById("dynamicContent").innerHTML = response
-          $("#settingsResponse").hide();
-        });
-    }
-
-    function populateAboutPage() {
-      make_active('aboutlink');
-      $.get('about', {},
-        function (response) {
-          document.getElementById("dynamicContent").innerHTML = response
-        });
-    }
-    function populateHelpPage() {
-      make_active('helplink')
-      $.get('help', {},
-        function (response) {
-          document.getElementById("dynamicContent").innerHTML = response
-        })
-    }
-
-    function populateGetStartedPage(){
-      make_active('getstartedlink')
-      $.get('getStarted', {},
-        function (response) {
-          document.getElementById("dynamicContent").innerHTML = response
-        })
-    }
-
-
-    function updatequiz() {
-      //console.log("inside..." + document.getElementById("true_false").value)
-      var tfval = document.getElementById("true_false").value;
-      //console.log("inside..." + document.getElementById("multiple_choice").value)
-      var mcval = document.getElementById("multiple_choice").value;
-      //console.log("inside..." + document.getElementById("fill").value);
-      var fillblankval = document.getElementById("fill").value;
-
-      var nodes = document.getElementById('checkbox_options').childNodes;
-      var checkbox_answers = [];
-      for (var i = 0; i < nodes.length; i++) {
-        {
-          //console.log(nodes[i]);
-          var labelChildNodes = nodes[i].childNodes;
-          for (var j = 0; j < labelChildNodes.length; j++) {
-            //console.log(labelChildNodes[j].nodeName);    
-            if (labelChildNodes[j].nodeName == 'INPUT' && document.getElementById(labelChildNodes[j].id).checked) {
-              if (labelChildNodes[j + 1].nodeName == '#text') {
-                //console.log(labelChildNodes[j+1].nodeValue);
-                checkbox_answers.push(labelChildNodes[j + 1].nodeValue);
-                //console.log("Array" + checkbox_answers.toString());
-              }
-            }
-            j = j + 1;
-          }
-        }
-      }
-
-
-      var nodes = document.getElementById('matching').childNodes;
-      var matching_prompts_answers = [];
-      var matching_prompts_answer = {};
-      for (var i = 0; i < nodes.length; i++) {
-        if (nodes[i].nodeName != '#text') {
-          //console.log(nodes[i]);
-          var labelChildNodes = nodes[i].childNodes;
-          var prompt = '';
-          //for each row make dict of left-side with right-side selected.
-          for (var j = 0; j < labelChildNodes.length; j++) {
-
-            if (labelChildNodes[j].nodeName != '#text') {
-              var bothsideNodes = labelChildNodes[j].childNodes;
-
-
-              for (var k = 0; k < bothsideNodes.length; k++) {
-                //console.log("forloop begin, node: " + bothsideNodes[k].nodeName + " prompt: " + prompt);
-                // child node would be one of left-side or right-side.
-
-
-                if (bothsideNodes[k].nodeName != '#text') {
-                  // left side.
-                  if (bothsideNodes[k].nodeName == 'INPUT') {
-                    //matching_prompts_answer[bothsideNodes[k].value] = ''
-                    //console.log(bothsideNodes[k].value);
-                    prompt = bothsideNodes[k].value;
-                    //console.log(prompt);
-                  }
-                  if (bothsideNodes[k].nodeName == 'SELECT') {
-                    //console.log(prompt);
-                    matching_prompts_answer[prompt] = bothsideNodes[k].value;
-                    //console.log(matching_prompts_answer);  
-                    //matching_prompts_answers.push(matching_prompts_answer);
-                  }
-                }
-              }
-            }
-          }
-
-        }
-      }
-
-      var quiz_json = { "true_false_answer": tfval, "multiple_choice_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers, "matching": matching_prompts_answer }
-      console.log(JSON.stringify(quiz_json))
-
-      //$.post('updateCurrentQuizState', {quiz_json});
-
-      $.ajax({
-        type: 'POST',
-        url: 'updateCurrentQuizState',
-        data: JSON.stringify(quiz_json),
-        //success: function(data) { alert('data: ' + data); },
-        contentType: "application/json",
-        dataType: 'json'
-      });
-    }
-
-
-    function openForm() {
-      document.getElementById("myForm").style.display = "block";
-    }
-
-    function closeForm() {
-      document.getElementById("myForm").style.display = "none";
-    }
-    function responsemessage() {
-      // send request to python and get answer, update textarea
-      var quiz_json = { "question": document.getElementById("typedmessage").value }
-      console.log(JSON.stringify(quiz_json))
-      $.ajax({
-        type: 'POST',
-        url: 'getHelp',
-        data: JSON.stringify(quiz_json),
-        success: function (data) {
-          var qastring = '';
-          for (i = 0; i < data.length; i++) {
-            var qIndex = i + 1;
-            qastring = qastring + "\r\n\r\n" + "Q" + qIndex + ": " + data[i]['question'] + "\r\n" + "Answer: " + data[i]['answer'];
-          }
-          document.getElementById("chatwindow").value = document.getElementById("chatwindow").value + '\r\n' + "--------------------" +
-            '\r\n' + "--------------------" + '\r\n' +
-            "Your question: " + document.getElementById("typedmessage").value + '\r\n' + '\r\n' + 'We found below help for your question' + '\r\n' + qastring + '\r\n';
-          document.getElementById("typedmessage").value = '';
-          var textarea = document.getElementById('chatwindow');
-          
-          textarea.scrollTop = textarea.scrollHeight;
-
-        },
-        contentType: "application/json",
-        dataType: 'json'
-      });
-
-    }
-
-    $(document).ready(function () {
-      $('#sidebarCollapse').on('click', function () {
-        $('#sidebar').toggleClass('active');
-        if ($(this).find('span').text() == ">") {
-          $(this).find('span').text("<");
-        }
-        else {
-          $(this).find('span').text(">");
-        }
-
-      });
-    });
-
-    function updateSettings() {
-    $("#settingsResponse").hide();
-    $('#settingsform')
-    .ajaxForm({
-        url : 'settings', // or whatever
-        success : function (response) {
-          $("#settingsResponse").html("Settings updated")
-          $("#settingsResponse").show();
-        }
-    });
     }
   </script>
   <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
