@@ -103,12 +103,12 @@ def quiz():
             if quizqa is not None:
                 # get correct answers of the quiz progress from the database
                 questions_answers = quiz_ref.get_correct_answers(quizqa)
-                return render_template('quizinprogress.html', quizqa=quizqa['results'], enumerate=enumerate)
+                return render_template('quizinprogress.html', quizqa=quizqa['results'], enumerate=enumerate, type = type, len = len)
         else:  # If the user wants a new quiz
             quiz_ref.delete_quiz_in_progress(session['username'])  # Deletes any existing quiz
             questions_answers = quiz_ref.generate_quiz(session['username'])  # Generates new quiz
         if 'username' in session.keys():
-            return render_template('quizpage.html', questions=questions_answers, enumerate=enumerate)
+            return render_template('quizpage.html', questions=questions_answers, enumerate=enumerate, type = type, len = len)
 
         else:  # If user is not logged in
             return redirect(url_for('login'))  # Redirect them to login

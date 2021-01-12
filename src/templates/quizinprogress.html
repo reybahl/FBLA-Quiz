@@ -43,18 +43,32 @@
         </div>
       {% elif question['type'] == 'checkbox' %}
       <div class="form-group">
-        <label>{{num+1}}. {{question['question']}} Select all that apply.</label>
-        <div id="checkbox_options" class="form-check">
-          {% for i, option in enumerate(question['options']) %}
-          {% if option in question['answer'] %}
-          <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
-              value="checkbox" name="{{option}}" onchange="updatequiz()" checked>{{option}}</label><br />
-          {% else %}
-          <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
-              value="checkbox" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
+        {% if type(question['question']['answer']) == 'str' or len(question['question']['answer']) == 1 %}
+          <label>{{num+1}}. {{question['question']}}</label>
+            <div id="checkbox_options" class="form-check">
+              {% for option in question['options'] %}
+              {% if option in question['answer'] %}
+              <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
+                  value="checkbox" name="{{option}}" onchange="updatequiz()" checked>{{option}}</label><br />
+              {% else %}
+              <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
+                  value="checkbox" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
+              {% endif %}
+              {% endfor %}
+            <!-- End the for loop -->
+        {% else %}
+            <label>{{num+1}}. {{question['question']}} Select all that apply.</label>
+            <div id="checkbox_options" class="form-check">
+              {% for option in question['options'] %}
+              {% if option in question['answer'] %}
+              <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
+                  value="checkbox" name="{{option}}" onchange="updatequiz()" checked>{{option}}</label><br />
+              {% else %}
+              <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
+                  value="checkbox" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
+              {% endif %}
+              {% endfor %}
           {% endif %}
-          {% endfor %}
-          <!-- End the for loop -->
         </div>
         <div id = "checkbox_result" style="display:none"></div>
       </div>
