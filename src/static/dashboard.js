@@ -184,7 +184,7 @@ function updateSettings() {
     $("#settingsResponse").hide();
     $('#settingsform')
         .ajaxForm({
-            url: 'settings', 
+            url: 'settings',
             success: function (response) {
                 $("#settingsResponse").html("Settings updated")
                 $("#settingsResponse").show();
@@ -195,7 +195,7 @@ function updateSettings() {
 function submitQuiz() {
     $('#quizForm')
         .ajaxForm({
-            url: 'saveAndGetQuizResults', 
+            url: 'saveAndGetQuizResults',
             success: function (response) {
                 document.getElementById("quizSubmitButton").disabled = true;
                 document.getElementById("toggleEnabled").disabled = true;
@@ -203,7 +203,7 @@ function submitQuiz() {
                 $("#quizScore").html("Score: " + response['score'] + "/5");
                 $("#quizScore").show();
                 var results =  response['results']
-                for (var i = 0; i < results.length; i++) {                    
+                for (var i = 0; i < results.length; i++) {
                     console.log(results[i]);
                     var question_div = "#"+results[i].type+"_result";
                     console.log(question_div);
@@ -229,4 +229,18 @@ function submitQuiz() {
                 $("#quizScore").show();
             }
         });
+}
+
+function printPDFReport() {
+    console.log('inside pdf')
+    var $iframe = $('#' + 'pdfiframe');
+    if ( $iframe.length ) {
+        $iframe.attr('src', '/generateReport?datetime=Mon%20Jan%2011%2016:02:27%202021');
+    }
+    $("#dialog").dialog({
+        minHeight: 700,
+        width: 500,
+        height: 700
+        // position: { my: "left top", at: "left bottom", of: button }
+    });
 }
