@@ -16,7 +16,8 @@
 <body>
   <br>
   <div class="container-fluid w-100">
-    <form class="needs-validation" action="/quiz" method="POST">
+    <form id="quizForm" class="needs-validation" method="POST">
+      <fieldset id = "toggleEnabled" enabled>
       {% for num, question in enumerate(quizqa) %}
       {% if question['type'] == 'multiple_choice' %}
       <div class="form-group">
@@ -31,13 +32,15 @@
           {% endif %}
           {% endfor %}
         </select>
+        <div id = "multiple_choice_result" style="display:none"></div>
       </div>
       {% elif question['type'] == 'fill_in_the_blank' %}
       <div class="form-group">
         <label>{{num+1}}. {{question['question']}}</label>
         <input id="fill" type="text" class="form-control" name="fill_in_the_blank" onchange="updatequiz()"
           placeholder="Fill in the blank" value="{{question['answer']}}" required>
-      </div>
+          <div id = "fill_in_the_blank_result" style="display:none"></div>
+        </div>
       {% elif question['type'] == 'checkbox' %}
       <div class="form-group">
         <label>{{num+1}}. {{question['question']}} Select all that apply.</label>
@@ -53,7 +56,7 @@
           {% endfor %}
           <!-- End the for loop -->
         </div>
-
+        <div id = "checkbox_result" style="display:none"></div>
       </div>
       {% elif question['type'] == 'true_false' %}
       <label>{{num+1}}. {{question['question']}}</label>
@@ -70,8 +73,8 @@
         <option value="False">False</option>
         {% endif %}
       </select>
-      <br>
-      <br>
+      <div id = "true_false_result" style="display:none"></div>
+
       {% elif question['type'] == 'matching' %}
       <label>{{num+1}}. {{question['question']['content']}}</label>
       <br />
@@ -99,11 +102,16 @@
           </div>
         </div>
         {% endfor %}
+        <div id = "matching_result" style="display:none"></div>
         <br />
       </div>
       {% endif %}
       {% endfor %}
-      <button type="submit" class="btn btn-primary">Submit</button>
-    </form>
+      <button id= "quizSubmitButton" onclick = "submitQuiz()" type="submit" class="btn btn-primary">Submit</button>
+    </fieldset>
+  </form>
+  <a style = "display:none" id = "generateReport" class="btn btn-outline-primary" target="blank">Generate Report</a>
+    <br>
+    <div style="display:none" id="quizScore" class="alert alert-success center-block" role="alert"></div>
   </div>
 </body>

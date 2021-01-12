@@ -184,10 +184,49 @@ function updateSettings() {
     $("#settingsResponse").hide();
     $('#settingsform')
         .ajaxForm({
-            url: 'settings', // or whatever
+            url: 'settings', 
             success: function (response) {
                 $("#settingsResponse").html("Settings updated")
                 $("#settingsResponse").show();
+            }
+        });
+}
+
+function submitQuiz() {
+    $('#quizForm')
+        .ajaxForm({
+            url: 'saveAndGetQuizResults', 
+            success: function (response) {
+                document.getElementById("quizSubmitButton").disabled = true;
+                document.getElementById("toggleEnabled").disabled = true;
+                console.log(response);
+                $("#quizScore").html("Score: " + response['score'] + "/5");
+                $("#quizScore").show();
+                var results =  response['results']
+                for (var i = 0; i < results.length; i++) {                    
+                    console.log(results[i]);
+                    var question_div = "#"+results[i].type+"_result";
+                    console.log(question_div);
+                    if (results[i].boolcorrect){
+                        $(question_div).toggleClass("alert alert-success");
+                        $(question_div).html("Correct!");
+                    } else{
+                        $(question_div).toggleClass("alert alert-danger");
+                        if(results[i].type != "matching"){
+                            $(question_div).html("Correct Answer: " + results[i].correct);
+                        } else{
+                            var correct_answer = "";
+                            for(var key in results[i].correct){
+                                correct_answer += (key + "-->" + results[i].correct[key] +"<br>");
+                            }
+                            $(question_div).html("Correct Answer: <br>" + correct_answer);
+                        }
+                    }
+                    $(question_div).show();
+                }
+                document.getElementById("generateReport").href = response.url;
+                $("#generateReport").show();
+                $("#quizScore").show();
             }
         });
 }

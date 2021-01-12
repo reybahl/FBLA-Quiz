@@ -113,19 +113,6 @@ def quiz():
         else:  # If user is not logged in
             return redirect(url_for('login'))  # Redirect them to login
 
-    if request.method == "POST":
-        req = request.form
-        if questions_answers is not None:
-            results, score = check(questions_answers, list(req.items()))
-            print(results)
-            date_time = quiz_ref.save_results(session['username'], results,
-                                              score)  # saves results and returns the datetime
-            quiz_ref.delete_quiz_in_progress(session['username'])  # Deletes the quiz in progress
-
-            return redirect(url_for('generate_report',
-                                    datetime=date_time))  # Sends them to the report generation page with the date and time the quiz was submitted as the url argument
-
-
 @app.route('/generateReport', methods=["GET"])
 def generate_report():
     """Generates report when a quiz is submitted or user clicks on generate report
@@ -279,6 +266,23 @@ def getStarted():
     """
 
     return render_template("getstarted.html")
+
+@app.route('/saveAndGetQuizResults', methods=["POST"])
+def saveAndGetQuizResults():
+    if request.method == "POST":
+        req = request.form
+        if questions_answers is not None:
+            results, score = check(questions_answers, list(req.items()))
+            #print(results)
+            date_time = quiz_ref.save_results(session['username'], results,
+                                              score)  # saves results and returns the datetime
+            quiz_ref.delete_quiz_in_progress(session['username'])  # Deletes the quiz in progress
+
+            return jsonify({'url' : url_for('generate_report',
+                                    datetime=date_time),
+                            'score' : score,
+                            'results' : results})  # Sends them to the report generation page with the date and time the quiz was submitted as the url argument
+
 connection = Connection.Instance()
 questions_answers = None
 quiz_ref = Quiz()
