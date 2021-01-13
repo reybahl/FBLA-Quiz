@@ -66,7 +66,7 @@ class Quiz:
     def save_results(self, user, results, score):
         connection = Connection.Instance()
         now = datetime.now()
-        now_formatted = now.strftime('%c')
+        now_formatted = now.strftime('%b %d %Y %I:%M%p')
         users_ref = connection.getPrimaryDatabase().collection('users')
         users_ref2 = connection.getBackupDatabase().collection('users')
         current_user_quizzes_ref = users_ref.document(user).collection('quiz_results').document(now_formatted)

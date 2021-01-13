@@ -249,3 +249,35 @@ a.article:hover {
     padding: 15px;
     margin: auto;
   }
+
+  .button-report-glow {
+    /* background-color: #1c87c9; */
+    /* -webkit-border-radius: 60px;
+    border-radius: 60px;
+    border: none;
+    color: #eeeeee;
+    cursor: pointer;
+    display: inline-block;
+    font-family: sans-serif;
+    font-size: 20px;
+    padding: 10px 10px;
+    text-align: center;
+    text-decoration: none; */
+  }
+  @keyframes glowing {
+    0% {
+      background-color: #007bff;
+      box-shadow: 0 0 5px #007bff;
+    }
+    50% {
+      background-color: #1476df;
+      box-shadow: 0 0 20px #1476df;
+    }
+    100% {
+      background-color: #316399;
+      box-shadow: 0 0 5px #316399;
+    }
+  }
+  .button-report-glow {
+    animation: glowing 1300ms infinite;
+  }

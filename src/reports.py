@@ -4,6 +4,7 @@
 
 import asyncio
 from databaseconnect import Connection
+import datetime
 
 
 class Reports:
@@ -27,7 +28,8 @@ class Reports:
                 'datetime': doc.id,
                 'score': doc.to_dict()['score']
             })
-
+        
+        reports = sorted(reports, key = lambda i: i['datetime'],reverse=True)
         return reports
 
     def get_report_for_date(self, user, datetime):

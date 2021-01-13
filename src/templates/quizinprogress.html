@@ -21,7 +21,7 @@
       {% for num, question in enumerate(quizqa) %}
       {% if question['type'] == 'multiple_choice' %}
       <div class="form-group">
-        <label>{{num+1}}. {{question['question']}}</label>
+        <label><b>{{num+1}}.</b> {{question['question']}}</label>
         <select id="multiple_choice" class="custom-select" name="multiple_choice" onchange="updatequiz()" required>
           <option value="">Choose an answer</option>
           {% for option in question['options'] %}
@@ -33,18 +33,20 @@
           {% endfor %}
         </select>
         <div id = "multiple_choice_result" style="display:none"></div>
+        <br/><br/>
       </div>
       {% elif question['type'] == 'fill_in_the_blank' %}
       <div class="form-group">
-        <label>{{num+1}}. {{question['question']}}</label>
+        <label><b>{{num+1}}.</b> {{question['question']}}</label>
         <input id="fill" type="text" class="form-control" name="fill_in_the_blank" onchange="updatequiz()"
           placeholder="Fill in the blank" value="{{question['answer']}}" required>
           <div id = "fill_in_the_blank_result" style="display:none"></div>
+          <br/><br/>
         </div>
       {% elif question['type'] == 'checkbox' %}
       <div class="form-group">
         {% if type(question['question']['answer']) == 'str' or len(question['question']['answer']) == 1 %}
-          <label>{{num+1}}. {{question['question']}}</label>
+          <label><b>{{num+1}}.</b> {{question['question']}}</label>
             <div id="checkbox_options" class="form-check">
               {% for option in question['options'] %}
               {% if option in question['answer'] %}
@@ -57,7 +59,7 @@
               {% endfor %}
             <!-- End the for loop -->
         {% else %}
-            <label>{{num+1}}. {{question['question']}} Select all that apply.</label>
+            <label><b>{{num+1}}.</b> {{question['question']}} <i>(Select all that apply)</i></label>
             <div id="checkbox_options" class="form-check">
               {% for option in question['options'] %}
               {% if option in question['answer'] %}
@@ -71,9 +73,10 @@
           {% endif %}
         </div>
         <div id = "checkbox_result" style="display:none"></div>
+        <br/><br/>
       </div>
       {% elif question['type'] == 'true_false' %}
-      <label>{{num+1}}. {{question['question']}}</label>
+      <label><b>{{num+1}}.</b> {{question['question']}}</label>
       <select id="true_false" class="custom-select" name="true_false" required onchange="updatequiz()">>
         <option value="">True or False?</option>
         {% if question['answer'] == 'True'%}
@@ -88,9 +91,9 @@
         {% endif %}
       </select>
       <div id = "true_false_result" style="display:none"></div>
-
+      <br/><br/>
       {% elif question['type'] == 'matching' %}
-      <label>{{num+1}}. {{question['question']['content']}}</label>
+      <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
       <br />
       <div id="matching" class="container-fluid">
         {% for prompt in question['question']['left_side'] %}
@@ -117,14 +120,14 @@
         </div>
         {% endfor %}
         <div id = "matching_result" style="display:none"></div>
-        <br />
+        <br/><br/>
       </div>
       {% endif %}
       {% endfor %}
-      <button id= "quizSubmitButton" onclick = "submitQuiz()" type="submit" class="btn btn-primary">Submit</button>
     </fieldset>
+    <button id= "quizSubmitButton" onclick = "submitQuiz()" type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" style="display:none" id="pdfreport" onclick="printPDFReport()" class="btn btn-primary button-report-glow">Print Report</button>
   </form>
-  <a style = "display:none" id = "generateReport" class="btn btn-outline-primary" target="blank">Generate Report</a>
     <br>
     <div style="display:none" id="quizScore" class="alert alert-success center-block" role="alert"></div>
   </div>

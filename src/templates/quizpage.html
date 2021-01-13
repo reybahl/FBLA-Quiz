@@ -11,12 +11,6 @@
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
   <script type="text/javascript" src="{{url_for('static', filename = 'validation.js')}}"></script>
   <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
-  <script>
-
-    function updatequiz() {
-      console.log("inside...")
-    }
-  </script>
 </head>
 
 <body>
@@ -28,7 +22,7 @@
         {% for num, question in enumerate(questions) %}
       {% if question['type'] == 'multiple_choice' %}
       <div class="form-group">
-        <label>{{num+1}}. {{question['question']['content']}}</label>
+        <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
         <select select id="multiple_choice" class="custom-select" name="multiple_choice" required
           onchange="updatequiz()">
           <option value="">Choose an answer</option>
@@ -37,18 +31,20 @@
           {% endfor %}
         </select>
         <div id = "multiple_choice_result" style="display:none"></div>
+        <br/>
       </div>
       {% elif question['type'] == 'fill_in_the_blank' %}
       <div class="form-group">
-        <label>{{num+1}}. {{question['question']['content']}}</label>
+        <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
         <input id="fill" type="text" class="form-control" name="fill_in_the_blank" placeholder="Fill in the blank"
           onchange="updatequiz()" required>
           <div id = "fill_in_the_blank_result" style="display:none"></div>
+          <br/>
       </div>
       {% elif question['type'] == 'checkbox' %}
       <div class="form-group">
         {% if type(question['question']['answer']) == 'str' or len(question['question']['answer']) == 1 %}
-          <label>{{num+1}}. {{question['question']['content']}}</label>
+          <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
           <div id="checkbox_options" class="form-check">
               {% for option in question['question']['options'] %}
 
@@ -58,7 +54,7 @@
               {% endfor %}
 
           {% else %}
-          <label>{{num+1}}. {{question['question']['content']}} Select all that apply.</label>
+          <label><b>{{num+1}}.</b> {{question['question']['content']}} <i>(Select all that apply)</i></label>
             <div id="checkbox_options" class="form-check">
             {% for option in question['question']['options'] %}
 
@@ -70,18 +66,19 @@
           {% endif %}
         </div>
         <div id = "checkbox_result" style="display:none"></div>
+        <br/>
       </div>
       {% elif question['type'] == 'true_false' %}
-      <label>{{num+1}}. {{question['question']['content']}}</label>
+      <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
       <select id="true_false" class="custom-select" name="true_false" required onchange="updatequiz()">
         <option value="">True or False?</option>
         <option value="True">True</option>
         <option value="False">False</option>
       </select>
       <div id = "true_false_result" style="display:none"></div>
-      
+      <br/><br/>
       {% elif question['type'] == 'matching' %}
-      <label>{{num+1}}. {{question['question']['question']['content']}}</label>
+      <label><b>{{num+1}}.</b> {{question['question']['question']['content']}}</label>
       <br />
       <div id="matching" class="container-fluid">
         {% for prompt in question['question']['question']['left_side'] %}
@@ -100,15 +97,16 @@
         </div>
         {% endfor %}
         <div id = "matching_result" style="display:none"></div>
+        <br/>
         
       </div>
       {% endif %}
       <br/>
       {% endfor %}
-      <button id= "quizSubmitButton" onclick = "submitQuiz()" type="submit" class="btn btn-primary">Submit</button>
-    </fieldset>
+    </fieldset> 
+    <button id= "quizSubmitButton" onclick = "submitQuiz()" type="submit" class="btn btn-primary">Submit</button>
+    <button type="button" style="display:none" id="pdfreport" onclick="printPDFReport()" class="btn btn-primary button-report-glow">Print Report</button>
     </form>
-    <a style = "display:none" id = "generateReport" class="btn btn-outline-primary" target="blank">Generate Report</a>
     <br>
     <div style="display:none" id="quizScore" class="alert alert-success center-block" role="alert"></div>
   </div>

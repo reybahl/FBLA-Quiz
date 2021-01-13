@@ -1,4 +1,6 @@
 // Populates quiz tab
+var submitReportUrl = ''
+
 function populateQuizStartPage() {
     location.hash = "";
     location.reload();
@@ -224,23 +226,27 @@ function submitQuiz() {
                     }
                     $(question_div).show();
                 }
-                document.getElementById("generateReport").href = response.url;
+                //document.getElementById("generateReport").href = response.url;
+                submitReportUrl = response.url
                 $("#generateReport").show();
                 $("#quizScore").show();
+                $("#pdfreport").show();
+                document.getElementById("pdfreport").disabled = false;
+                window.scrollTo(0,document.body.scrollHeight);
             }
         });
 }
 
 function printPDFReport() {
     console.log('inside pdf')
+    console.log(submitReportUrl)
     var $iframe = $('#' + 'pdfiframe');
     if ( $iframe.length ) {
-        $iframe.attr('src', '/generateReport?datetime=Mon%20Jan%2011%2016:02:27%202021');
+        $iframe.attr('src', submitReportUrl);
     }
-    $("#dialog").dialog({
+    $("#dialog").dialog({   
         minHeight: 700,
         width: 500,
         height: 700
-        // position: { my: "left top", at: "left bottom", of: button }
     });
 }

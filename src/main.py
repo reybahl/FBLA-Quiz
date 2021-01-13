@@ -135,7 +135,7 @@ def generate_report():
             'encoding': "UTF-8",
         }
         user_date_time = results['datetimesubmitted']
-        user_date_time = datetime.strptime(user_date_time, '%c')
+        user_date_time = datetime.strptime(user_date_time, '%b %d %Y %I:%M%p')
         date = user_date_time.date()
         time = user_date_time.time()
         rendered = render_template('resultpagetemplate.html', enumerate=enumerate, results=results['results'],
