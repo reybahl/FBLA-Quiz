@@ -15,7 +15,7 @@ The FBLA Quizzer application allows users to take a randomly generated quiz from
 #### Login Security
 Login is safe and user information is protected.
 * In order to access the application, users can either register with their email id / password or Google Sign-int.
-  * For email-id/password, the application uses firebase authentication (https://firebase.google.com/products/auth) and passwords are not visible to any user or administrator of the application. The passwords are stored in firebase internally and are encrypted.
+  * For email-id/password, the application uses [Firebase Authentication](https://firebase.google.com/products/auth) and passwords are not visible to any user or administrator of the application. The passwords are stored in firebase internally and are encrypted.
   * Google Sign-in is provided by Google and users can use their Google Account to sign-in and that's very secure.
 #### Data storage
 **Please follow this link for details on Data: [Data Description and snapshot](docs/data/readme.md)**
@@ -66,7 +66,7 @@ There are 2 options to install packages.
    ```
    
 #### Additional dependency for PDF report generation
-* https://wkhtmltopdf.org/downloads.html
+* [wkhtmltopdf](https://wkhtmltopdf.org/downloads.html)
 * *For Windows, there's an additional step needed because the wkhtmltopdf installer for windows does not update path.*
     * For windows, please go to the project directory: wkhtmltopdfWindows and run batch file: wkhtmltopdfWindows.bat. This file will update the path.
 
@@ -114,7 +114,7 @@ New users can register using an email and password or alternately they can use G
    * Output reports are customizable and users can set their preferences in Settings tab
 #### Futher Application Help
 ##### Intelligent Q&A
-The application features an intelligent help feature which users can use at any time while they are on the portal. Its a chat feature where users can type a question and get answers instantly. Application internally uses Naive Bayes classifier using textblob to classify what category the question falls in and based upon that it returns the corrresponding help related to that category. The categories and corresponding help is stored in the database. Further details on Naive Bayes Classifier can be found here: https://textblob.readthedocs.io/en/dev/classifiers.html
+The application features an intelligent help feature which users can use at any time while they are on the portal. Its a chat feature where users can type a question and get answers instantly. Application internally uses [Naive Bayes classifier using textblob](https://textblob.readthedocs.io/en/dev/classifiers.html) to classify what category the question falls in and based upon that it returns the corrresponding help related to that category. The categories and corresponding help is stored in the database. Further details on Naive 
 ##### FAQs and Tooltip
 * In the application portal, when users hover over the UI elements, there are tooltips available that provide information about the element.
 * There's a tab for FAQs as well, which contains question and answers on most frequently asked questions.
