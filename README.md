@@ -18,7 +18,10 @@ Login is safe and user information is protected.
   * For email-id/password, the application uses firebase authentication (https://firebase.google.com/products/auth) and passwords are not visible to any user or administrator of the application. The passwords are stored in firebase internally and are encrypted.
   * Google Sign-in is provided by Google and users can use their Google Account to sign-in and that's very secure.
 #### Data storage
-Data storage is done on Cloud Firestore - A document oriented NoSQL database by Google (https://firebase.google.com/products/firestore). The application supports dynamic backup feature where data is written asynchronously to a primary database instance and a backup database instance.
+* Data storage is done on Cloud Firestore - A document oriented NoSQL database by Google (https://firebase.google.com/products/firestore). The application supports dynamic backup feature where data is written asynchronously to a primary database instance and a backup database instance.
+* Dataset contains more than 50 questions of 5 different types (True/False, Fill in the blanks, Matching, Dropdown, Multiple Choice).
+* Please follow this link for further details on Data: [Data Description and snapshot](docs/readme.md)
+
 ##### Security
 Data storage is secure and protected by firestore IAM policies. No user of the application can directly modify the data and has access only to the data that belongs to the user. Only a service account or an admin can make changes to the data. Further details for the firestore IAM policies can be found here: https://cloud.google.com/firestore/docs/security/iam
 
