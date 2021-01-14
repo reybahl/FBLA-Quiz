@@ -97,7 +97,7 @@
       <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
       <br />
       <div id="matching" class="container-fluid">
-        {% for prompt in question['question']['left_side'] %}
+        {% for prompt in sorted(question['question']['left_side']) %}
         <div class="row">
           <div class="col">
             <input class="form-control" value="{{prompt}}" readonly></input>

@@ -1,7 +1,7 @@
 // Populates quiz tab
 var submitReportUrl = ''
 
-function populateQuizStartPage() {
+function populateQuizStartPage() { 
     location.hash = "";
     location.reload();
 }
@@ -237,6 +237,7 @@ function submitQuiz() {
         });
 }
 
+//Shows PDF report popup when "Print report" button is clicked
 function printPDFReport() {
     console.log('inside pdf')
     console.log(submitReportUrl)

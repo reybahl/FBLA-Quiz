@@ -47,10 +47,8 @@
           <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
           <div id="multiple_choice_options" class="form-check">
               {% for option in question['question']['options'] %}
-              <div class="form-check">
                 <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
                     value="{{option}}" name="multiple_choice" onchange="updatequiz()">{{option}}</label><br />
-              </div>
               {% endfor %}
 
           {% else %}
@@ -81,7 +79,7 @@
       <label><b>{{num+1}}.</b> {{question['question']['question']['content']}}</label>
       <br />
       <div id="matching" class="container-fluid">
-        {% for prompt in question['question']['question']['left_side'] %}
+        {% for prompt in sorted(question['question']['question']['left_side']) %}
         <div class="row">
           <div class="col-sm">
             <input class="form-control" value="{{prompt}}" readonly></input>
@@ -90,7 +88,7 @@
             <select class="custom-select" name="matching_{{prompt}}" onchange="updatequiz()" required>
               <option value="" selected>Match</option>
               {% for answer in question['question']['question']['right_side'] %}
-              <option value="{{answer}}">{{answer}}</option>
+                <option value="{{answer}}">{{answer}}</option>
               {% endfor %}
             </select>
           </div>

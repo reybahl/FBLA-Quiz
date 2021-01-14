@@ -101,12 +101,12 @@ def quiz():
             if quiz_in_progress is not None:
                 # get correct answers of the quiz progress from the database
                 questions_answers = quiz_ref.get_correct_answers(quiz_in_progress)
-                return render_template('quizinprogress.html', quizqa=quiz_in_progress['results'], enumerate=enumerate, type = type, len = len)
+                return render_template('quizinprogress.html', quizqa=quiz_in_progress['results'], enumerate=enumerate, sorted = sorted)
         else:  # If the user wants a new quiz
             quiz_ref.delete_quiz_in_progress(session['username'])  # Deletes any existing quiz
             questions_answers = quiz_ref.generate_quiz(session['username'])  # Generates new quiz
         if 'username' in session.keys():
-            return render_template('quizpage.html', questions=questions_answers, enumerate=enumerate, type = type, len = len)
+            return render_template('quizpage.html', questions=questions_answers, enumerate=enumerate, sorted = sorted)
 
         else:  # If user is not logged in
             return redirect(url_for('login'))  # Redirect them to login
@@ -143,7 +143,7 @@ def generate_report():
         time = date_time_submitted.time()
         rendered = render_template('resultpagetemplate.html', enumerate=enumerate, results=results['results'],
                                    score=results['score'], date=date, time=time,
-                                   prefs=settings_ref.get_prefs(session['username'])['settings'])
+                                   prefs=settings_ref.get_prefs(session['username'])['settings'], sorted = sorted)
         pdf = pdfkit.from_string(rendered, False, options)
         response = make_response(pdf)
         response.headers['Content-Type'] = 'application/pdf'

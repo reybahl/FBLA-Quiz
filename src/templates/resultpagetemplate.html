@@ -40,9 +40,9 @@
                     {% endif %}
                     {% if question['type'] == 'matching' %}
                     <p><i>You answered:</i></p>
-                    {% for key, value in question['answer'].items() %}
-                    <p>{{key}} --> {{value}}</p>
-                    {% endfor %}
+                        {% for key in sorted(question['answer']) %}
+                        <p>{{key}} --> {{question['answer'][key]}}</p>
+                        {% endfor %}
                     {% else %}
                     <p><i>You answered: <b>{{question['answer']}}</b></i></p>
                     {% endif %}
@@ -51,8 +51,8 @@
                     {% if 'showcorrectanswer' in prefs['checkbox'] %}
                     {% if question['type'] == 'matching' %}
                     <p style="color:rgb(0, 123, 255);"><i>Correct answer:</i></p>
-                    {% for key, value in question['correct'].items() %}
-                    <p style="color:rgb(0, 123, 255);">{{key}} --> {{value}}</p>
+                    {% for key in sorted(question['correct']) %}
+                    <p style="color:rgb(0, 123, 255);">{{key}} --> {{question['correct'][key]}}</p>
                     {% endfor %}
                     {% else %}
                     <p style="color:rgb(0, 123, 255);"><i>Correct answer: <b>{{question['correct']}}</b></i></p>
@@ -62,8 +62,8 @@
                     {% if 'showwronganswer' in prefs['checkbox'] %}
                     {% if question['type'] == 'matching' %}
                     <p style="color:rgb(0, 123, 255);"><i>Correct answer:</i></p>
-                    {% for key, value in question['correct'].items() %}
-                    <p style="color:rgb(0, 123, 255);">{{key}} --> {{value}}</p>
+                    {% for key in sorted(question['correct']) %}
+                    <p style="color:rgb(0, 123, 255);">{{key}} --> {{question['correct'][key]}}</p>
                     {% endfor %}
                     {% else %}
                     <p style="color:rgb(8, 127, 254);"><i>Correct answer: <b>{{question['correct']}}</b></i></p>
@@ -75,3 +75,4 @@
                 <br>
                 {% endfor %}
 </body>
+</html>

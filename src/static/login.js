@@ -1,8 +1,11 @@
-// Sign in with email and password
+/* Sign in with email and password using firebase. 
+Display error messages if email or password are not filled out
+or display error messages coming from FireBase. */
+
 function SignInWithEmail() {
-    var email = document.getElementById("inputEmail").value;
-    var password = document.getElementById("inputPassword").value;
-    if (email != "" && password != "") {
+    var email = document.getElementById("inputEmail").value; //get email
+    var password = document.getElementById("inputPassword").value; //get password
+    if (email != "" && password != "") { //if both are filled out, then send to firebase for authentication
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((user) => {
                 console.log(user);
@@ -19,32 +22,34 @@ function SignInWithEmail() {
             });
     }
 
-    else if (email == "") {
+    else if (email == "") { //If email is empty
         $("#errorMessage").html("Please enter your email");
         $("#errorMessage").show();
     }
-    else if (password == "") {
+    else if (password == "") { //Otherwise, If password is empty
         $("#errorMessage").html("Please enter your password");
         $("#errorMessage").show();
     }
 
 }
 
-// Register with new email and password. Authentication happens via Firesbase Authentication
+// Register with new email and password. Authentication happens via Firebase Authentication
 function RegisterWithEmail() {
     var email = document.getElementById("registerEmail").value;
     var password = document.getElementById("registerPassword").value;
     var confirm_password = document.getElementById("registerConfirmPassword").value;
-    if (email != "" && password != "" && password == confirm_password) {
+    if (email != "" && password != "" && password == confirm_password) { 
+        //Checks if fields are filled and confirm_password matches password
 
         firebase.auth().createUserWithEmailAndPassword(email, password).then((user) => {
             console.log(user);
             $('#exampleModal').modal('hide');
+            //Posts to login, where it can be stored as a session
             $.post('login', { email: email },
                 function (response) {
-                    window.location.href = 'dashboard#getStarted';
+                    window.location.href = 'dashboard#getStarted'; //Redirects to dashboard getting started page
                 });
-        }).catch(function (error) {
+        }).catch(function (error) { //Display any error messages from Firebase
             $("#registerErrorMessage").html(error.message);
             $("#registerErrorMessage").show();
             console.log(error.message);
