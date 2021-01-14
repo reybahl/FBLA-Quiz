@@ -17,7 +17,7 @@ app = Flask(__name__)
 app.secret_key = "FBLA"
 
 
-@app.route('/')
+@app.route('/', methods=["GET"])
 def start():
     """Main route -- Invoked when user visits domain
     When this function is invoked, the user is redirected to a login
@@ -96,15 +96,19 @@ def quiz():
 
     if request.method != "POST":
         get_quiz_in_progress = request.args.get('quiz_in_progress')  # Gets url argument specifying if the user wants a quiz in progress or wants to start a new one.
+        
         if get_quiz_in_progress == 'true':
             quiz_in_progress = quiz_ref.get_quiz_in_progress(session['username'])
+        
             if quiz_in_progress is not None:
                 # get correct answers of the quiz progress from the database
                 questions_answers = quiz_ref.get_correct_answers(quiz_in_progress)
                 return render_template('quizinprogress.html', quizqa=quiz_in_progress['results'], enumerate=enumerate, sorted = sorted)
+        
         else:  # If the user wants a new quiz
             quiz_ref.delete_quiz_in_progress(session['username'])  # Deletes any existing quiz
             questions_answers = quiz_ref.generate_quiz(session['username'])  # Generates new quiz
+        
         if 'username' in session.keys():
             return render_template('quizpage.html', questions=questions_answers, enumerate=enumerate, sorted = sorted)
 
@@ -141,17 +145,19 @@ def generate_report():
         date = date_time_submitted.date()
         #extracts time from date_time_submitted
         time = date_time_submitted.time()
+        
         rendered = render_template('resultpagetemplate.html', enumerate=enumerate, results=results['results'],
                                    score=results['score'], date=date, time=time,
                                    prefs=settings_ref.get_prefs(session['username'])['settings'], sorted = sorted)
         pdf = pdfkit.from_string(rendered, False, options)
+        
         response = make_response(pdf)
         response.headers['Content-Type'] = 'application/pdf'
         response.headers['Content-Disposition'] = 'inline; filename=output.pdf'
 
         return response
 
-@app.route('/logout')
+@app.route('/logout', methods=["GET"])
 def logout():
     """Logs out a user out of the session and removes the username from the 
     session object and sends them back to the login screen.
@@ -160,10 +166,11 @@ def logout():
     """
     if 'username' in session.keys():
         del session['username']
+    
     return redirect(url_for('login'))  # Sends them back to login screen
 
 
-@app.route('/settings', methods=['GET', 'POST'])
+@app.route('/settings', methods=["GET", "POST"])
 def settings():
     """Presents users with a settings screen for the purpose of report generation.
     It includes various options like font size, and content to include.
@@ -171,7 +178,7 @@ def settings():
     :return: Response object that contains settings screen.
     """
     #If it gets a post request, save the settings
-    if request.method == 'POST':
+    if request.method == "POST":
         settings_ref.set_prefs(session['username'], request.form.items())
 
     #This is a dictionary of what checkboxes and values to show in settings
@@ -191,7 +198,7 @@ def settings():
                                user=session['username'], settings_quiz_checkboxes=settings_quiz_checkboxes)
 
 
-@app.route('/reports')
+@app.route('/reports', methods=["GET"])
 def reports():
     """Show the historical quiz reports that the user has taken. It also presents
     an option to generate PDF report for each run.
@@ -201,18 +208,18 @@ def reports():
     return render_template("reports.html", reports=reports_ref.get_reports(session['username']))
 
 
-@app.route('/updateCurrentQuizState', methods=['POST'])
+@app.route('/updateCurrentQuizState', methods=["POST"])
 def updateCurrentQuizState():
     """Updates user's current quiz in progress as and when user changes 
     anything. This function updates the quiz state in the database.
     """
-    if request.method == 'POST':
+    if request.method == "POST":
             quiz_ref.update_quiz_in_progress(session['username'], request.get_json())
             return "Saved"
 
 
 
-@app.route('/getHelp', methods=['POST'])
+@app.route('/getHelp', methods=["POST"])
 def getHelp():
     """Intelligent Q&A feature: This gets called when user types a
     question in get help chat window. It uses Naive Bayes algorithm
@@ -226,25 +233,26 @@ def getHelp():
     :return: List of questions and answers corresponding to category of the 
              question that user has asked.
     """
-    if request.method == 'POST':
+    if request.method == "POST":
         qa = intelligent_qa_ref.get_help(request.get_json())
         return jsonify(qa) #Returns a JSON object
 
 
-@app.route('/quizInProgressExists', methods=['GET'])
+@app.route('/quizInProgressExists', methods=["GET"])
 def quizInProgressExists():
     """Checks if there's a current quiz in progress for the user.
     
     :return: True if the user has a quiz in progress, False otherwise
     """
     quiz = quiz_ref.get_quiz_in_progress(session['username'])
+    
     if quiz is None:
         return "False"
     else:
         return "True"
 
 
-@app.route('/about', methods=['GET'])
+@app.route('/about', methods=["GET"])
 def aboutPage():
     """Shows About Page with description about FBLA Quizzer and the developer
     
@@ -253,7 +261,7 @@ def aboutPage():
     return render_template('aboutpage.html')
 
 
-@app.route('/help', methods=['GET'])
+@app.route('/help', methods=["GET"])
 def help():
     """Shows FAQs
     
@@ -261,7 +269,7 @@ def help():
     """
     return render_template('helppage.html', faqs=intelligent_qa_ref.get_frequently_asked_questions())
 
-@app.route('/getStarted', methods=['GET'])
+@app.route('/getStarted', methods=["GET"])
 def getStarted():
     """Shows a list of instructions to get started using FBLA Quiz
 
@@ -279,6 +287,7 @@ def saveAndGetQuizResults():
     """
     if request.method == "POST":
         req = request.form
+
         if questions_answers is not None:
             results, score = check(questions_answers, list(req.items()))
             #print(results)

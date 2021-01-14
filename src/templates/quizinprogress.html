@@ -1,135 +1,136 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-  <title>FBLA quiz</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-  <script type="text/javascript" src="{{url_for('static', filename = 'validation.js')}}"></script>
-  <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
-</head>
+  <head>
+    <title>FBLA quiz</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="{{url_for('static', filename = 'validation.js')}}"></script>
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='dashboard.css') }}" />
+  </head>
 
-<body>
-  <br>
-  <div class="container-fluid w-100">
-    <form id="quizForm" class="needs-validation" method="POST">
-      <fieldset id = "toggleEnabled" enabled>
-      {% for num, question in enumerate(quizqa) %}
-      {% if question['type'] == 'dropdown' %}
-      <div class="form-group">
-        <label><b>{{num+1}}.</b> {{question['question']}}</label>
-        <select id="dropdown" class="custom-select" name="dropdown" onchange="updatequiz()" required>
-          <option value="">Choose an answer</option>
-          {% for option in question['options'] %}
-          {% if option in question['answer'] %}
-          <option value="{{option}}" selected>{{option}}</option>
-          {% else %}
-          <option value="{{option}}">{{option}}</option>
-          {% endif %}
-          {% endfor %}
-        </select>
-        <div id = "dropdown_result" style="display:none"></div>
-        <br/><br/>
-      </div>
-      {% elif question['type'] == 'fill_in_the_blank' %}
-      <div class="form-group">
-        <label><b>{{num+1}}.</b> {{question['question']}}</label>
-        <input id="fill" type="text" class="form-control" name="fill_in_the_blank" onchange="updatequiz()"
-          placeholder="Fill in the blank" value="{{question['answer']}}" required>
-          <div id = "fill_in_the_blank_result" style="display:none"></div>
-          <br/><br/>
-        </div>
-      {% elif question['type'] == 'multiple_choice' %}
-      <div class="form-group">
-        <!-- Checks if correct answer is string to check how many answers it has -->
-        {% if question['correct_answer'] is string %} 
-          <label><b>{{num+1}}.</b> {{question['question']}}</label>
-            <div id="multiple_choice_options" class="form-check">
-              {% for option in question['options'] %}
-                {% if option.strip() in question['answer'] %}
-                  <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
-                      value="{{option}}" name="multiple_choice" onchange="updatequiz()" checked>{{option}}</label><br />
-                {% else %}
-                  <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
-                      value="{{option}}" name="multiple_choice" onchange="updatequiz()">{{option}}</label><br />
-                {% endif %}
-                {% endfor %}
-            <!-- End the for loop -->
-        {% else %}
-            <label><b>{{num+1}}.</b> {{question['question']}} <i>(Select all that apply)</i></label>
-            <div id="multiple_choice_options" class="form-check">
-              {% for option in question['options'] %}
-              {% if option in question['answer'] %}
-              <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
-                value="multiple_choice" name="{{option}}" onchange="updatequiz()" checked>{{option}}</label><br />
-              {% else %}
-              <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
-                value="multiple_choice" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
-              {% endif %}
-              {% endfor %}
-          {% endif %}
-        </div>
-        <div id = "multiple_choice_result" style="display:none"></div>
-        <br/><br/>
-      </div>
-      {% elif question['type'] == 'true_false' %}
-      <label><b>{{num+1}}.</b> {{question['question']}}</label>
-      <select id="true_false" class="custom-select" name="true_false" required onchange="updatequiz()">>
-        <option value="">True or False?</option>
-        {% if question['answer'] == 'True'%}
-        <option value="True" selected>True</option>
-        <option value="False">False</option>
-        {% elif question['answer'] == 'False'%}
-        <option value="True">True</option>
-        <option value="False" selected>False</option>
-        {% else %}
-        <option value="True">True</option>
-        <option value="False">False</option>
-        {% endif %}
-      </select>
-      <div id = "true_false_result" style="display:none"></div>
-      <br/><br/>
-      {% elif question['type'] == 'matching' %}
-      <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
-      <br />
-      <div id="matching" class="container-fluid">
-        {% for prompt in sorted(question['question']['left_side']) %}
-        <div class="row">
-          <div class="col">
-            <input class="form-control" value="{{prompt}}" readonly></input>
-          </div>
-          <div class="col">
-            <select class="custom-select" name="matching_{{prompt}}" onchange="updatequiz()" required>
-              <option value="" selected>Match</option>
-              {% for option in question['question']['right_side'] %}
-              {%if 'answer' in question.keys()%}
-              {% if option == question['answer'][prompt] %}
-              <option value="{{option}}" selected>{{option}}</option>
-              {% else %}
-              <option value="{{option}}">{{option}}</option>
-              {% endif %}
-              {% else %}
-              <option value="{{option}}">{{option}}</option>
-              {% endif %}
-              {% endfor %}
-            </select>
-          </div>
-        </div>
-        {% endfor %}
-        <div id = "matching_result" style="display:none"></div>
-        <br/><br/>
-      </div>
-      {% endif %}
-      {% endfor %}
-    </fieldset>
-    <button id= "quizSubmitButton" onclick = "submitQuiz()" type="submit" class="btn btn-primary">Submit</button>
-    <button type="button" style="display:none" id="pdfreport" onclick="printPDFReport()" class="btn btn-primary button-report-glow">Print Report</button>
-  </form>
+  <body>
     <br>
-    <div style="display:none" id="quizScore" class="alert alert-success center-block" role="alert"></div>
-  </div>
-</body>
+    <div class="container-fluid w-100">
+      <form id="quizForm" class="needs-validation" method="POST">
+          <fieldset id = "toggleEnabled" enabled>
+            {% for num, question in enumerate(quizqa) %}
+              {% if question['type'] == 'dropdown' %}
+                <div class="form-group">
+                  <label><b>{{num+1}}.</b> {{question['question']}}</label>
+                  <select id="dropdown" class="custom-select" name="dropdown" onchange="updatequiz()" required>
+                  <option value="">Choose an answer</option>
+                    {% for option in question['options'] %}
+                      {% if option in question['answer'] %}
+                        <option value="{{option}}" selected>{{option}}</option>
+                      {% else %}
+                        <option value="{{option}}">{{option}}</option>
+                      {% endif %}
+                    {% endfor %}
+                  </select>
+                  <div id = "dropdown_result" style="display:none"></div>
+                  <br/><br/>
+                </div>
+              {% elif question['type'] == 'fill_in_the_blank' %}
+                <div class="form-group">
+                  <label><b>{{num+1}}.</b> {{question['question']}}</label>
+                  <input id="fill" type="text" class="form-control" name="fill_in_the_blank" onchange="updatequiz()"
+              placeholder="Fill in the blank" value="{{question['answer']}}" required>
+                  <div id = "fill_in_the_blank_result" style="display:none"></div>
+                  <br/><br/>
+                </div>
+              {% elif question['type'] == 'multiple_choice' %}
+                <div class="form-group">
+                <!-- Checks if correct answer is string to check how many answers it has -->
+                  {% if question['correct_answer'] is string %} 
+                    <label><b>{{num+1}}.</b> {{question['question']}}</label>
+                    <div id="multiple_choice_options" class="form-check">
+                        {% for option in question['options'] %}
+                            {% if option.strip() in question['answer'] %}
+                              <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
+                                  value="{{option}}" name="multiple_choice" onchange="updatequiz()" checked>{{option}}</label><br />
+                            {% else %}
+                              <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
+                                  value="{{option}}" name="multiple_choice" onchange="updatequiz()">{{option}}</label><br />
+                            {% endif %}
+                        {% endfor %}
+                        <!-- End the for loop -->
+                  {% else %} <!-- If it has multiple answers -->
+                    <label><b>{{num+1}}.</b> {{question['question']}} <i>(Select all that apply)</i></label>
+                    <div id="multiple_choice_options" class="form-check">
+                      {% for option in question['options'] %}
+                        {% if option in question['answer'] %} <!-- If user selected that option -->
+                          <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
+                          value="multiple_choice" name="{{option}}" onchange="updatequiz()" checked>{{option}}</label><br />
+                        {% else %}
+                          <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
+                          value="multiple_choice" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
+                        {% endif %}
+                      {% endfor %}
+                  {% endif %}
+                  </div>
+                  <div id = "multiple_choice_result" style="display:none"></div>
+                  <br/><br/>
+                </div>
+              {% elif question['type'] == 'true_false' %}
+                <label><b>{{num+1}}.</b> {{question['question']}}</label>
+                <select id="true_false" class="custom-select" name="true_false" required onchange="updatequiz()">>
+                  <option value="">True or False?</option>
+                  {% if question['answer'] == 'True'%}
+                    <option value="True" selected>True</option>
+                    <option value="False">False</option>
+                  {% elif question['answer'] == 'False'%}
+                    <option value="True">True</option>
+                    <option value="False" selected>False</option>
+                  {% else %}
+                    <option value="True">True</option>
+                    <option value="False">False</option>
+                  {% endif %}
+                </select>
+                <div id = "true_false_result" style="display:none"></div>
+                <br/><br/>
+              {% elif question['type'] == 'matching' %}
+                <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
+                <br/>
+                <div id="matching" class="container-fluid">
+                  {% for prompt in sorted(question['question']['left_side']) %}
+                    <div class="row">
+                      <div class="col">
+                        <input class="form-control" value="{{prompt}}" readonly></input>
+                      </div>
+                      <div class="col">
+                        <select class="custom-select" name="matching_{{prompt}}" onchange="updatequiz()" required>
+                          <option value="" selected>Match</option>
+                          {% for option in question['question']['right_side'] %}
+                            {% if 'answer' in question.keys()%}
+                              {% if option == question['answer'][prompt] %}
+                                <option value="{{option}}" selected>{{option}}</option>
+                              {% else %}
+                                <option value="{{option}}">{{option}}</option>
+                              {% endif %}
+                            {% else %}
+                              <option value="{{option}}">{{option}}</option>
+                            {% endif %}
+                          {% endfor %}
+                        </select>
+                      </div>
+                    </div>
+                  {% endfor %}
+                  <div id = "matching_result" style="display:none"></div>
+                  <br/><br/>
+                </div>
+              {% endif %}
+            {% endfor %}
+          </fieldset>
+          <button id= "quizSubmitButton" onclick = "submitQuiz()" type="submit" class="btn btn-primary">Submit</button>
+          <button type="button" style="display:none" id="pdfreport" onclick="printPDFReport()" class="btn btn-primary button-report-glow">Print Report</button>
+        </form>
+        <br>
+        <div style="display:none" id="quizScore" class="alert alert-success center-block" role="alert"></div>
+    </div>
+  </body>
+</html>

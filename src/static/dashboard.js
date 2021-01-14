@@ -1,6 +1,6 @@
-// Populates quiz tab
 var submitReportUrl = ''
 
+// Populates quiz tab
 function populateQuizStartPage() { 
     location.hash = "";
     location.reload();
@@ -194,6 +194,7 @@ function updateSettings() {
         });
 }
 
+// Submits quiz and gets results to display
 function submitQuiz() {
     $('#quizForm')
         .ajaxForm({

@@ -33,9 +33,11 @@ class IntelligentQA:
         connection = Connection.Instance()
         q_a_list_fromDatabase = connection.getPrimaryDatabase().collection('help').document(classification).collection('Q&A').stream()
         q_a_list = []
+
         for doc in q_a_list_fromDatabase:
             qa = doc.to_dict()
             q_a_list_fromDatabase.append(qa)
+
         return q_a_list
 
     def get_frequently_asked_questions(self):
@@ -46,9 +48,11 @@ class IntelligentQA:
         connection = Connection.Instance()
         help_questions_answers = connection.getPrimaryDatabase().collection('help')
         docs = help_questions_answers.stream()
+
         for doc in docs:
             category = doc.id
             questions_of_category = help_questions_answers.document(category).collection('Q&A').stream()
+            
             for question in questions_of_category:
                 questions.append({'question': question.to_dict()['question'],
                                   'answer': question.to_dict()['answer']})

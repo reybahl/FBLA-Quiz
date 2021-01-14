@@ -1,23 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 
-<head>
-    <title>Quiz Results</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-</head>
+    <head>
+        <title>Quiz Results</title>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    </head>
 
-<body>
-    <h1 class="display-2" style="text-align:center;">Results</h1>
-    {% if 'show_name' in prefs['checkbox'] %}
-    <h1 class="display-4" style="text-align: center;">{{prefs['Name'][0]}}</h1>
+    <body>
+        <h1 class="display-2" style="text-align:center;">Results</h1>
+        {% if 'show_name' in prefs['checkbox'] %}
+            <h1 class="display-4" style="text-align: center;">{{prefs['Name'][0]}}</h1>
         {% endif %}
+
         {% if 'score' in prefs['checkbox'] %}
-        <h4 class="h4" style="text-align: center;">Score : {{score}}/5</h2>
+        <h4 class="h4" style="text-align: center;">Score : {{score}}/5</h4>
             {% endif %}
             {% if 'date' in prefs['checkbox'] %}
             <h4 class="h4" style="text-align: center;">Date Submitted : {{date}}</h4>
@@ -28,51 +29,55 @@
             {% endif %}
 
             {% for num, question in enumerate(results) %}
-            {% if question['boolcorrect'] %}
-            <div font-size="{{prefs['font'][0]}}" style="color:green; font-size:{{prefs['font'][0]}}px;">
+                {% if question['boolcorrect'] %}
+                    <div font-size="{{prefs['font'][0]}}" style="color:green; font-size:{{prefs['font'][0]}}px;">
                 {% else %}
-                <div style="color:red;font-size:{{prefs['font'][0]}}px;">
-                    {% endif %}
-                    {% if 'q_number' in prefs['checkbox'] %}
-                    <p style="color:black;"><b>{{num + 1}}. {{question['question']}}</b></p>
-                    {% else %}
-                    <p style="color:black;"><b>{{question['question']}}</b></p>
-                    {% endif %}
-                    {% if question['type'] == 'matching' %}
-                    <p><i>You answered:</i></p>
-                        {% for key in sorted(question['answer']) %}
-                        <p>{{key}} --> {{question['answer'][key]}}</p>
-                        {% endfor %}
-                    {% else %}
-                    <p><i>You answered: <b>{{question['answer']}}</b></i></p>
-                    {% endif %}
+                    <div style="color:red;font-size:{{prefs['font'][0]}}px;">
+                {% endif %}
 
-                    {% if question['boolcorrect'] %}
+                {% if 'q_number' in prefs['checkbox'] %}
+                    <p style="color:black;"><b>{{num + 1}}. {{question['question']}}</b></p>
+                {% else %}
+                    <p style="color:black;"><b>{{question['question']}}</b></p>
+                {% endif %}
+
+                {% if question['type'] == 'matching' %}
+                    <p><i><b>You answered:</b></i></p>
+
+                    {% for key in sorted(question['answer']) %}
+                    <p>{{key}} --> {{question['answer'][key]}}</p>
+                    {% endfor %}
+
+                {% else %}
+                    <p><i><b>You answered:</b> {{question['answer']}}</i></p>
+                {% endif %}
+
+                {% if question['boolcorrect'] %}
                     {% if 'showcorrectanswer' in prefs['checkbox'] %}
-                    {% if question['type'] == 'matching' %}
-                    <p style="color:rgb(0, 123, 255);"><i>Correct answer:</i></p>
-                    {% for key in sorted(question['correct']) %}
-                    <p style="color:rgb(0, 123, 255);">{{key}} --> {{question['correct'][key]}}</p>
-                    {% endfor %}
-                    {% else %}
-                    <p style="color:rgb(0, 123, 255);"><i>Correct answer: <b>{{question['correct']}}</b></i></p>
+                        {% if question['type'] == 'matching' %}
+                            <p style="color:rgb(0, 123, 255);"><i><b>Correct answer:</b></i></p>
+                            {% for key in sorted(question['correct']) %}
+                                <p style="color:rgb(0, 123, 255);"><i>{{key}} --> {{question['correct'][key]}}</i></p>
+                            {% endfor %}
+                        {% else %}
+                            <p style="color:rgb(0, 123, 255);"><i><b>Correct answer:</b> {{question['correct']}}</i></p>
+                        {% endif %}
                     {% endif %}
-                    {% endif %}
-                    {% else %}
+                {% else %}
                     {% if 'showwronganswer' in prefs['checkbox'] %}
-                    {% if question['type'] == 'matching' %}
-                    <p style="color:rgb(0, 123, 255);"><i>Correct answer:</i></p>
-                    {% for key in sorted(question['correct']) %}
-                    <p style="color:rgb(0, 123, 255);">{{key}} --> {{question['correct'][key]}}</p>
-                    {% endfor %}
-                    {% else %}
-                    <p style="color:rgb(8, 127, 254);"><i>Correct answer: <b>{{question['correct']}}</b></i></p>
+                        {% if question['type'] == 'matching' %}
+                            <p style="color:rgb(0, 123, 255);"><i><b>Correct answer:</b></i></p>
+                            {% for key in sorted(question['correct']) %}
+                                <p style="color:rgb(0, 123, 255);">{{key}} --> {{question['correct'][key]}}</p>
+                            {% endfor %}
+                        {% else %}
+                            <p style="color:rgb(8, 127, 254);"><i><b>Correct answer:</b> {{question['correct']}}</i></p>
+                        {% endif %}
                     {% endif %}
-                    {% endif %}
-                    {% endif %}
+                {% endif %}
                 </div>
 
                 <br>
-                {% endfor %}
-</body>
+            {% endfor %}
+    </body>
 </html>

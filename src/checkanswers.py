@@ -70,7 +70,7 @@ def check(questions, responses):
             results.append({'type': x['type'],
                             'question': question['content'],
                             'answer': responses[x['type']][0],
-                            'correct': correct_answer.title(),
+                            'correct': correct_answer,
                             'boolcorrect': boolcorrect})
 
         elif x['type'] == 'matching':
