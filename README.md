@@ -13,28 +13,14 @@ The project API has been fully documented and uploaded to the location: https://
 #### Overview
 The FBLA Quizzer application allows users to take a randomly generated quiz from a set of more than 50 questions with 5 different question types. It also stores past history of the quiz taken by any user and users can generate reports for the same.
 #### Login Security
-The application has been written keeping security in mind and all the data is protected.
-* In order to gain access to the application, users first need to register with their email id and users do not have access to other users' data.
-  * There are 2 ways to sign-in (Using email-id/password and Google sign-in). Both are very secure ways to sign-in
+Login is safe and user information is protected.
+* In order to access the application, users can either register with their email id / password or Google Sign-int.
   * For email-id/password, the application uses firebase authentication (https://firebase.google.com/products/auth) and passwords are not visible to any user or administrator of the application. The passwords are stored in firebase internally and are encrypted.
-  * Google Sign-in is provided by Google and users can use their Google Account to sign-in and that's very secure. Users' google account password is not visible to any user or administrator of the application.
+  * Google Sign-in is provided by Google and users can use their Google Account to sign-in and that's very secure.
 #### Data storage
 Data storage is done on Cloud Firestore - A document oriented NoSQL database by Google (https://firebase.google.com/products/firestore). The application supports dynamic backup feature where data is written asynchronously to a primary database instance and a backup database instance.
 ##### Security
 Data storage is secure and protected by firestore IAM policies. No user of the application can directly modify the data and has access only to the data that belongs to the user. Only a service account or an admin can make changes to the data. Further details for the firestore IAM policies can be found here: https://cloud.google.com/firestore/docs/security/iam
-#### Application Usage
-* At login screen, users first need to register (if not already registered) and then enter their email and password. Alternatively they can also use their Google Account to sign-in. They can also reset their password in case they forget. For reset, they will need to enter the email id that was used to register and on clicking reset, an email will be sent to the user where they can click on a link and reset their password.
-* When user logs in, there is a help page that gives instructions on how to get started and navigate
-* Users can then continue to "Take a quiz tab". The application keeps track of the users' quiz progress and saves it in the database. Users may leave to another tab or even close the browser and when they come back and if they have a quiz in progress, they can resume existing quiz or take a new quiz.
-* Reports tab shows the past quiz taken by the user and also provides links to generate report for each quiz.
-   * Reports are generated in PDF file format using wkhtmltopdf library
-   * Output reports are customizable and users can set their preferences in Settings tab
-#### Futher Application Help
-##### Intelligent Q&A
-The application features an intelligent help feature which users can use at any time while they are on the portal. Its a chat feature where users can type a question and get answers instantly. Application internally uses Naive Bayes classifier using textblob to classify what category the question falls in and based upon that it returns the corrresponding help related to that category. The categories and corresponding help is stored in the database. Further details on Naive Bayes Classifier can be found here: https://textblob.readthedocs.io/en/dev/classifiers.html
-##### FAQs and Tooltip
-* In the application portal, when users hover over the UI elements, there are tooltips available that provide information about the element.
-* There's a tab for FAQs as well, which contains question and answers on most frequently asked questions.
 
 ### Technologies used
 The application uses below technologies
@@ -115,6 +101,21 @@ python src/main.py
 
 The above command will start a local flask server on port 5000. Once the server starts, we can navigate to the link: http://localhost:5000 and we will reach the login page.  
 New users can register using an email and password or alternately they can use Google sign-in and login by using their Google account.
+
+#### Application Usage
+* At login screen, users first need to register (if not already registered) and then enter their email and password. Alternatively they can also use their Google Account to sign-in. They can also reset their password in case they forget. For reset, they will need to enter the email id that was used to register and on clicking reset, an email will be sent to the user where they can click on a link and reset their password. Users also have the option to Continue as a guest if they want to try out the application first.
+* When user logs in, there is a help page that gives instructions on how to get started and navigate
+* Users can then continue to "Take a quiz tab". The application keeps track of the users' quiz progress and saves it in the database. Users may leave to another tab or even close the browser and when they come back and if they have a quiz in progress, they can resume existing quiz or take a new quiz.
+* Reports tab shows the past quiz taken by the user and also provides links to generate report for each quiz.
+   * Reports are generated in PDF file format using wkhtmltopdf library
+   * Output reports are customizable and users can set their preferences in Settings tab
+#### Futher Application Help
+##### Intelligent Q&A
+The application features an intelligent help feature which users can use at any time while they are on the portal. Its a chat feature where users can type a question and get answers instantly. Application internally uses Naive Bayes classifier using textblob to classify what category the question falls in and based upon that it returns the corrresponding help related to that category. The categories and corresponding help is stored in the database. Further details on Naive Bayes Classifier can be found here: https://textblob.readthedocs.io/en/dev/classifiers.html
+##### FAQs and Tooltip
+* In the application portal, when users hover over the UI elements, there are tooltips available that provide information about the element.
+* There's a tab for FAQs as well, which contains question and answers on most frequently asked questions.
+
 
 ## Further recommended softwares
 * IDE for debugging: Visual Studio Code (https://code.visualstudio.com/)
