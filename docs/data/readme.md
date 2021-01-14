@@ -26,6 +26,6 @@ Questions
 ![alt text](screenshots/questions.png)
 The document in the extreme right in the above image contains an actual question. "options" represents all the options that would be presented to the user. "answers" represents the correct answers.
 
-## Dataset
+## Data Snapshot
 Below is complete dataset extracted from firestore in JSON format.
 
