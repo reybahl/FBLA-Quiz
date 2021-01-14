@@ -20,7 +20,7 @@ Login is safe and user information is protected.
 #### Data storage
 **Please follow this link for details on Data: [Data Description and snapshot](docs/data/readme.md)**
 
-* Data storage is done on Cloud Firestore - A document oriented NoSQL database by Google (https://firebase.google.com/products/firestore). The application supports dynamic backup feature where data is written asynchronously to a primary database instance and a backup database instance.
+* Data storage is done on [Cloud Firestore](https://firebase.google.com/products/firestore) - A document oriented NoSQL database by Google. The application supports dynamic backup feature where data is written asynchronously to a primary database instance and a backup database instance.
 * Dataset contains more than [50 questions of 5 different types](docs/data/readme.md) (True/False, Fill in the blanks, Matching, Dropdown, Multiple Choice).
 
 ##### Security
