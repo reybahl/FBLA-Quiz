@@ -34,7 +34,7 @@ class Quiz:
         currentstate_ref_backup = connection.getBackupDatabase().collection('users').document(user).collection(
             'quizinprogress').document('currentstate')
 
-        self.question_types = ['dropdown', 'checkbox', 'fill_in_the_blank', 'true_false', 'matching']
+        self.question_types = ['dropdown', 'multiple_choice', 'fill_in_the_blank', 'true_false', 'matching']
         quiz = []
         random.shuffle(self.question_types)
         currentstate = []
@@ -51,7 +51,7 @@ class Quiz:
                 if question_type == 'dropdown':
                     currentstate_question = {'type': question_type, 'question': doc_dict['content'],
                                              'options': doc_dict['options']}
-                elif question_type == 'checkbox':
+                elif question_type == 'multiple_choice':
                     currentstate_question = {'type': question_type, 'question': doc_dict['content'],
                                              'options': doc_dict['options'], 'correct_answer': doc_dict['answer']}
                 elif question_type == 'matching':
@@ -117,8 +117,8 @@ class Quiz:
                 question['answer'] = quiz_json['fillblank_answer']
             elif (question['type'] == 'true_false'):
                 question['answer'] = quiz_json['true_false_answer']
-            elif (question['type'] == 'checkbox'):
-                question['answer'] = quiz_json['checkbox_answers']
+            elif (question['type'] == 'multiple_choice'):
+                question['answer'] = quiz_json['multiple_choice_answers']
             elif (question['type'] == 'dropdown'):
                 question['answer'] = quiz_json['dropdown_answer']
             elif (question['type'] == 'matching'):

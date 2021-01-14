@@ -10,7 +10,7 @@ def convert_to_dict(responses):
     d = {}
     matching_dict = {}
     for a, b in responses:
-        if b == 'checkbox':
+        if b == 'multiple_choice':
             d.setdefault(b, []).append(a)
         elif "matching" in a:
             matching_dict[a.replace('matching_', '')] = b
@@ -37,13 +37,13 @@ def check(questions, responses):
                             'correct': question['answer'],
                             'boolcorrect': responses[x['type']][0].lower() in lowered_correct_answer})
 
-        elif x['type'] == 'checkbox':
+        elif x['type'] == 'multiple_choice':
 
             correct = sorted(question['answer']) if type(question['answer']) == list else question['answer']
 
             correct = correct.lower() if type(correct) == str else [x.lower() for x in correct]
 
-            response = sorted(responses['checkbox']) if len(responses['checkbox']) > 1 else responses['checkbox'][0]
+            response = sorted(responses['multiple_choice']) if len(responses['multiple_choice']) > 1 else responses['multiple_choice'][0]
 
             response = response.lower() if type(response) == str else [x.lower() for x in response]
 

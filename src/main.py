@@ -172,8 +172,7 @@ def settings():
     """
     #If it gets a post request, save the settings
     if request.method == 'POST':
-        prefs = convert_to_dict(request.form.items())
-        settings_ref.set_prefs(session['username'], prefs)
+        settings_ref.set_prefs(session['username'], request.form.items())
 
     #This is a dictionary of what checkboxes and values to show in settings
     settings_quiz_checkboxes = {

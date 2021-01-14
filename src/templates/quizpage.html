@@ -41,31 +41,31 @@
           <div id = "fill_in_the_blank_result" style="display:none"></div>
           <br/>
       </div>
-      {% elif question['type'] == 'checkbox' %}
+      {% elif question['type'] == 'multiple_choice' %}
       <div class="form-group">
         {% if question['question']['answer'] is string %}
           <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
-          <div id="checkbox_options" class="form-check">
+          <div id="multiple_choice_options" class="form-check">
               {% for option in question['question']['options'] %}
               <div class="form-check">
                 <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
-                    value="{{option}}" name="checkbox" onchange="updatequiz()">{{option}}</label><br />
+                    value="{{option}}" name="multiple_choice" onchange="updatequiz()">{{option}}</label><br />
               </div>
               {% endfor %}
 
           {% else %}
           <label><b>{{num+1}}.</b> {{question['question']['content']}} <i>(Select all that apply)</i></label>
-            <div id="checkbox_options" class="form-check">
+            <div id="multiple_choice_options" class="form-check">
             {% for option in question['question']['options'] %}
 
             <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
-                value="checkbox" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
+                value="multiple_choice" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
 
             {% endfor %}
             <!-- End the for loop -->
           {% endif %}
         </div>
-        <div id = "checkbox_result" style="display:none"></div>
+        <div id = "multiple_choice_result" style="display:none"></div>
         <br/>
       </div>
       {% elif question['type'] == 'true_false' %}

@@ -76,15 +76,15 @@ function updatequiz() {
     var tfval = document.getElementById("true_false").value;
     var mcval = document.getElementById("dropdown").value;
     var fillblankval = document.getElementById("fill").value;
-    var nodes = document.getElementById('checkbox_options').childNodes;
-    var checkbox_answers = [];
+    var nodes = document.getElementById('multiple_choice_options').childNodes;
+    var multiple_choice_answers = [];
     for (var i = 0; i < nodes.length; i++) {
         {
             var labelChildNodes = nodes[i].childNodes;
             for (var j = 0; j < labelChildNodes.length; j++) {
                 if (labelChildNodes[j].nodeName == 'INPUT' && document.getElementById(labelChildNodes[j].id).checked) {
                     if (labelChildNodes[j + 1].nodeName == '#text') {
-                        checkbox_answers.push(labelChildNodes[j + 1].nodeValue);
+                        multiple_choice_answers.push(labelChildNodes[j + 1].nodeValue);
                     }
                 }
                 j = j + 1;
@@ -117,7 +117,7 @@ function updatequiz() {
         }
     }
 
-    var quiz_json = { "true_false_answer": tfval, "dropdown_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers, "matching": matching_prompts_answer }
+    var quiz_json = { "true_false_answer": tfval, "dropdown_answer": mcval, "fillblank_answer": fillblankval, "multiple_choice_answers": multiple_choice_answers, "matching": matching_prompts_answer }
     $.ajax({
         type: 'POST',
         url: 'updateCurrentQuizState',

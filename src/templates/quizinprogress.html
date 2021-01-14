@@ -43,37 +43,37 @@
           <div id = "fill_in_the_blank_result" style="display:none"></div>
           <br/><br/>
         </div>
-      {% elif question['type'] == 'checkbox' %}
+      {% elif question['type'] == 'multiple_choice' %}
       <div class="form-group">
         <!-- Checks if correct answer is string to check how many answers it has -->
         {% if question['correct_answer'] is string %} 
           <label><b>{{num+1}}.</b> {{question['question']}}</label>
-            <div id="checkbox_options" class="form-check">
+            <div id="multiple_choice_options" class="form-check">
               {% for option in question['options'] %}
                 {% if option.strip() in question['answer'] %}
                   <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
-                      value="{{option}}" name="checkbox" onchange="updatequiz()" checked>{{option}}</label><br />
+                      value="{{option}}" name="multiple_choice" onchange="updatequiz()" checked>{{option}}</label><br />
                 {% else %}
                   <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
-                      value="{{option}}" name="checkbox" onchange="updatequiz()">{{option}}</label><br />
+                      value="{{option}}" name="multiple_choice" onchange="updatequiz()">{{option}}</label><br />
                 {% endif %}
                 {% endfor %}
             <!-- End the for loop -->
         {% else %}
             <label><b>{{num+1}}.</b> {{question['question']}} <i>(Select all that apply)</i></label>
-            <div id="checkbox_options" class="form-check">
+            <div id="multiple_choice_options" class="form-check">
               {% for option in question['options'] %}
               {% if option in question['answer'] %}
               <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
-                value="checkbox" name="{{option}}" onchange="updatequiz()" checked>{{option}}</label><br />
+                value="multiple_choice" name="{{option}}" onchange="updatequiz()" checked>{{option}}</label><br />
               {% else %}
               <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
-                value="checkbox" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
+                value="multiple_choice" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
               {% endif %}
               {% endfor %}
           {% endif %}
         </div>
-        <div id = "checkbox_result" style="display:none"></div>
+        <div id = "multiple_choice_result" style="display:none"></div>
         <br/><br/>
       </div>
       {% elif question['type'] == 'true_false' %}

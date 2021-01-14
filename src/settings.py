@@ -10,7 +10,7 @@ class Settings:
     """Update user settings for the purpose of report generation.
     It includes various options like font size, and content to include.
     """
-    def set_prefs(self, user, settings):
+    def set_prefs(self, user, request):
         """Updates all the settings for a user asynchronously to both primary and backup database.
         
         :param user: email corresponding to which the settings need to be updated.
@@ -19,6 +19,8 @@ class Settings:
         :type settings: dictionary
         """
         connection = Connection.Instance()
+        settings = convert_to_dict(request)
+
         usersPrimaryRef = connection.getPrimaryDatabase().collection('users')
         usersBackupRef = connection.getBackupDatabase().collection('users')
         current_user_settings_PrimaryRef = usersPrimaryRef.document(user).collection('settings').document('settings')
@@ -52,3 +54,19 @@ class Settings:
             return doc.to_dict()
         else:
             return default_settings
+
+def convert_to_dict(request):
+    """Converts the users responses into a dictionary, 
+    the format needed for checking
+    """
+    d = {}
+    matching_dict = {}
+    for a, b in request:
+        if b == 'checkbox':
+            d.setdefault(b, []).append(a)
+        elif "matching" in a:
+            matching_dict[a.replace('matching_', '')] = b
+        else:
+            d.setdefault(a, []).append(b)
+    d['matching'] = matching_dict
+    return d
