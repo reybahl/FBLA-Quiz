@@ -24,27 +24,26 @@ Login is safe and user information is protected.
 * Dataset contains more than [50 questions of 5 different types](docs/data/readme.md) (True/False, Fill in the blanks, Matching, Dropdown, Multiple Choice).
 
 ##### Security
-Data storage is secure and protected by firestore IAM policies. No user of the application can directly modify the data and has access only to the data that belongs to the user. Only a service account or an admin can make changes to the data. Further details for the firestore IAM policies can be found here: https://cloud.google.com/firestore/docs/security/iam
+Data storage is secure and protected by firestore IAM policies. No user of the application can directly modify the data and has access only to the data that belongs to the user. Only a service account or an admin can make changes to the data. Further details can be found here: [IAM](https://cloud.google.com/firestore/docs/security/iam)
 
 ### Technologies used
 The application uses below technologies
 * Python
 * HTML/css
 * Javascript
-* Bootstrap (https://getbootstrap.com/)
-* Cloud Firestore - A document oriented NoSQL database by Google (https://firebase.google.com/products/firestore).
-* Firebase Authentication - Application uses firebase authentication and provides 2 options to login
+* [Bootstrap](https://getbootstrap.com/)
+* [Cloud Firestore](https://firebase.google.com/products/firestore) - A document oriented NoSQL database by Google.
+* [Firebase Authentication](https://firebase.google.com/products/auth) - Application uses firebase authentication and provides 2 options to login
   * By using email id and password
   * By using google sign-in with google account.
-  * *More details on firebase authentication: https://firebase.google.com/products/auth*
-* Flask - A Python web app framework. (https://palletsprojects.com/p/flask/)
-* Sphinx for code API documentation. (https://www.sphinx-doc.org/en/master/)
-* Heroku for cloud deployment. (https://www.heroku.com/)
+* [Flask](https://palletsprojects.com/p/flask/) - A Python web app framework.
+* [Sphinx](https://www.sphinx-doc.org/en/master/) for code API documentation.
+* [Heroku](https://www.heroku.com/) for cloud deployment.
 
 ## Local installation Pre-requisites
 ### In order to run the application locally, below are the pre-requisites
 #### Softwares / Framework
-* Python 3 (Python can be downloaded from here: https://www.python.org/downloads/)
+* [Python 3](https://www.python.org/downloads/)
 * Web browser (Google chrome / Microsoft Edge / Safari (Mac OS), Mozilla Firefox
 
 
@@ -122,7 +121,7 @@ The application features an intelligent help feature which users can use at any 
 
 
 ## Further recommended softwares
-* IDE for debugging: Visual Studio Code (https://code.visualstudio.com/)
-* IDE for debugging: (https://www.jetbrains.com/pycharm/)
-* Postman for sending HTTP requests (https://www.postman.com/downloads/)
+* IDE for debugging: [Visual Studio Code](https://code.visualstudio.com/)
+* IDE for debugging: [Pycharm](https://www.jetbrains.com/pycharm/)
+* [Postman](https://www.postman.com/downloads/) for sending HTTP requests 
 * Google Chrome browser for debugging Javascript
