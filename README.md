@@ -16,7 +16,7 @@ The project API has been fully documented and uploaded to the location: https://
 The FBLA Quizzer application allows users to take a randomly generated quiz from a set of more than 50 questions with 5 different question types. It also stores past history of the quiz taken by any user and users can generate reports for the same.
 #### Login Security
 Login is safe and user information is protected.
-* In order to access the application, users can either register with their email id / password or Google Sign-int.
+* In order to access the application, users can either register with their email id / password or use Google Sign-in.
   * For email-id/password, the application uses [Firebase Authentication](https://firebase.google.com/products/auth) and passwords are not visible to any user or administrator of the application. The passwords are stored in firebase internally and are encrypted.
   * Google Sign-in is provided by Google and users can use their Google Account to sign-in and that's very secure.
 #### Data storage
