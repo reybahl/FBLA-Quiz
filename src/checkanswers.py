@@ -3,10 +3,13 @@ from databaseconnect import Connection
 connection = Connection.Instance()
 
 
-def convert_to_dict(_list):
+def convert_to_dict(responses):
+    """Converts the users responses into a dictionary, 
+    the format needed for checking
+    """
     d = {}
     matching_dict = {}
-    for a, b in _list:
+    for a, b in responses:
         if b == 'checkbox':
             d.setdefault(b, []).append(a)
         elif "matching" in a:
@@ -18,6 +21,8 @@ def convert_to_dict(_list):
 
 
 def check(questions, responses):
+    """Checks the user's responses based on the correct question and answer
+    """
     responses = convert_to_dict(responses)
     # print(responses)
     results = []
@@ -34,9 +39,13 @@ def check(questions, responses):
 
         elif x['type'] == 'checkbox':
 
-            correct = sorted(question['answer'])
+            correct = sorted(question['answer']) if type(question['answer']) == list else question['answer']
 
-            response = sorted(responses['checkbox'])
+            correct = correct.lower() if type(correct) == str else [x.lower() for x in correct]
+
+            response = sorted(responses['checkbox']) if len(responses['checkbox']) > 1 else responses['checkbox'][0]
+
+            response = response.lower() if type(response) == str else [x.lower() for x in response]
 
             results.append({'type': x['type'],
                             'question': question['content'],
@@ -44,7 +53,7 @@ def check(questions, responses):
                             'correct': correct,
                             'boolcorrect': response == correct})
 
-        elif x['type'] == 'multiple_choice' or x['type'] == 'true_false':
+        elif x['type'] == 'dropdown' or x['type'] == 'true_false':
             if type(question['answer']) == 'list':
                 correct_fixed = [choice.lower() for choice in question['answer']]
                 boolcorrect = responses[x['type']][0].lower() in correct_fixed

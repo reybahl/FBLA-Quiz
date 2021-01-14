@@ -19,13 +19,12 @@ class Settings:
         :type settings: dictionary
         """
         connection = Connection.Instance()
-        users_ref = connection.getPrimaryDatabase().collection('users')
-        users_ref2 = connection.getBackupDatabase().collection('users')
-        current_user_settings_ref = users_ref.document(user).collection('settings').document('settings')
-        current_user_settings_ref2 = users_ref2.document(user).collection('settings').document('settings')
+        usersPrimaryRef = connection.getPrimaryDatabase().collection('users')
+        usersBackupRef = connection.getBackupDatabase().collection('users')
+        current_user_settings_PrimaryRef = usersPrimaryRef.document(user).collection('settings').document('settings')
+        current_user_settings_BackupRef = usersBackupRef.document(user).collection('settings').document('settings')
 
-        asyncio.run(
-            connection.update_both_databases(db1ref=current_user_settings_ref, db2ref=current_user_settings_ref2,
+        asyncio.run(connection.update_both_databases(primaryDB=current_user_settings_PrimaryRef, backupDB=current_user_settings_BackupRef,
                                              ref_type='doc', task='write', data={'settings': settings}))
 
     def get_prefs(self, user):
@@ -46,9 +45,9 @@ class Settings:
         
         #By default, reports will have 18 px font, and will include the correct answer for incorrectly answered questions, the score, and question numbers
         }
-        users_ref = connection.getPrimaryDatabase().collection('users')
-        current_user_settings_ref = users_ref.document(user).collection('settings').document('settings')
-        doc = current_user_settings_ref.get()
+        usersPrimaryRef = connection.getPrimaryDatabase().collection('users')
+        current_user_settings_PrimaryRef = usersPrimaryRef.document(user).collection('settings').document('settings')
+        doc = current_user_settings_PrimaryRef.get()
         if doc.exists:
             return doc.to_dict()
         else:

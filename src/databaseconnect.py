@@ -80,9 +80,9 @@ class Connection:
             if ref_type == 'doc':
                 ref.delete()
 
-    async def update_both_databases(self, db1ref, db2ref, ref_type, task, data):
+    async def update_both_databases(self, primaryDB, backupDB, ref_type, task, data):
         # Updates both databases
         """update_both_databases asynchronously updates primary and backup databases.
         """
-        await asyncio.gather(self.update_dbref_1(db1ref, ref_type, task, data),
-                             self.update_dbref_2(db2ref, ref_type, task, data))
+        await asyncio.gather(self.update_dbref_1(primaryDB, ref_type, task, data),
+                             self.update_dbref_2(backupDB, ref_type, task, data))

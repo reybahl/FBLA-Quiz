@@ -20,17 +20,17 @@
       <fieldset id = "toggleEnabled" enabled>
       <!-- <form class="needs-validation" action="/quiz" method="POST"> -->
         {% for num, question in enumerate(questions) %}
-      {% if question['type'] == 'multiple_choice' %}
+      {% if question['type'] == 'dropdown' %}
       <div class="form-group">
         <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
-        <select select id="multiple_choice" class="custom-select" name="multiple_choice" required
+        <select select id="dropdown" class="custom-select" name="dropdown" required
           onchange="updatequiz()">
           <option value="">Choose an answer</option>
           {% for i, option in enumerate(question['question']['options']) %}
           <option value="{{option}}">{{option}}</option>
           {% endfor %}
         </select>
-        <div id = "multiple_choice_result" style="display:none"></div>
+        <div id = "dropdown_result" style="display:none"></div>
         <br/>
       </div>
       {% elif question['type'] == 'fill_in_the_blank' %}
@@ -43,14 +43,14 @@
       </div>
       {% elif question['type'] == 'checkbox' %}
       <div class="form-group">
-        {% if type(question['question']['answer']) == 'str' or len(question['question']['answer']) == 1 %}
+        {% if question['question']['answer'] is string %}
           <label><b>{{num+1}}.</b> {{question['question']['content']}}</label>
           <div id="checkbox_options" class="form-check">
               {% for option in question['question']['options'] %}
-
+              <div class="form-check">
                 <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
-                    value="checkbox" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
-
+                    value="{{option}}" name="checkbox" onchange="updatequiz()">{{option}}</label><br />
+              </div>
               {% endfor %}
 
           {% else %}

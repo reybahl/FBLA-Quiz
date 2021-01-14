@@ -19,10 +19,10 @@
     <form id="quizForm" class="needs-validation" method="POST">
       <fieldset id = "toggleEnabled" enabled>
       {% for num, question in enumerate(quizqa) %}
-      {% if question['type'] == 'multiple_choice' %}
+      {% if question['type'] == 'dropdown' %}
       <div class="form-group">
         <label><b>{{num+1}}.</b> {{question['question']}}</label>
-        <select id="multiple_choice" class="custom-select" name="multiple_choice" onchange="updatequiz()" required>
+        <select id="dropdown" class="custom-select" name="dropdown" onchange="updatequiz()" required>
           <option value="">Choose an answer</option>
           {% for option in question['options'] %}
           {% if option in question['answer'] %}
@@ -32,7 +32,7 @@
           {% endif %}
           {% endfor %}
         </select>
-        <div id = "multiple_choice_result" style="display:none"></div>
+        <div id = "dropdown_result" style="display:none"></div>
         <br/><br/>
       </div>
       {% elif question['type'] == 'fill_in_the_blank' %}
@@ -45,18 +45,19 @@
         </div>
       {% elif question['type'] == 'checkbox' %}
       <div class="form-group">
-        {% if type(question['question']['answer']) == 'str' or len(question['question']['answer']) == 1 %}
+        <!-- Checks if correct answer is string to check how many answers it has -->
+        {% if question['correct_answer'] is string %} 
           <label><b>{{num+1}}.</b> {{question['question']}}</label>
             <div id="checkbox_options" class="form-check">
               {% for option in question['options'] %}
-              {% if option in question['answer'] %}
-              <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
-                  value="checkbox" name="{{option}}" onchange="updatequiz()" checked>{{option}}</label><br />
-              {% else %}
-              <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
-                  value="checkbox" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
-              {% endif %}
-              {% endfor %}
+                {% if option.strip() in question['answer'] %}
+                  <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
+                      value="{{option}}" name="checkbox" onchange="updatequiz()" checked>{{option}}</label><br />
+                {% else %}
+                  <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="radio"
+                      value="{{option}}" name="checkbox" onchange="updatequiz()">{{option}}</label><br />
+                {% endif %}
+                {% endfor %}
             <!-- End the for loop -->
         {% else %}
             <label><b>{{num+1}}.</b> {{question['question']}} <i>(Select all that apply)</i></label>
@@ -64,10 +65,10 @@
               {% for option in question['options'] %}
               {% if option in question['answer'] %}
               <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
-                  value="checkbox" name="{{option}}" onchange="updatequiz()" checked>{{option}}</label><br />
+                value="checkbox" name="{{option}}" onchange="updatequiz()" checked>{{option}}</label><br />
               {% else %}
               <label class="form-check-label"><input id="{{option}}" class="form-check-input" type="checkbox"
-                  value="checkbox" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
+                value="checkbox" name="{{option}}" onchange="updatequiz()">{{option}}</label><br />
               {% endif %}
               {% endfor %}
           {% endif %}

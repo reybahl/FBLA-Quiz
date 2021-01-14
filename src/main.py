@@ -68,19 +68,18 @@ def dashboard():
 
     :return: Response object which contains dashboard html with quiz tab selected.
     """
-    # Gets a quiz in progress
-    quiz = quiz_ref.get_quiz_in_progress(session['username'])
-    # Checks if a quiz in progress exists
-    quiz_in_progress = True if quiz is not None else False
-    # Shows dashboard and specifies if the user has a quiz in progress
-    return render_template('dashboard.html', email=session['username'],
-                            quiz_in_progress=quiz_in_progress)
-
     # If the user comes directly to the dashboard without the login page, it checks the session to check if the user is signed in
     if 'username' in session.keys():
+        # Gets a quiz in progress
+
         quiz = quiz_ref.get_quiz_in_progress(session['username'])
+        # Checks if a quiz in progress exists
         quiz_in_progress = True if quiz is not None else False
-        return render_template('dashboard.html', email=session['username'], quiz_in_progress=quiz_in_progress)
+        # Shows dashboard and specifies if the user has a quiz in progress
+        return render_template('dashboard.html', email=session['username'],
+                                quiz_in_progress=quiz_in_progress)
+
+    
     else:  # If the user is not signed in, then redirects them back to the sign in page
         return redirect(url_for('login'))
 
@@ -96,14 +95,13 @@ def quiz():
     global questions_answers
 
     if request.method != "POST":
-        generate_quiz_in_progress = request.args.get(
-            'quiz_in_progress')  # Gets url argument specifying if the user wants a quiz in progress or wants to start a new one.
-        if generate_quiz_in_progress == 'true':
-            quizqa = quiz_ref.get_quiz_in_progress(session['username'])
-            if quizqa is not None:
+        get_quiz_in_progress = request.args.get('quiz_in_progress')  # Gets url argument specifying if the user wants a quiz in progress or wants to start a new one.
+        if get_quiz_in_progress == 'true':
+            quiz_in_progress = quiz_ref.get_quiz_in_progress(session['username'])
+            if quiz_in_progress is not None:
                 # get correct answers of the quiz progress from the database
-                questions_answers = quiz_ref.get_correct_answers(quizqa)
-                return render_template('quizinprogress.html', quizqa=quizqa['results'], enumerate=enumerate, type = type, len = len)
+                questions_answers = quiz_ref.get_correct_answers(quiz_in_progress)
+                return render_template('quizinprogress.html', quizqa=quiz_in_progress['results'], enumerate=enumerate, type = type, len = len)
         else:  # If the user wants a new quiz
             quiz_ref.delete_quiz_in_progress(session['username'])  # Deletes any existing quiz
             questions_answers = quiz_ref.generate_quiz(session['username'])  # Generates new quiz
@@ -120,6 +118,7 @@ def generate_report():
     
     :return: Response object that contains a generated report in PDF file format.
     """
+    #Gets date_time URL argument
     date_time = request.args['datetime']
     if request.method == "GET":
         results = reports_ref.get_report_for_date(session['username'], date_time)
@@ -134,10 +133,14 @@ def generate_report():
             'margin-left': '1in',
             'encoding': "UTF-8",
         }
-        user_date_time = results['datetimesubmitted']
-        user_date_time = datetime.strptime(user_date_time, '%b %d %Y %I:%M%p')
-        date = user_date_time.date()
-        time = user_date_time.time()
+
+        date_time_submitted = results['datetimesubmitted']
+        #Creates a DateTime object in the correct format
+        date_time_submitted = datetime.strptime(date_time_submitted, '%b %d %Y %I:%M%p')
+        #extracts date from date_time_submitted
+        date = date_time_submitted.date()
+        #extracts time from date_time_submitted
+        time = date_time_submitted.time()
         rendered = render_template('resultpagetemplate.html', enumerate=enumerate, results=results['results'],
                                    score=results['score'], date=date, time=time,
                                    prefs=settings_ref.get_prefs(session['username'])['settings'])
@@ -151,7 +154,7 @@ def generate_report():
 @app.route('/logout')
 def logout():
     """Logs out a user out of the session and removes the username from the 
-    session object and sens them back to the login screen.
+    session object and sends them back to the login screen.
     
     :return: Response object that contains main login screen.
     """
@@ -167,13 +170,13 @@ def settings():
     
     :return: Response object that contains settings screen.
     """
+    #If it gets a post request, save the settings
     if request.method == 'POST':
         prefs = convert_to_dict(request.form.items())
         settings_ref.set_prefs(session['username'], prefs)
-        print(prefs)
-        # return redirect('/dashboard#settings')
 
-    include_in_quiz_checkbox = {
+    #This is a dictionary of what checkboxes and values to show in settings
+    settings_quiz_checkboxes = {
         'q_number': 'Question numbers',
         'show_name': 'Your Name',
         'date': 'Date Submitted',
@@ -182,14 +185,16 @@ def settings():
         'showcorrectanswer': 'Correct Answers',
         'showwronganswer': 'Wrong Answers'
     }
+
+
     if 'username' in session.keys():
         return render_template('settings.html', prefs=settings_ref.get_prefs(session['username'])['settings'],
-                               user=session['username'], include_in_quiz_checkbox=include_in_quiz_checkbox)
+                               user=session['username'], settings_quiz_checkboxes=settings_quiz_checkboxes)
 
 
 @app.route('/reports')
 def reports():
-    """Show the historical quiz that the user has taken. It also presents
+    """Show the historical quiz reports that the user has taken. It also presents
     an option to generate PDF report for each run.
     
     :return: Response object that contains historical reports screen.
@@ -202,11 +207,10 @@ def updateCurrentQuizState():
     """Updates user's current quiz in progress as and when user changes 
     anything. This function updates the quiz state in the database.
     """
-    try:
-        if request.method == 'POST':
+    if request.method == 'POST':
             quiz_ref.update_quiz_in_progress(session['username'], request.get_json())
-    except TypeError:
-        pass
+            return "Saved"
+
 
 
 @app.route('/getHelp', methods=['POST'])
@@ -225,7 +229,7 @@ def getHelp():
     """
     if request.method == 'POST':
         qa = intelligent_qa_ref.get_help(request.get_json())
-        return jsonify(qa)
+        return jsonify(qa) #Returns a JSON object
 
 
 @app.route('/quizInProgressExists', methods=['GET'])
@@ -243,7 +247,7 @@ def quizInProgressExists():
 
 @app.route('/about', methods=['GET'])
 def aboutPage():
-    """Shows About Page with the links to this documentation.
+    """Shows About Page with description about FBLA Quizzer and the developer
     
     :return: Response object that contains about page.
     """
@@ -269,6 +273,11 @@ def getStarted():
 
 @app.route('/saveAndGetQuizResults', methods=["POST"])
 def saveAndGetQuizResults():
+    """This function checks the quiz, saves the results, and sends back the results, 
+    which include the questions, answers, and the user's responses.
+
+    :return: JSON object which contains url for PDF report, score, and results
+    """
     if request.method == "POST":
         req = request.form
         if questions_answers is not None:
@@ -289,4 +298,4 @@ quiz_ref = Quiz()
 settings_ref = Settings()
 reports_ref = Reports()
 intelligent_qa_ref = IntelligentQA()
-app.run('localhost')
+app.run('localhost') #Runs the application on localhost

@@ -31,12 +31,12 @@ class IntelligentQA:
         """
         classification = self.intelligentHelpNaivebayesclassifier.classify(question_json['question'])
         connection = Connection.Instance()
-        qas = connection.getPrimaryDatabase().collection('help').document(classification).collection('Q&A').stream()
-        qaarr = []
-        for doc in qas:
+        q_a_list_fromDatabase = connection.getPrimaryDatabase().collection('help').document(classification).collection('Q&A').stream()
+        q_a_list = []
+        for doc in q_a_list_fromDatabase:
             qa = doc.to_dict()
-            qaarr.append(qa)
-        return qaarr
+            q_a_list_fromDatabase.append(qa)
+        return q_a_list
 
     def get_frequently_asked_questions(self):
         """Get the list of all the faqs from the database.
@@ -44,11 +44,11 @@ class IntelligentQA:
         """
         questions = []
         connection = Connection.Instance()
-        qa = connection.getPrimaryDatabase().collection('help')
-        docs = qa.stream()
+        help_questions_answers = connection.getPrimaryDatabase().collection('help')
+        docs = help_questions_answers.stream()
         for doc in docs:
             category = doc.id
-            questions_of_category = qa.document(category).collection('Q&A').stream()
+            questions_of_category = help_questions_answers.document(category).collection('Q&A').stream()
             for question in questions_of_category:
                 questions.append({'question': question.to_dict()['question'],
                                   'answer': question.to_dict()['answer']})

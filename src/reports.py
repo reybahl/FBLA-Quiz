@@ -20,16 +20,19 @@ class Reports:
         :return: A list of all the quiz results to be used for reporting purpose.
         """
         connection = Connection.Instance()
-        users_ref = connection.getPrimaryDatabase().collection('users')
-        docs = users_ref.document(user).collection('quiz_results').stream()
+        users_PrimaryRef = connection.getPrimaryDatabase().collection('users')
+
+        user_quizResults_docs = users_PrimaryRef.document(user).collection('quiz_results').stream()
         reports = []
-        for doc in docs:
+        
+        for doc in user_quizResults_docs:
             reports.append({
+                'datetimeVal': datetime.datetime.strptime(doc.id, '%b %d %Y %I:%M%p'),
                 'datetime': doc.id,
                 'score': doc.to_dict()['score']
             })
         
-        reports = sorted(reports, key = lambda i: i['datetime'],reverse=True)
+        reports = sorted(reports, key = lambda i: i['datetimeVal'],reverse=True) #Sorts the reports based upon date and time submitted
         return reports
 
     def get_report_for_date(self, user, datetime):
@@ -43,6 +46,6 @@ class Reports:
         :return: A list of all the quiz results to be used for reporting purpose.
         """
         connection = Connection.Instance()
-        users_ref = connection.getPrimaryDatabase().collection('users')
-        doc = users_ref.document(user).collection('quiz_results').document(datetime).get()
+        users_PrimaryRef = connection.getPrimaryDatabase().collection('users')
+        doc = users_PrimaryRef.document(user).collection('quiz_results').document(datetime).get()
         return doc.to_dict()

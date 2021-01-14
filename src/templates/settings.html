@@ -37,7 +37,7 @@
               Check below what to include in quiz reports.
             </label>
             {% if 'checkbox' in prefs.keys() %}
-            {% for key, value in include_in_quiz_checkbox.items() %}
+            {% for key, value in settings_quiz_checkboxes.items() %}
             {% if key == 'showcorrectanswer' %}
             <br />
             <label>

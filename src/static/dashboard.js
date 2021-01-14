@@ -74,7 +74,7 @@ function populateGetStartedPage() {
 // Updates quiz in progress
 function updatequiz() {
     var tfval = document.getElementById("true_false").value;
-    var mcval = document.getElementById("multiple_choice").value;
+    var mcval = document.getElementById("dropdown").value;
     var fillblankval = document.getElementById("fill").value;
     var nodes = document.getElementById('checkbox_options').childNodes;
     var checkbox_answers = [];
@@ -117,7 +117,7 @@ function updatequiz() {
         }
     }
 
-    var quiz_json = { "true_false_answer": tfval, "multiple_choice_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers, "matching": matching_prompts_answer }
+    var quiz_json = { "true_false_answer": tfval, "dropdown_answer": mcval, "fillblank_answer": fillblankval, "checkbox_answers": checkbox_answers, "matching": matching_prompts_answer }
     $.ajax({
         type: 'POST',
         url: 'updateCurrentQuizState',

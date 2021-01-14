@@ -38,12 +38,14 @@ class IntelligentHelpNaiveBayesClassifier:
         """
         connection = Connection.Instance()
         data = connection.getPrimaryDatabase().collection('intelligent_help')
+
         docs = data.stream()
         training_data = []
         for doc in docs:
             training_data.append((doc.to_dict()['text'], doc.to_dict()['label']))
-        cl = NaiveBayesClassifier(training_data)
-        text_tokens = word_tokenize(question)
-        tokens_without_sw = [word for word in text_tokens if not word in stopwords.words()]
-        filtered_question = (" ").join(tokens_without_sw)
-        return cl.classify(filtered_question)
+        
+        classifier = NaiveBayesClassifier(training_data)
+        text_tokens = word_tokenize(question) #Tokenizes the question
+        tokens_without_stopwords = [word for word in text_tokens if not word in stopwords.words()] #Filters stopwords(very common words) from the question
+        filtered_question = (" ").join(tokens_without_stopwords)
+        return classifier.classify(filtered_question)
