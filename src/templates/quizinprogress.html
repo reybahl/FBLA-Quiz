@@ -99,8 +99,8 @@
                 <div id="matching" class="container-fluid">
                   {% for prompt in sorted(question['question']['left_side']) %}
                     <div class="row">
-                      <div class="col">
-                        <input class="form-control" value="{{prompt}}" readonly></input>
+                      <div class="col" style="overflow: auto;">
+                        <label style="float:left;border-style: solid;border-width: thin;padding: 8px;" readonly>{{prompt}}</label>
                       </div>
                       <div class="col">
                         <select class="custom-select" name="matching_{{prompt}}" onchange="updatequiz()" required>
@@ -119,6 +119,7 @@
                         </select>
                       </div>
                     </div>
+                    <br/>
                   {% endfor %}
                   <div id = "matching_result" style="display:none"></div>
                   <br/><br/>

@@ -36,7 +36,7 @@ class IntelligentQA:
 
         for doc in q_a_list_fromDatabase:
             qa = doc.to_dict()
-            q_a_list_fromDatabase.append(qa)
+            q_a_list.append(qa)
 
         return q_a_list
 

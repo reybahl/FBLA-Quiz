@@ -103,8 +103,8 @@ function updatequiz() {
                     var bothsideNodes = labelChildNodes[j].childNodes;
                     for (var k = 0; k < bothsideNodes.length; k++) {
                         if (bothsideNodes[k].nodeName != '#text') {
-                            if (bothsideNodes[k].nodeName == 'INPUT') {
-                                prompt = bothsideNodes[k].value;
+                            if (bothsideNodes[k].nodeName == 'LABEL') {
+                                prompt = bothsideNodes[k].innerHTML;
                             }
                             if (bothsideNodes[k].nodeName == 'SELECT') {
                                 matching_prompts_answer[prompt] = bothsideNodes[k].value;
