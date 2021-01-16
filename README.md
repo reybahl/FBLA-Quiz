@@ -46,7 +46,7 @@ The application uses below technologies
 ### In order to run the application locally, below are the pre-requisites
 #### Softwares / Framework
 * [Python 3](https://www.python.org/downloads/)
-* Web browser (Google chrome / Microsoft Edge / Safari (Mac OS), Mozilla Firefox
+* Web browser (Google chrome / Microsoft Edge / Safari (Mac OS), Mozilla Firefox)
 
 
 #### Python packages. (Use pip install to install the packages. Below are the commands)
@@ -116,7 +116,7 @@ New users can register using an email and password or alternately they can use G
    * Output reports are customizable and users can set their preferences in Settings tab
 #### Futher Application Help
 ##### Intelligent Q&A
-The application features an intelligent help feature which users can use at any time while they are on the portal. Its a chat feature where users can type a question and get answers instantly. Application internally uses [Naive Bayes classifier using textblob](https://textblob.readthedocs.io/en/dev/classifiers.html) to classify what category the question falls in and based upon that it returns the corrresponding help related to that category. The categories and corresponding help is stored in the database. Further details on Naive 
+The application features an intelligent help feature which users can use at any time while they are on the portal. Its a chat feature where users can type a question and get answers instantly. Application internally uses [Naive Bayes classifier using textblob](https://textblob.readthedocs.io/en/dev/classifiers.html) to classify what category the question falls in and based upon that it returns the corrresponding help related to that category. The categories and corresponding help is stored in the database.  
 ##### FAQs and Tooltip
 * In the application portal, when users hover over the UI elements, there are tooltips available that provide information about the element.
 * There's a tab for FAQs as well, which contains question and answers on most frequently asked questions.
