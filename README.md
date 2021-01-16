@@ -113,7 +113,7 @@ New users can register using an email and password or alternately they can use G
 * Users can then continue to "Take a quiz tab". The application keeps track of the users' quiz progress and saves it in the database. Users may leave to another tab or even close the browser and when they come back and if they have a quiz in progress, they can resume existing quiz or take a new quiz.
 * Reports tab shows the past quiz taken by the user and also provides links to generate report for each quiz.
    * Reports are generated in PDF file format using wkhtmltopdf library
-   * Output reports are customizable and users can set their preferences in Settings tab
+   * Output reports are customizable and users can set their preferences in Settings tab. The settings get stored in the database corresponding to the user.
 #### Futher Application Help
 ##### Intelligent Q&A
 The application features an intelligent help feature which users can use at any time while they are on the portal. Its a chat feature where users can type a question and get answers instantly. Application internally uses [Naive Bayes classifier using textblob](https://textblob.readthedocs.io/en/dev/classifiers.html) to classify what category the question falls in and based upon that it returns the corrresponding help related to that category. The categories and corresponding help is stored in the database.  
