@@ -40,13 +40,18 @@
 
 
 <div class="viewcode-block" id="IntelligentQA"><a class="viewcode-back" href="../index.html#intelligentqa.IntelligentQA">[docs]</a><span class="k">class</span> <span class="nc">IntelligentQA</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Contains all the functionality related to quiz. </span>
+    <span class="sd">&quot;&quot;&quot;Contains all the functionality related to intelligent help. </span>
 <span class="sd">    Contains dynamic backup feature: It writes data to firestore database as the backend</span>
 <span class="sd">    and stores data in primary as well as backup database instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initializes object and creates a Naive Bayes Classifier object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intelligentHelpNaivebayesclassifier</span> <span class="o">=</span> <span class="n">IntelligentHelpNaiveBayesClassifier</span><span class="p">()</span>
+
 <div class="viewcode-block" id="IntelligentQA.get_help"><a class="viewcode-back" href="../index.html#intelligentqa.IntelligentQA.get_help">[docs]</a>    <span class="k">def</span> <span class="nf">get_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question_json</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Intelligent Q&amp;A feature: This gets called when user types a</span>
-<span class="sd">        question in get help chat window. It uses Naives Bayes algorithm</span>
+<span class="sd">        question in get help chat window. It uses Naive Bayes algorithm</span>
 <span class="sd">        to classify what category the question falls in and based upon that</span>
 <span class="sd">        it returns the corrresponding help related to that category. The</span>
 <span class="sd">        categories and corresponding help is stored in the database.</span>
@@ -57,15 +62,16 @@
 <span class="sd">        :return: List of questions and answers corresponding to category of the </span>
 <span class="sd">                question that user has asked.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">intelligentHelpNaivebayesclassifier</span> <span class="o">=</span> <span class="n">IntelligentHelpNaiveBayesClassifier</span><span class="p">()</span>
-        <span class="n">classification</span> <span class="o">=</span> <span class="n">intelligentHelpNaivebayesclassifier</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">question_json</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">])</span>
+        <span class="n">classification</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intelligentHelpNaivebayesclassifier</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">question_json</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">])</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span>
-        <span class="n">qas</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;help&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">classification</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;Q&amp;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
-        <span class="n">qaarr</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">qas</span><span class="p">:</span>
+        <span class="n">q_a_list_fromDatabase</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;help&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">classification</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;Q&amp;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+        <span class="n">q_a_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">q_a_list_fromDatabase</span><span class="p">:</span>
             <span class="n">qa</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
-            <span class="n">qaarr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qa</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">qaarr</span></div>
+            <span class="n">q_a_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qa</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">q_a_list</span></div>
 
 <div class="viewcode-block" id="IntelligentQA.get_frequently_asked_questions"><a class="viewcode-back" href="../index.html#intelligentqa.IntelligentQA.get_frequently_asked_questions">[docs]</a>    <span class="k">def</span> <span class="nf">get_frequently_asked_questions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Get the list of all the faqs from the database.</span>
@@ -73,11 +79,13 @@
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">questions</span> <span class="o">=</span> <span class="p">[]</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span>
-        <span class="n">qa</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;help&#39;</span><span class="p">)</span>
-        <span class="n">docs</span> <span class="o">=</span> <span class="n">qa</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+        <span class="n">help_questions_answers</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;help&#39;</span><span class="p">)</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="n">help_questions_answers</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+
         <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
             <span class="n">category</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">id</span>
-            <span class="n">questions_of_category</span> <span class="o">=</span> <span class="n">qa</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;Q&amp;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+            <span class="n">questions_of_category</span> <span class="o">=</span> <span class="n">help_questions_answers</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;Q&amp;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+            
             <span class="k">for</span> <span class="n">question</span> <span class="ow">in</span> <span class="n">questions_of_category</span><span class="p">:</span>
                 <span class="n">questions</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;question&#39;</span><span class="p">:</span> <span class="n">question</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;question&#39;</span><span class="p">],</span>
                                   <span class="s1">&#39;answer&#39;</span><span class="p">:</span> <span class="n">question</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;answer&#39;</span><span class="p">]})</span>

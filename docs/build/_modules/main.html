@@ -50,7 +50,7 @@
 <span class="n">app</span><span class="o">.</span><span class="n">secret_key</span> <span class="o">=</span> <span class="s2">&quot;FBLA&quot;</span>
 
 
-<div class="viewcode-block" id="start"><a class="viewcode-back" href="../index.html#main.start">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="start"><a class="viewcode-back" href="../index.html#main.start">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">start</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Main route -- Invoked when user visits domain</span>
 <span class="sd">    When this function is invoked, the user is redirected to a login</span>
@@ -76,6 +76,16 @@
 <span class="sd">    :return: Response object as a result of redirecting to the dashboard if </span>
 <span class="sd">             user is already logged in, other response object for loginpagefirebase.html</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Checks if it got a post request</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="c1"># Gets form data</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span>
+        <span class="c1"># Gets email from the form</span>
+        <span class="n">user</span> <span class="o">=</span> <span class="n">req</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
+        <span class="c1"># Creates a session</span>
+        <span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span>
+        <span class="k">return</span> <span class="s2">&quot;Logged in&quot;</span>
+        
     <span class="k">if</span> <span class="s1">&#39;username&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;dashboard&#39;</span><span class="p">))</span>
 
@@ -91,27 +101,18 @@
 
 <span class="sd">    :return: Response object which contains dashboard html with quiz tab selected.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="c1"># Checks if it got a post request</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
-        <span class="c1"># Gets form data</span>
-        <span class="n">req</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span>
-        <span class="c1"># Gets email from the form</span>
-        <span class="n">user</span> <span class="o">=</span> <span class="n">req</span><span class="p">[</span><span class="s1">&#39;email&#39;</span><span class="p">]</span>
-        <span class="c1"># Creates a session</span>
-        <span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">user</span>
+    <span class="c1"># If the user comes directly to the dashboard without the login page, it checks the session to check if the user is signed in</span>
+    <span class="k">if</span> <span class="s1">&#39;username&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="c1"># Gets a quiz in progress</span>
+
         <span class="n">quiz</span> <span class="o">=</span> <span class="n">quiz_ref</span><span class="o">.</span><span class="n">get_quiz_in_progress</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
         <span class="c1"># Checks if a quiz in progress exists</span>
         <span class="n">quiz_in_progress</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">quiz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
         <span class="c1"># Shows dashboard and specifies if the user has a quiz in progress</span>
         <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;dashboard.html&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span>
-                               <span class="n">quiz_in_progress</span><span class="o">=</span><span class="n">quiz_in_progress</span><span class="p">)</span>
+                                <span class="n">quiz_in_progress</span><span class="o">=</span><span class="n">quiz_in_progress</span><span class="p">)</span>
 
-    <span class="c1"># If the user comes directly to the dashboard without the login page, it checks the session to check if the user is signed in</span>
-    <span class="k">if</span> <span class="s1">&#39;username&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-        <span class="n">quiz</span> <span class="o">=</span> <span class="n">quiz_ref</span><span class="o">.</span><span class="n">get_quiz_in_progress</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
-        <span class="n">quiz_in_progress</span> <span class="o">=</span> <span class="kc">True</span> <span class="k">if</span> <span class="n">quiz</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="kc">False</span>
-        <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;dashboard.html&#39;</span><span class="p">,</span> <span class="n">email</span><span class="o">=</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">quiz_in_progress</span><span class="o">=</span><span class="n">quiz_in_progress</span><span class="p">)</span>
+    
     <span class="k">else</span><span class="p">:</span>  <span class="c1"># If the user is not signed in, then redirects them back to the sign in page</span>
         <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">))</span></div>
 
@@ -127,35 +128,25 @@
     <span class="k">global</span> <span class="n">questions_answers</span>
 
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">!=</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
-        <span class="n">generate_quiz_in_progress</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>
-            <span class="s1">&#39;quiz_in_progress&#39;</span><span class="p">)</span>  <span class="c1"># Gets url argument specifying if the user wants a quiz in progress or wants to start a new one.</span>
-        <span class="k">if</span> <span class="n">generate_quiz_in_progress</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span><span class="p">:</span>
-            <span class="n">quizqa</span> <span class="o">=</span> <span class="n">quiz_ref</span><span class="o">.</span><span class="n">get_quiz_in_progress</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
-            <span class="k">if</span> <span class="n">quizqa</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">get_quiz_in_progress</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s1">&#39;quiz_in_progress&#39;</span><span class="p">)</span>  <span class="c1"># Gets url argument specifying if the user wants a quiz in progress or wants to start a new one.</span>
+        
+        <span class="k">if</span> <span class="n">get_quiz_in_progress</span> <span class="o">==</span> <span class="s1">&#39;true&#39;</span><span class="p">:</span>
+            <span class="n">quiz_in_progress</span> <span class="o">=</span> <span class="n">quiz_ref</span><span class="o">.</span><span class="n">get_quiz_in_progress</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
+        
+            <span class="k">if</span> <span class="n">quiz_in_progress</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
                 <span class="c1"># get correct answers of the quiz progress from the database</span>
-                <span class="n">questions_answers</span> <span class="o">=</span> <span class="n">quiz_ref</span><span class="o">.</span><span class="n">get_correct_answers</span><span class="p">(</span><span class="n">quizqa</span><span class="p">)</span>
-                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;quizinprogress.html&#39;</span><span class="p">,</span> <span class="n">quizqa</span><span class="o">=</span><span class="n">quizqa</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">],</span> <span class="nb">enumerate</span><span class="o">=</span><span class="nb">enumerate</span><span class="p">)</span>
+                <span class="n">questions_answers</span> <span class="o">=</span> <span class="n">quiz_ref</span><span class="o">.</span><span class="n">get_correct_answers</span><span class="p">(</span><span class="n">quiz_in_progress</span><span class="p">)</span>
+                <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;quizinprogress.html&#39;</span><span class="p">,</span> <span class="n">quizqa</span><span class="o">=</span><span class="n">quiz_in_progress</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">],</span> <span class="nb">enumerate</span><span class="o">=</span><span class="nb">enumerate</span><span class="p">,</span> <span class="nb">sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">)</span>
+        
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># If the user wants a new quiz</span>
             <span class="n">quiz_ref</span><span class="o">.</span><span class="n">delete_quiz_in_progress</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>  <span class="c1"># Deletes any existing quiz</span>
             <span class="n">questions_answers</span> <span class="o">=</span> <span class="n">quiz_ref</span><span class="o">.</span><span class="n">generate_quiz</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>  <span class="c1"># Generates new quiz</span>
+        
         <span class="k">if</span> <span class="s1">&#39;username&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
-            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;quizpage.html&#39;</span><span class="p">,</span> <span class="n">questions</span><span class="o">=</span><span class="n">questions_answers</span><span class="p">,</span> <span class="nb">enumerate</span><span class="o">=</span><span class="nb">enumerate</span><span class="p">)</span>
+            <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;quizpage.html&#39;</span><span class="p">,</span> <span class="n">questions</span><span class="o">=</span><span class="n">questions_answers</span><span class="p">,</span> <span class="nb">enumerate</span><span class="o">=</span><span class="nb">enumerate</span><span class="p">,</span> <span class="nb">sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">)</span>
 
         <span class="k">else</span><span class="p">:</span>  <span class="c1"># If user is not logged in</span>
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">))</span>  <span class="c1"># Redirect them to login</span>
-
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
-        <span class="n">req</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span>
-        <span class="k">if</span> <span class="n">questions_answers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
-            <span class="n">results</span><span class="p">,</span> <span class="n">score</span> <span class="o">=</span> <span class="n">check</span><span class="p">(</span><span class="n">questions_answers</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
-            <span class="nb">print</span><span class="p">(</span><span class="n">results</span><span class="p">)</span>
-            <span class="n">date_time</span> <span class="o">=</span> <span class="n">quiz_ref</span><span class="o">.</span><span class="n">save_results</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">,</span>
-                                              <span class="n">score</span><span class="p">)</span>  <span class="c1"># saves results and returns the datetime</span>
-            <span class="n">quiz_ref</span><span class="o">.</span><span class="n">delete_quiz_in_progress</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>  <span class="c1"># Deletes the quiz in progress</span>
-
-            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;generate_report&#39;</span><span class="p">,</span>
-                                    <span class="n">datetime</span><span class="o">=</span><span class="n">date_time</span><span class="p">))</span>  <span class="c1"># Sends them to the report generation page with the date and time the quiz was submitted as the url argument</span></div>
-
+            <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">))</span>  <span class="c1"># Redirect them to login</span></div>
 
 <div class="viewcode-block" id="generate_report"><a class="viewcode-back" href="../index.html#main.generate_report">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/generateReport&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">generate_report</span><span class="p">():</span>
@@ -164,6 +155,7 @@
 <span class="sd">    </span>
 <span class="sd">    :return: Response object that contains a generated report in PDF file format.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1">#Gets date_time URL argument</span>
     <span class="n">date_time</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">args</span><span class="p">[</span><span class="s1">&#39;datetime&#39;</span><span class="p">]</span>
     <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;GET&quot;</span><span class="p">:</span>
         <span class="n">results</span> <span class="o">=</span> <span class="n">reports_ref</span><span class="o">.</span><span class="n">get_report_for_date</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">date_time</span><span class="p">)</span>
@@ -178,46 +170,52 @@
             <span class="s1">&#39;margin-left&#39;</span><span class="p">:</span> <span class="s1">&#39;1in&#39;</span><span class="p">,</span>
             <span class="s1">&#39;encoding&#39;</span><span class="p">:</span> <span class="s2">&quot;UTF-8&quot;</span><span class="p">,</span>
         <span class="p">}</span>
-        <span class="n">user_date_time</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;datetimesubmitted&#39;</span><span class="p">]</span>
-        <span class="n">user_date_time</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">user_date_time</span><span class="p">,</span> <span class="s1">&#39;</span><span class="si">%c</span><span class="s1">&#39;</span><span class="p">)</span>
-        <span class="n">date</span> <span class="o">=</span> <span class="n">user_date_time</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
-        <span class="n">time</span> <span class="o">=</span> <span class="n">user_date_time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+
+        <span class="n">date_time_submitted</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="s1">&#39;datetimesubmitted&#39;</span><span class="p">]</span>
+        <span class="c1">#Creates a DateTime object in the correct format</span>
+        <span class="n">date_time_submitted</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">date_time_submitted</span><span class="p">,</span> <span class="s1">&#39;%b </span><span class="si">%d</span><span class="s1"> %Y %I:%M%p&#39;</span><span class="p">)</span>
+        <span class="c1">#extracts date from date_time_submitted</span>
+        <span class="n">date</span> <span class="o">=</span> <span class="n">date_time_submitted</span><span class="o">.</span><span class="n">date</span><span class="p">()</span>
+        <span class="c1">#extracts time from date_time_submitted</span>
+        <span class="n">time</span> <span class="o">=</span> <span class="n">date_time_submitted</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
+        
         <span class="n">rendered</span> <span class="o">=</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;resultpagetemplate.html&#39;</span><span class="p">,</span> <span class="nb">enumerate</span><span class="o">=</span><span class="nb">enumerate</span><span class="p">,</span> <span class="n">results</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;results&#39;</span><span class="p">],</span>
                                    <span class="n">score</span><span class="o">=</span><span class="n">results</span><span class="p">[</span><span class="s1">&#39;score&#39;</span><span class="p">],</span> <span class="n">date</span><span class="o">=</span><span class="n">date</span><span class="p">,</span> <span class="n">time</span><span class="o">=</span><span class="n">time</span><span class="p">,</span>
-                                   <span class="n">prefs</span><span class="o">=</span><span class="n">settings_ref</span><span class="o">.</span><span class="n">get_prefs</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])[</span><span class="s1">&#39;settings&#39;</span><span class="p">])</span>
+                                   <span class="n">prefs</span><span class="o">=</span><span class="n">settings_ref</span><span class="o">.</span><span class="n">get_prefs</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])[</span><span class="s1">&#39;settings&#39;</span><span class="p">],</span> <span class="nb">sorted</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">)</span>
         <span class="n">pdf</span> <span class="o">=</span> <span class="n">pdfkit</span><span class="o">.</span><span class="n">from_string</span><span class="p">(</span><span class="n">rendered</span><span class="p">,</span> <span class="kc">False</span><span class="p">,</span> <span class="n">options</span><span class="p">)</span>
+        
         <span class="n">response</span> <span class="o">=</span> <span class="n">make_response</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span>
         <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;application/pdf&#39;</span>
         <span class="n">response</span><span class="o">.</span><span class="n">headers</span><span class="p">[</span><span class="s1">&#39;Content-Disposition&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="s1">&#39;inline; filename=output.pdf&#39;</span>
 
         <span class="k">return</span> <span class="n">response</span></div>
 
-<div class="viewcode-block" id="logout"><a class="viewcode-back" href="../index.html#main.logout">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/logout&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="logout"><a class="viewcode-back" href="../index.html#main.logout">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/logout&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">logout</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Logs out a user out of the session and removes the username from the </span>
-<span class="sd">    session object and sens them back to the login screen.</span>
+<span class="sd">    session object and sends them back to the login screen.</span>
 <span class="sd">    </span>
 <span class="sd">    :return: Response object that contains main login screen.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">if</span> <span class="s1">&#39;username&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="k">del</span> <span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]</span>
+    
     <span class="k">return</span> <span class="n">redirect</span><span class="p">(</span><span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;login&#39;</span><span class="p">))</span>  <span class="c1"># Sends them back to login screen</span></div>
 
 
-<div class="viewcode-block" id="settings"><a class="viewcode-back" href="../index.html#main.settings">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/settings&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">,</span> <span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="settings"><a class="viewcode-back" href="../index.html#main.settings">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/settings&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">,</span> <span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">settings</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Presents users with a settings screen for the purpose of report generation.</span>
 <span class="sd">    It includes various options like font size, and content to include.</span>
 <span class="sd">    </span>
 <span class="sd">    :return: Response object that contains settings screen.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
-        <span class="n">prefs</span> <span class="o">=</span> <span class="n">convert_to_dict</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
-        <span class="n">settings_ref</span><span class="o">.</span><span class="n">set_prefs</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">prefs</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="n">prefs</span><span class="p">)</span>
-        <span class="c1"># return redirect(&#39;/dashboard#settings&#39;)</span>
+    <span class="c1">#If it gets a post request, save the settings</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">settings_ref</span><span class="o">.</span><span class="n">set_prefs</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span><span class="o">.</span><span class="n">items</span><span class="p">())</span>
 
-    <span class="n">include_in_quiz_checkbox</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="c1">#This is a dictionary of what checkboxes and values to show in settings</span>
+    <span class="n">settings_quiz_checkboxes</span> <span class="o">=</span> <span class="p">{</span>
         <span class="s1">&#39;q_number&#39;</span><span class="p">:</span> <span class="s1">&#39;Question numbers&#39;</span><span class="p">,</span>
         <span class="s1">&#39;show_name&#39;</span><span class="p">:</span> <span class="s1">&#39;Your Name&#39;</span><span class="p">,</span>
         <span class="s1">&#39;date&#39;</span><span class="p">:</span> <span class="s1">&#39;Date Submitted&#39;</span><span class="p">,</span>
@@ -226,14 +224,16 @@
         <span class="s1">&#39;showcorrectanswer&#39;</span><span class="p">:</span> <span class="s1">&#39;Correct Answers&#39;</span><span class="p">,</span>
         <span class="s1">&#39;showwronganswer&#39;</span><span class="p">:</span> <span class="s1">&#39;Wrong Answers&#39;</span>
     <span class="p">}</span>
+
+
     <span class="k">if</span> <span class="s1">&#39;username&#39;</span> <span class="ow">in</span> <span class="n">session</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
         <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;settings.html&#39;</span><span class="p">,</span> <span class="n">prefs</span><span class="o">=</span><span class="n">settings_ref</span><span class="o">.</span><span class="n">get_prefs</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])[</span><span class="s1">&#39;settings&#39;</span><span class="p">],</span>
-                               <span class="n">user</span><span class="o">=</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">include_in_quiz_checkbox</span><span class="o">=</span><span class="n">include_in_quiz_checkbox</span><span class="p">)</span></div>
+                               <span class="n">user</span><span class="o">=</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">settings_quiz_checkboxes</span><span class="o">=</span><span class="n">settings_quiz_checkboxes</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="reports"><a class="viewcode-back" href="../index.html#main.reports">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/reports&#39;</span><span class="p">)</span>
+<div class="viewcode-block" id="reports"><a class="viewcode-back" href="../index.html#main.reports">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/reports&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">reports</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Show the historical quiz that the user has taken. It also presents</span>
+    <span class="sd">&quot;&quot;&quot;Show the historical quiz reports that the user has taken. It also presents</span>
 <span class="sd">    an option to generate PDF report for each run.</span>
 <span class="sd">    </span>
 <span class="sd">    :return: Response object that contains historical reports screen.</span>
@@ -241,60 +241,60 @@
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;reports.html&quot;</span><span class="p">,</span> <span class="n">reports</span><span class="o">=</span><span class="n">reports_ref</span><span class="o">.</span><span class="n">get_reports</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">]))</span></div>
 
 
-<div class="viewcode-block" id="updateCurrentQuizState"><a class="viewcode-back" href="../index.html#main.updateCurrentQuizState">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/updateCurrentQuizState&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="updateCurrentQuizState"><a class="viewcode-back" href="../index.html#main.updateCurrentQuizState">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/updateCurrentQuizState&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">updateCurrentQuizState</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Updates user&#39;s current quiz in progress as and when user changes </span>
 <span class="sd">    anything. This function updates the quiz state in the database.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
             <span class="n">quiz_ref</span><span class="o">.</span><span class="n">update_quiz_in_progress</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">())</span>
-    <span class="k">except</span> <span class="ne">TypeError</span><span class="p">:</span>
-        <span class="k">pass</span></div>
+            <span class="k">return</span> <span class="s2">&quot;Saved&quot;</span></div>
 
 
-<div class="viewcode-block" id="getHelp"><a class="viewcode-back" href="../index.html#main.getHelp">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/getHelp&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;POST&#39;</span><span class="p">])</span>
+
+<div class="viewcode-block" id="getHelp"><a class="viewcode-back" href="../index.html#main.getHelp">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/getHelp&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">getHelp</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Intelligent Q&amp;A feature: This gets called when user types a</span>
-<span class="sd">    question in get help chat window. It uses Naives Bayes algorithm</span>
+<span class="sd">    question in get help chat window. It uses Naive Bayes algorithm</span>
 <span class="sd">    to classify what category the question falls in and based upon that</span>
 <span class="sd">    it returns the corrresponding help related to that category. The</span>
 <span class="sd">    categories and corresponding help is stored in the database.</span>
 <span class="sd">    Example::</span>
-<span class="sd">            User types in: How can I customize font in reports</span>
+<span class="sd">            User types a question: How can I customize font in reports ?</span>
 <span class="sd">            Category: reportgeneration</span>
 <span class="sd">    </span>
 <span class="sd">    :return: List of questions and answers corresponding to category of the </span>
 <span class="sd">             question that user has asked.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s1">&#39;POST&#39;</span><span class="p">:</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
         <span class="n">qa</span> <span class="o">=</span> <span class="n">intelligent_qa_ref</span><span class="o">.</span><span class="n">get_help</span><span class="p">(</span><span class="n">request</span><span class="o">.</span><span class="n">get_json</span><span class="p">())</span>
-        <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">qa</span><span class="p">)</span></div>
+        <span class="k">return</span> <span class="n">jsonify</span><span class="p">(</span><span class="n">qa</span><span class="p">)</span> <span class="c1">#Returns a JSON object</span></div>
 
 
-<div class="viewcode-block" id="quizInProgressExists"><a class="viewcode-back" href="../index.html#main.quizInProgressExists">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/quizInProgressExists&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="quizInProgressExists"><a class="viewcode-back" href="../index.html#main.quizInProgressExists">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/quizInProgressExists&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">quizInProgressExists</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Checks if there&#39;s a current quiz in progress for the user.</span>
 <span class="sd">    </span>
 <span class="sd">    :return: True if the user has a quiz in progress, False otherwise</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">quiz</span> <span class="o">=</span> <span class="n">quiz_ref</span><span class="o">.</span><span class="n">get_quiz_in_progress</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>
+    
     <span class="k">if</span> <span class="n">quiz</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;False&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="k">return</span> <span class="s2">&quot;True&quot;</span></div>
 
 
-<div class="viewcode-block" id="aboutPage"><a class="viewcode-back" href="../index.html#main.aboutPage">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/about&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="aboutPage"><a class="viewcode-back" href="../index.html#main.aboutPage">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/about&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">aboutPage</span><span class="p">():</span>
-    <span class="sd">&quot;&quot;&quot;Shows About Page with the links to this documentation.</span>
+    <span class="sd">&quot;&quot;&quot;Shows About Page with description about FBLA Quizzer and the developer</span>
 <span class="sd">    </span>
 <span class="sd">    :return: Response object that contains about page.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;aboutpage.html&#39;</span><span class="p">)</span></div>
 
 
-<div class="viewcode-block" id="help"><a class="viewcode-back" href="../index.html#main.help">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/help&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;GET&#39;</span><span class="p">])</span>
+<div class="viewcode-block" id="help"><a class="viewcode-back" href="../index.html#main.help">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/help&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
 <span class="k">def</span> <span class="nf">help</span><span class="p">():</span>
     <span class="sd">&quot;&quot;&quot;Shows FAQs</span>
 <span class="sd">    </span>
@@ -302,14 +302,44 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s1">&#39;helppage.html&#39;</span><span class="p">,</span> <span class="n">faqs</span><span class="o">=</span><span class="n">intelligent_qa_ref</span><span class="o">.</span><span class="n">get_frequently_asked_questions</span><span class="p">())</span></div>
 
+<div class="viewcode-block" id="getStarted"><a class="viewcode-back" href="../index.html#main.getStarted">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/getStarted&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;GET&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">getStarted</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;Shows a list of instructions to get started using FBLA Quiz</span>
 
-<span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span>
+<span class="sd">    :return: Response object that contains Get Started HTML page</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">return</span> <span class="n">render_template</span><span class="p">(</span><span class="s2">&quot;getstarted.html&quot;</span><span class="p">)</span></div>
+
+<div class="viewcode-block" id="saveAndGetQuizResults"><a class="viewcode-back" href="../index.html#main.saveAndGetQuizResults">[docs]</a><span class="nd">@app</span><span class="o">.</span><span class="n">route</span><span class="p">(</span><span class="s1">&#39;/saveAndGetQuizResults&#39;</span><span class="p">,</span> <span class="n">methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;POST&quot;</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">saveAndGetQuizResults</span><span class="p">():</span>
+    <span class="sd">&quot;&quot;&quot;This function checks the quiz, saves the results, and sends back the results, </span>
+<span class="sd">    which include the questions, answers, and the user&#39;s responses.</span>
+
+<span class="sd">    :return: JSON object which contains url for PDF report, score, and results</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">if</span> <span class="n">request</span><span class="o">.</span><span class="n">method</span> <span class="o">==</span> <span class="s2">&quot;POST&quot;</span><span class="p">:</span>
+        <span class="n">req</span> <span class="o">=</span> <span class="n">request</span><span class="o">.</span><span class="n">form</span>
+
+        <span class="k">if</span> <span class="n">questions_answers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">results</span><span class="p">,</span> <span class="n">score</span> <span class="o">=</span> <span class="n">check</span><span class="p">(</span><span class="n">questions_answers</span><span class="p">,</span> <span class="nb">list</span><span class="p">(</span><span class="n">req</span><span class="o">.</span><span class="n">items</span><span class="p">()))</span>
+            <span class="c1">#print(results)</span>
+            <span class="n">date_time</span> <span class="o">=</span> <span class="n">quiz_ref</span><span class="o">.</span><span class="n">save_results</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">],</span> <span class="n">results</span><span class="p">,</span>
+                                              <span class="n">score</span><span class="p">)</span>  <span class="c1"># saves results and returns the datetime</span>
+            <span class="n">quiz_ref</span><span class="o">.</span><span class="n">delete_quiz_in_progress</span><span class="p">(</span><span class="n">session</span><span class="p">[</span><span class="s1">&#39;username&#39;</span><span class="p">])</span>  <span class="c1"># Deletes the quiz in progress</span>
+
+            <span class="k">return</span> <span class="n">jsonify</span><span class="p">({</span><span class="s1">&#39;url&#39;</span> <span class="p">:</span> <span class="n">url_for</span><span class="p">(</span><span class="s1">&#39;generate_report&#39;</span><span class="p">,</span>
+                                    <span class="n">datetime</span><span class="o">=</span><span class="n">date_time</span><span class="p">),</span>
+                            <span class="s1">&#39;score&#39;</span> <span class="p">:</span> <span class="n">score</span><span class="p">,</span>
+                            <span class="s1">&#39;results&#39;</span> <span class="p">:</span> <span class="n">results</span><span class="p">})</span>  <span class="c1"># Sends them to the report generation page with the date and time the quiz was submitted as the url argument</span></div>
+
+<span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="p">()</span>
 <span class="n">questions_answers</span> <span class="o">=</span> <span class="kc">None</span>
 <span class="n">quiz_ref</span> <span class="o">=</span> <span class="n">Quiz</span><span class="p">()</span>
 <span class="n">settings_ref</span> <span class="o">=</span> <span class="n">Settings</span><span class="p">()</span>
 <span class="n">reports_ref</span> <span class="o">=</span> <span class="n">Reports</span><span class="p">()</span>
 <span class="n">intelligent_qa_ref</span> <span class="o">=</span> <span class="n">IntelligentQA</span><span class="p">()</span>
-<span class="c1">#app.run(&#39;localhost&#39;)</span>
+<span class="c1">#app.run(&#39;localhost&#39;) #Runs the application on localhost</span>
 </pre></div>
 
           </div>

@@ -37,6 +37,7 @@
 
 <span class="kn">import</span> <span class="nn">asyncio</span>
 <span class="kn">from</span> <span class="nn">databaseconnect</span> <span class="k">import</span> <span class="n">Connection</span>
+<span class="kn">import</span> <span class="nn">datetime</span>
 
 
 <div class="viewcode-block" id="Reports"><a class="viewcode-back" href="../index.html#reports.Reports">[docs]</a><span class="k">class</span> <span class="nc">Reports</span><span class="p">:</span>
@@ -52,15 +53,19 @@
 <span class="sd">        :return: A list of all the quiz results to be used for reporting purpose.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span>
-        <span class="n">users_ref</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-        <span class="n">docs</span> <span class="o">=</span> <span class="n">users_ref</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;quiz_results&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+        <span class="n">users_PrimaryRef</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+
+        <span class="n">user_quizResults_docs</span> <span class="o">=</span> <span class="n">users_PrimaryRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;quiz_results&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
         <span class="n">reports</span> <span class="o">=</span> <span class="p">[]</span>
-        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+        
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">user_quizResults_docs</span><span class="p">:</span>
             <span class="n">reports</span><span class="o">.</span><span class="n">append</span><span class="p">({</span>
+                <span class="s1">&#39;datetimeVal&#39;</span><span class="p">:</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">strptime</span><span class="p">(</span><span class="n">doc</span><span class="o">.</span><span class="n">id</span><span class="p">,</span> <span class="s1">&#39;%b </span><span class="si">%d</span><span class="s1"> %Y %I:%M%p&#39;</span><span class="p">),</span>
                 <span class="s1">&#39;datetime&#39;</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">id</span><span class="p">,</span>
                 <span class="s1">&#39;score&#39;</span><span class="p">:</span> <span class="n">doc</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;score&#39;</span><span class="p">]</span>
             <span class="p">})</span>
-
+        
+        <span class="n">reports</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">reports</span><span class="p">,</span> <span class="n">key</span> <span class="o">=</span> <span class="k">lambda</span> <span class="n">i</span><span class="p">:</span> <span class="n">i</span><span class="p">[</span><span class="s1">&#39;datetimeVal&#39;</span><span class="p">],</span><span class="n">reverse</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span> <span class="c1">#Sorts the reports based upon date and time submitted</span>
         <span class="k">return</span> <span class="n">reports</span></div>
 
 <div class="viewcode-block" id="Reports.get_report_for_date"><a class="viewcode-back" href="../index.html#reports.Reports.get_report_for_date">[docs]</a>    <span class="k">def</span> <span class="nf">get_report_for_date</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">datetime</span><span class="p">):</span>
@@ -74,8 +79,8 @@
 <span class="sd">        :return: A list of all the quiz results to be used for reporting purpose.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span>
-        <span class="n">users_ref</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="n">users_ref</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;quiz_results&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">users_PrimaryRef</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">users_PrimaryRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;quiz_results&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">datetime</span><span class="p">)</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">doc</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span></div></div>
 </pre></div>
 

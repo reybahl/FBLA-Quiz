@@ -42,57 +42,92 @@
 <span class="kn">from</span> <span class="nn">singleton</span> <span class="k">import</span> <span class="n">Singleton</span>
 
 
+
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../index.html#databaseconnect.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">:</span>
-    <span class="sd">&quot;&quot;&quot;Singleton Connection - Only one instance exists throughout the lifecycle</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Singleton Connection - Only one instance exists throughout the lifecycle</span>
 <span class="sd">    of the application.</span>
 
 <span class="sd">    Contains all the functionality related to database interaction. It connects</span>
-<span class="sd">    to firestore database and has dynamic database backup feature which interacts</span>
-<span class="sd">    asynchronously to two database instance, one being primary and other one being</span>
+<span class="sd">    to firestore database https://firebase.google.com/docs/firestore</span>
+<span class="sd">    and implements a dynamic database backup feature by asynchronously</span>
+<span class="sd">    writing to two database instance, one being primary and other one being</span>
 <span class="sd">    backup.</span>
+
 <span class="sd">    Contains dynamic backup feature: It writes data to firestore database as the backend</span>
 <span class="sd">    and stores data in primary as well as backup database instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="sd">&quot;&quot;&quot;init</span>
+        <span class="k">pass</span>
+
+<div class="viewcode-block" id="Connection.getPrimaryDatabase"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.getPrimaryDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">getPrimaryDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;getPrimaryDatabase gets a reference to the primary database.</span>
+
+<span class="sd">        :return: reference to primary database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">primaryCredentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">Certificate</span><span class="p">(</span><span class="s2">&quot;serviceAccountKey2.json&quot;</span><span class="p">)</span>
-        <span class="n">primaryApp</span> <span class="o">=</span> <span class="n">firebase_admin</span><span class="o">.</span><span class="n">initialize_app</span><span class="p">(</span><span class="n">primaryCredentials</span><span class="p">,</span> <span class="p">{</span>
-            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="s1">&#39;firestoredemo-2&#39;</span><span class="p">,</span>
-        <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;primaryApp&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">primaryDBref</span> <span class="o">=</span> <span class="n">firestore</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">primaryApp</span><span class="p">)</span>
-        <span class="n">backupCredentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">Certificate</span><span class="p">(</span><span class="s2">&quot;serviceAccountKey.json&quot;</span><span class="p">)</span>
-        <span class="n">backupApp</span> <span class="o">=</span> <span class="n">firebase_admin</span><span class="o">.</span><span class="n">initialize_app</span><span class="p">(</span><span class="n">backupCredentials</span><span class="p">,</span> <span class="p">{</span>
-            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="s1">&#39;fir-demo-537d0&#39;</span><span class="p">,</span>
-        <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;backupApp&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">backupDBref</span> <span class="o">=</span> <span class="n">firestore</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">backupApp</span><span class="p">)</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">primaryDBref</span></div>
 
-    <span class="k">def</span> <span class="nf">getPrimaryDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">primaryDBref</span>
+<div class="viewcode-block" id="Connection.getBackupDatabase"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.getBackupDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">getBackupDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;getBackupDatabase gets a reference to the backup database.</span>
 
-    <span class="k">def</span> <span class="nf">getBackupDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backupDBref</span>
+<span class="sd">        :return: reference to backup database</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backupDBref</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_dbref_1</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.update_primary_database"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.update_primary_database">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_primary_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Updates primary database.</span>
+
+<span class="sd">        :param ref: Path to the Firestore document or collection to be updated.</span>
+<span class="sd">        :type ref: Object reference</span>
+<span class="sd">        :param ref_type: Firestore document or collection</span>
+<span class="sd">        :type ref_type: string</span>
+<span class="sd">        :param task: Write or Delete operation</span>
+<span class="sd">        :type task: string</span>
+<span class="sd">        :param data: data to be written (can be new data or existing data to be updated)</span>
+<span class="sd">        :type data: dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s1">&#39;write&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">ref_type</span> <span class="o">==</span> <span class="s1">&#39;doc&#39;</span><span class="p">:</span>
                 <span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s1">&#39;del&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">ref_type</span> <span class="o">==</span> <span class="s1">&#39;doc&#39;</span><span class="p">:</span>
-                <span class="n">ref</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                <span class="n">ref</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_dbref_2</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.update_backup_database"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.update_backup_database">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_backup_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Updates backup database.</span>
+
+<span class="sd">        :param ref: Path to the Firestore document or collection to be updated.</span>
+<span class="sd">        :type ref: Object reference</span>
+<span class="sd">        :param ref_type: Firestore document or collection</span>
+<span class="sd">        :type ref_type: string</span>
+<span class="sd">        :param task: Write or Delete operation</span>
+<span class="sd">        :type task: string</span>
+<span class="sd">        :param data: data to be written (can be new data or existing data to be updated)</span>
+<span class="sd">        :type data: dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s1">&#39;write&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">ref_type</span> <span class="o">==</span> <span class="s1">&#39;doc&#39;</span><span class="p">:</span>
                 <span class="n">ref</span><span class="o">.</span><span class="n">set</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
         <span class="k">if</span> <span class="n">task</span> <span class="o">==</span> <span class="s1">&#39;del&#39;</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">ref_type</span> <span class="o">==</span> <span class="s1">&#39;doc&#39;</span><span class="p">:</span>
-                <span class="n">ref</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span>
+                <span class="n">ref</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
 
-    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_both_databases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">db1ref</span><span class="p">,</span> <span class="n">db2ref</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
-        <span class="c1"># Updates both databases</span>
-        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_dbref_1</span><span class="p">(</span><span class="n">db1ref</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">update_dbref_2</span><span class="p">(</span><span class="n">db2ref</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span></div>
+<div class="viewcode-block" id="Connection.update_both_databases"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.update_both_databases">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_both_databases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primaryDB</span><span class="p">,</span> <span class="n">backupDB</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Asynchronously updates primary and backup databases.</span>
+
+<span class="sd">        :param primaryDB: Path to the Primary Firestore document or collection to be updated.</span>
+<span class="sd">        :type primaryDB: Object Reference</span>
+<span class="sd">        :param backupDB: Path to the Backup Firestore document or collection to be updated.</span>
+<span class="sd">        :type backupDB: Object Reference</span>
+<span class="sd">        :param ref_type: Firestore document or collection</span>
+<span class="sd">        :type ref_type: string</span>
+<span class="sd">        :param task: Write or Delete operation</span>
+<span class="sd">        :type task: string</span>
+<span class="sd">        :param data: data to be written (can be new data or existing data to be updated)</span>
+<span class="sd">        :type data: dictionary</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_primary_database</span><span class="p">(</span><span class="n">primaryDB</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">update_backup_database</span><span class="p">(</span><span class="n">backupDB</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span></div></div>
 </pre></div>
 
           </div>

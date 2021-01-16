@@ -165,13 +165,13 @@
 
   <div class="chat-popup" id="myForm">
     <form onsubmit="return false;" class="form-container">
-      <h4>Intelligent Q&A</h4>
+      <h4>Interactive Q&A</h4>
 
       <label>Begin by typing any question</label>
       <textarea style="font-size: 9pt" id='chatwindow' required readonly></textarea>
       <input type="text" class="form-control" id='typedmessage' placeholder="Type any question.." required></input>
 
-      <button type="button" onclick="responsemessage()" class="btn">Send</button>
+      <button type="button" id="sendQuestion" onclick="responsemessage()" class="btn" disabled>Send</button>
       <button type="button" class="btn cancel" onclick="closeForm()">Close</button>
     </form>
   </div>

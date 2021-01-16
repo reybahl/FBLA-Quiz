@@ -42,7 +42,7 @@
 <dl class="function">
 <dt id="main.aboutPage">
 <code class="descclassname">main.</code><code class="descname">aboutPage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#aboutPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.aboutPage" title="Permalink to this definition">¶</a></dt>
-<dd><p>Shows About Page with the links to this documentation.</p>
+<dd><p>Shows About Page with description about FBLA Quizzer and the developer</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -89,13 +89,13 @@ in the reports tab.</p>
 <dt id="main.getHelp">
 <code class="descclassname">main.</code><code class="descname">getHelp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#getHelp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.getHelp" title="Permalink to this definition">¶</a></dt>
 <dd><p>Intelligent Q&amp;A feature: This gets called when user types a
-question in get help chat window. It uses Naives Bayes algorithm
+question in get help chat window. It uses Naive Bayes algorithm
 to classify what category the question falls in and based upon that
 it returns the corrresponding help related to that category. The
 categories and corresponding help is stored in the database.
 Example:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">User</span> <span class="n">types</span> <span class="ow">in</span><span class="p">:</span> <span class="n">How</span> <span class="n">can</span> <span class="n">I</span> <span class="n">customize</span> <span class="n">font</span> <span class="ow">in</span> <span class="n">reports</span>
-<span class="n">Category</span><span class="p">:</span> <span class="n">reportgeneration</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>User types a question: How can I customize font in reports ?
+Category: reportgeneration
 </pre></div>
 </div>
 <table class="docutils field-list" frame="void" rules="none">
@@ -104,6 +104,20 @@ Example:</p>
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">List of questions and answers corresponding to category of the 
 question that user has asked.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.getStarted">
+<code class="descclassname">main.</code><code class="descname">getStarted</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#getStarted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.getStarted" title="Permalink to this definition">¶</a></dt>
+<dd><p>Shows a list of instructions to get started using FBLA Quiz</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object that contains Get Started HTML page</td>
 </tr>
 </tbody>
 </table>
@@ -149,7 +163,7 @@ user is already logged in, other response object for loginpagefirebase.html</td>
 <dt id="main.logout">
 <code class="descclassname">main.</code><code class="descname">logout</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#logout"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.logout" title="Permalink to this definition">¶</a></dt>
 <dd><p>Logs out a user out of the session and removes the username from the 
-session object and sens them back to the login screen.</p>
+session object and sends them back to the login screen.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
@@ -194,13 +208,28 @@ a new quiz.</p>
 <dl class="function">
 <dt id="main.reports">
 <code class="descclassname">main.</code><code class="descname">reports</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#reports"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.reports" title="Permalink to this definition">¶</a></dt>
-<dd><p>Show the historical quiz that the user has taken. It also presents
+<dd><p>Show the historical quiz reports that the user has taken. It also presents
 an option to generate PDF report for each run.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object that contains historical reports screen.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.saveAndGetQuizResults">
+<code class="descclassname">main.</code><code class="descname">saveAndGetQuizResults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#saveAndGetQuizResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.saveAndGetQuizResults" title="Permalink to this definition">¶</a></dt>
+<dd><p>This function checks the quiz, saves the results, and sends back the results, 
+which include the questions, answers, and the user’s responses.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">JSON object which contains url for PDF report, score, and results</td>
 </tr>
 </tbody>
 </table>
@@ -336,7 +365,12 @@ and backup database instances.</p>
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
-<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>user</strong> (<em>string</em>) – user email for which we want to get quiz in progress.</td>
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>user</strong> (<em>string</em>) – user email for which we want to get quiz in progress.</li>
+<li><strong>quiz_json</strong> (<em>JSON string</em>) – contains the quiz object populated from the UI based upon 
+user selection</li>
+</ul>
+</td>
 </tr>
 </tbody>
 </table>
@@ -349,7 +383,10 @@ and backup database instances.</p>
 <span id="fbla-database-connection"></span><h1>FBLA Database Connection<a class="headerlink" href="#module-databaseconnect" title="Permalink to this headline">¶</a></h1>
 <p>FBLA Database Singleton
 .. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
-<p>Singleton Connection - Only one instance exists throughout the lifecycle
+<dl class="class">
+<dt id="databaseconnect.Connection">
+<em class="property">class </em><code class="descclassname">databaseconnect.</code><code class="descname">Connection</code><a class="reference internal" href="_modules/databaseconnect.html#Connection"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection" title="Permalink to this definition">¶</a></dt>
+<dd><p>Singleton Connection - Only one instance exists throughout the lifecycle
 of the application.</p>
 <p>Contains all the functionality related to database interaction. It connects
 to firestore database <a class="reference external" href="https://firebase.google.com/docs/firestore">https://firebase.google.com/docs/firestore</a>
@@ -358,13 +395,97 @@ writing to two database instance, one being primary and other one being
 backup.</p>
 <p>Contains dynamic backup feature: It writes data to firestore database as the backend
 and stores data in primary as well as backup database instance.</p>
-<p>getPrimaryDatabase gets a reference to the primary database.
-Returns reference to primary database</p>
-<p>getBackupDatabase gets a reference to the backup database.
-Returns reference to backup database</p>
-<p>update_dbref_1 updates primary database.</p>
-<p>update_dbref_2 updates backup database.</p>
-<p>update_both_databases asynchronously updates primary and backup databases.</p>
+<dl class="method">
+<dt id="databaseconnect.Connection.getBackupDatabase">
+<code class="descname">getBackupDatabase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.getBackupDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.getBackupDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>getBackupDatabase gets a reference to the backup database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">reference to backup database</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="databaseconnect.Connection.getPrimaryDatabase">
+<code class="descname">getPrimaryDatabase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.getPrimaryDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.getPrimaryDatabase" title="Permalink to this definition">¶</a></dt>
+<dd><p>getPrimaryDatabase gets a reference to the primary database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">reference to primary database</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="databaseconnect.Connection.update_backup_database">
+<code class="descname">update_backup_database</code><span class="sig-paren">(</span><em>ref</em>, <em>ref_type</em>, <em>task</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.update_backup_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.update_backup_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates backup database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ref</strong> (<em>Object reference</em>) – Path to the Firestore document or collection to be updated.</li>
+<li><strong>ref_type</strong> (<em>string</em>) – Firestore document or collection</li>
+<li><strong>task</strong> (<em>string</em>) – Write or Delete operation</li>
+<li><strong>data</strong> (<em>dictionary</em>) – data to be written (can be new data or existing data to be updated)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="databaseconnect.Connection.update_both_databases">
+<code class="descname">update_both_databases</code><span class="sig-paren">(</span><em>primaryDB</em>, <em>backupDB</em>, <em>ref_type</em>, <em>task</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.update_both_databases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.update_both_databases" title="Permalink to this definition">¶</a></dt>
+<dd><p>Asynchronously updates primary and backup databases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>primaryDB</strong> (<em>Object Reference</em>) – Path to the Primary Firestore document or collection to be updated.</li>
+<li><strong>backupDB</strong> (<em>Object Reference</em>) – Path to the Backup Firestore document or collection to be updated.</li>
+<li><strong>ref_type</strong> (<em>string</em>) – Firestore document or collection</li>
+<li><strong>task</strong> (<em>string</em>) – Write or Delete operation</li>
+<li><strong>data</strong> (<em>dictionary</em>) – data to be written (can be new data or existing data to be updated)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="databaseconnect.Connection.update_primary_database">
+<code class="descname">update_primary_database</code><span class="sig-paren">(</span><em>ref</em>, <em>ref_type</em>, <em>task</em>, <em>data=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.update_primary_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.update_primary_database" title="Permalink to this definition">¶</a></dt>
+<dd><p>Updates primary database.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>ref</strong> (<em>Object reference</em>) – Path to the Firestore document or collection to be updated.</li>
+<li><strong>ref_type</strong> (<em>string</em>) – Firestore document or collection</li>
+<li><strong>task</strong> (<em>string</em>) – Write or Delete operation</li>
+<li><strong>data</strong> (<em>dictionary</em>) – data to be written (can be new data or existing data to be updated)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
 </div>
 <div class="section" id="module-reports">
 <span id="fbla-user-past-reports"></span><h1>FBLA User Past Reports<a class="headerlink" href="#module-reports" title="Permalink to this headline">¶</a></h1>
@@ -424,7 +545,7 @@ the purpose of report generation.</p>
 <dl class="class">
 <dt id="intelligentqa.IntelligentQA">
 <em class="property">class </em><code class="descclassname">intelligentqa.</code><code class="descname">IntelligentQA</code><a class="reference internal" href="_modules/intelligentqa.html#IntelligentQA"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#intelligentqa.IntelligentQA" title="Permalink to this definition">¶</a></dt>
-<dd><p>Contains all the functionality related to quiz. 
+<dd><p>Contains all the functionality related to intelligent help. 
 Contains dynamic backup feature: It writes data to firestore database as the backend
 and stores data in primary as well as backup database instance.</p>
 <dl class="method">
@@ -438,7 +559,7 @@ and stores data in primary as well as backup database instance.</p>
 <dt id="intelligentqa.IntelligentQA.get_help">
 <code class="descname">get_help</code><span class="sig-paren">(</span><em>question_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/intelligentqa.html#IntelligentQA.get_help"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#intelligentqa.IntelligentQA.get_help" title="Permalink to this definition">¶</a></dt>
 <dd><p>Intelligent Q&amp;A feature: This gets called when user types a
-question in get help chat window. It uses Naives Bayes algorithm
+question in get help chat window. It uses Naive Bayes algorithm
 to classify what category the question falls in and based upon that
 it returns the corrresponding help related to that category. The
 categories and corresponding help is stored in the database.</p>
@@ -515,7 +636,7 @@ It includes various options like font size, and content to include.</p>
 
 <dl class="method">
 <dt id="settings.Settings.set_prefs">
-<code class="descname">set_prefs</code><span class="sig-paren">(</span><em>user</em>, <em>settings</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/settings.html#Settings.set_prefs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#settings.Settings.set_prefs" title="Permalink to this definition">¶</a></dt>
+<code class="descname">set_prefs</code><span class="sig-paren">(</span><em>user</em>, <em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/settings.html#Settings.set_prefs"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#settings.Settings.set_prefs" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates all the settings for a user asynchronously to both primary and backup database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -533,6 +654,13 @@ It includes various options like font size, and content to include.</p>
 
 </dd></dl>
 
+<dl class="function">
+<dt id="settings.convert_to_dict">
+<code class="descclassname">settings.</code><code class="descname">convert_to_dict</code><span class="sig-paren">(</span><em>request</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/settings.html#convert_to_dict"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#settings.convert_to_dict" title="Permalink to this definition">¶</a></dt>
+<dd><p>Converts the users responses into a dictionary, 
+the format needed for checking</p>
+</dd></dl>
+
 </div>
 <div class="section" id="module-singleton">
 <span id="fbla-singleton"></span><h1>FBLA Singleton<a class="headerlink" href="#module-singleton" title="Permalink to this headline">¶</a></h1>
@@ -544,7 +672,7 @@ It includes various options like font size, and content to include.</p>
 <dd><p>This is a singleton file used as a decorator for <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code>
 so as to disable creation of multiple instances of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Connection</span></code> object.
 We do not need to create the instance again and again and this helps in saving memory
-and time of database connection object.</p>
+and time of creation of a database connection object.</p>
 <dl class="method">
 <dt id="singleton.Singleton.Instance">
 <code class="descname">Instance</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/singleton.html#Singleton.Instance"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#singleton.Singleton.Instance" title="Permalink to this definition">¶</a></dt>
@@ -590,13 +718,6 @@ that instance.</p>
   </ul></li>
 </ul>
 </div>
-  <div role="note" aria-label="source link">
-    <h3>This Page</h3>
-    <ul class="this-page-menu">
-      <li><a href="_sources/index.rst.txt"
-            rel="nofollow">Show Source</a></li>
-    </ul>
-   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">

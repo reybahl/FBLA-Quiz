@@ -43,7 +43,7 @@
     <span class="sd">&quot;&quot;&quot;Update user settings for the purpose of report generation.</span>
 <span class="sd">    It includes various options like font size, and content to include.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="Settings.set_prefs"><a class="viewcode-back" href="../index.html#settings.Settings.set_prefs">[docs]</a>    <span class="k">def</span> <span class="nf">set_prefs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">settings</span><span class="p">):</span>
+<div class="viewcode-block" id="Settings.set_prefs"><a class="viewcode-back" href="../index.html#settings.Settings.set_prefs">[docs]</a>    <span class="k">def</span> <span class="nf">set_prefs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">,</span> <span class="n">request</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Updates all the settings for a user asynchronously to both primary and backup database.</span>
 <span class="sd">        </span>
 <span class="sd">        :param user: email corresponding to which the settings need to be updated.</span>
@@ -52,13 +52,14 @@
 <span class="sd">        :type settings: dictionary</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span>
-        <span class="n">users_ref</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-        <span class="n">users_ref2</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getBackupDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-        <span class="n">current_user_settings_ref</span> <span class="o">=</span> <span class="n">users_ref</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span>
-        <span class="n">current_user_settings_ref2</span> <span class="o">=</span> <span class="n">users_ref2</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span>
+        <span class="n">settings</span> <span class="o">=</span> <span class="n">convert_to_dict</span><span class="p">(</span><span class="n">request</span><span class="p">)</span>
 
-        <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span>
-            <span class="n">connection</span><span class="o">.</span><span class="n">update_both_databases</span><span class="p">(</span><span class="n">db1ref</span><span class="o">=</span><span class="n">current_user_settings_ref</span><span class="p">,</span> <span class="n">db2ref</span><span class="o">=</span><span class="n">current_user_settings_ref2</span><span class="p">,</span>
+        <span class="n">usersPrimaryRef</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+        <span class="n">usersBackupRef</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getBackupDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+        <span class="n">current_user_settings_PrimaryRef</span> <span class="o">=</span> <span class="n">usersPrimaryRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span>
+        <span class="n">current_user_settings_BackupRef</span> <span class="o">=</span> <span class="n">usersBackupRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span>
+
+        <span class="n">asyncio</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">connection</span><span class="o">.</span><span class="n">update_both_databases</span><span class="p">(</span><span class="n">primaryDB</span><span class="o">=</span><span class="n">current_user_settings_PrimaryRef</span><span class="p">,</span> <span class="n">backupDB</span><span class="o">=</span><span class="n">current_user_settings_BackupRef</span><span class="p">,</span>
                                              <span class="n">ref_type</span><span class="o">=</span><span class="s1">&#39;doc&#39;</span><span class="p">,</span> <span class="n">task</span><span class="o">=</span><span class="s1">&#39;write&#39;</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="n">settings</span><span class="p">}))</span></div>
 
 <div class="viewcode-block" id="Settings.get_prefs"><a class="viewcode-back" href="../index.html#settings.Settings.get_prefs">[docs]</a>    <span class="k">def</span> <span class="nf">get_prefs</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">user</span><span class="p">):</span>
@@ -72,18 +73,36 @@
         <span class="n">default_settings</span> <span class="o">=</span> <span class="p">{</span>
             <span class="s1">&#39;settings&#39;</span><span class="p">:</span> <span class="p">{</span>
                 <span class="s1">&#39;Name&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;&#39;</span><span class="p">],</span>
-                <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;12&#39;</span><span class="p">],</span>
+                <span class="s1">&#39;font&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;18&#39;</span><span class="p">],</span>
                 <span class="s1">&#39;Username&#39;</span><span class="p">:</span> <span class="p">[</span><span class="n">user</span><span class="p">],</span>
-                <span class="s1">&#39;checkbox&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;showwronganswer&#39;</span><span class="p">]</span>
+                <span class="s1">&#39;checkbox&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;showwronganswer&#39;</span><span class="p">,</span> <span class="s1">&#39;score&#39;</span><span class="p">,</span> <span class="s1">&#39;q_number&#39;</span><span class="p">]</span>
             <span class="p">}</span>
+        
+        <span class="c1">#By default, reports will have 18 px font, and will include the correct answer for incorrectly answered questions, the score, and question numbers</span>
         <span class="p">}</span>
-        <span class="n">users_ref</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
-        <span class="n">current_user_settings_ref</span> <span class="o">=</span> <span class="n">users_ref</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span>
-        <span class="n">doc</span> <span class="o">=</span> <span class="n">current_user_settings_ref</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
+        <span class="n">usersPrimaryRef</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;users&#39;</span><span class="p">)</span>
+        <span class="n">current_user_settings_PrimaryRef</span> <span class="o">=</span> <span class="n">usersPrimaryRef</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">user</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="s1">&#39;settings&#39;</span><span class="p">)</span>
+        <span class="n">doc</span> <span class="o">=</span> <span class="n">current_user_settings_PrimaryRef</span><span class="o">.</span><span class="n">get</span><span class="p">()</span>
         <span class="k">if</span> <span class="n">doc</span><span class="o">.</span><span class="n">exists</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">doc</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">default_settings</span></div></div>
+
+<div class="viewcode-block" id="convert_to_dict"><a class="viewcode-back" href="../index.html#settings.convert_to_dict">[docs]</a><span class="k">def</span> <span class="nf">convert_to_dict</span><span class="p">(</span><span class="n">request</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Converts the users responses into a dictionary, </span>
+<span class="sd">    the format needed for checking</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">d</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">matching_dict</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="k">for</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span> <span class="ow">in</span> <span class="n">request</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">b</span> <span class="o">==</span> <span class="s1">&#39;checkbox&#39;</span><span class="p">:</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">b</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">a</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="s2">&quot;matching&quot;</span> <span class="ow">in</span> <span class="n">a</span><span class="p">:</span>
+            <span class="n">matching_dict</span><span class="p">[</span><span class="n">a</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;matching_&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)]</span> <span class="o">=</span> <span class="n">b</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">d</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="p">[])</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">d</span><span class="p">[</span><span class="s1">&#39;matching&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">matching_dict</span>
+    <span class="k">return</span> <span class="n">d</span></div>
 </pre></div>
 
           </div>

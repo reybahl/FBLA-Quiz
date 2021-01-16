@@ -31,7 +31,8 @@ def check(questions, responses):
 
     for x in questions:
         question = x['question']
-        if x['type'] == 'fill_in_the_blank': #Checking question type
+        #Checking question type
+        if x['type'] == 'fill_in_the_blank':
             correct_answer = " or ".join(question['answer']) if type(question['answer']) == list else question['answer']
             lowered_correct_answer = [answer.lower() for answer in question['answer']] 
             results.append({'type': x['type'],
@@ -42,17 +43,13 @@ def check(questions, responses):
 
         elif x['type'] == 'multiple_choice':
             correct_answer = question['answer'] if type(question['answer']) == str else ", ".join(question['answer'])
-
-            correct_sorted = sorted(question['answer']) if type(question['answer']) == list else question['answer'] #Sorts answer if it is a list
-
-            correct_lowered = correct_sorted.lower() if type(correct_sorted) == str else [x.lower() for x in correct_sorted] #lowers all the answer choices
-
+            #Sorts answer if it is a list
+            correct_sorted = sorted(question['answer']) if type(question['answer']) == list else question['answer']
+            #lowers all the answer choices
+            correct_lowered = correct_sorted.lower() if type(correct_sorted) == str else [x.lower() for x in correct_sorted]
             response = ", ".join(responses['multiple_choice']) if type(responses['multiple_choice']) == list else responses['multiple_choice']
-
             response_sorted = sorted(responses['multiple_choice']) if len(responses['multiple_choice']) > 1 else responses['multiple_choice'][0]
-
             response_lowered = response_sorted.lower() if type(response_sorted) == str else [x.lower() for x in response_sorted]
-
             results.append({'type': x['type'],
                             'question': question['content'],
                             'answer': response,
@@ -86,7 +83,9 @@ def check(questions, responses):
 
     score = 0
     for result in results:
-        if result['boolcorrect']:  # if the answer is correct
-            score += 1  # add one to the score
+        # if the answer is correct
+        if result['boolcorrect']:
+            # add one to the score
+            score += 1
 
     return results, score

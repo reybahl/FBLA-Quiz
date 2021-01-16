@@ -179,6 +179,14 @@ $(document).ready(function () {
         }
 
     });
+    $('#typedmessage').on('input', function () {
+        if($("#typedmessage").val().length > 0) {
+            $('#sendQuestion').prop("disabled",false);
+        }
+        else {
+            $('#sendQuestion').prop("disabled", true);
+        }
+    });
 });
 
 // Updates settings.
