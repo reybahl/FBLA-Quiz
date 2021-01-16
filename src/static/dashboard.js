@@ -248,15 +248,10 @@ function submitQuiz() {
 
 //Shows PDF report popup when "Print report" button is clicked
 function printPDFReport() {
-    console.log('inside pdf')
-    console.log(submitReportUrl)
-    var $iframe = $('#' + 'pdfiframe');
-    if ( $iframe.length ) {
-        $iframe.attr('src', submitReportUrl);
-    }
-    $("#dialog").dialog({   
-        minHeight: 700,
-        width: 500,
-        height: 700
-    });
+    windowHeight = 600;
+    windowWidth = 600;
+    var left = (screen.width - windowWidth) / 2;
+    var top = (screen.height - windowHeight) / 4;
+    QuizResultsWindow = window.open(submitReportUrl,'QuizResultsWindow','width='+windowWidth+',height='+windowHeight+',top=' + top + ', left=' + left); 
+    return false;
 }
