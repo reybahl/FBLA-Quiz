@@ -1,7 +1,7 @@
 var submitReportUrl = ''
 
 // Populates quiz tab
-function populateQuizStartPage() { 
+function populateQuizStartPage() {
     location.hash = "";
     location.reload();
 }
@@ -150,11 +150,14 @@ function responsemessage() {
             var qastring = '';
             for (i = 0; i < data.length; i++) {
                 var qIndex = i + 1;
-                qastring = qastring + "\r\n\r\n" + "Q" + qIndex + ": " + data[i]['question'] + "\r\n" + "Answer: " + data[i]['answer'];
+                qastring = qastring + "<br/><b>Q" + qIndex + ": " + data[i]['question'] + 
+                "</b><br/>" + "Answer: " + data[i]['answer'];
             }
-            document.getElementById("chatwindow").value = document.getElementById("chatwindow").value + '\r\n' + "--------------------" +
-                '\r\n' + "--------------------" + '\r\n' +
-                "Your question: " + document.getElementById("typedmessage").value + '\r\n' + '\r\n' + 'We found below help for your question' + '\r\n' + qastring + '\r\n';
+            console.log(qastring)
+            document.getElementById("chatwindow").innerHTML = document.getElementById("chatwindow").innerHTML +
+                "<br/><p class=\"bg-primary text-white rounded\">" +
+                "Your question: " + "<b>" + document.getElementById("typedmessage").value + "</b></p><br/>" +
+                'We found below help for your question' + "<br/>" + qastring + "<br/>";
             document.getElementById("typedmessage").value = '';
             var textarea = document.getElementById('chatwindow');
 
@@ -180,8 +183,8 @@ $(document).ready(function () {
 
     });
     $('#typedmessage').on('input', function () {
-        if($("#typedmessage").val().length > 0) {
-            $('#sendQuestion').prop("disabled",false);
+        if ($("#typedmessage").val().length > 0) {
+            $('#sendQuestion').prop("disabled", false);
         }
         else {
             $('#sendQuestion').prop("disabled", true);
@@ -213,22 +216,22 @@ function submitQuiz() {
                 console.log(response);
                 $("#quizScore").html("Score: " + response['score'] + "/5");
                 $("#quizScore").show();
-                var results =  response['results']
+                var results = response['results']
                 for (var i = 0; i < results.length; i++) {
                     console.log(results[i]);
-                    var question_div = "#"+results[i].type+"_result";
+                    var question_div = "#" + results[i].type + "_result";
                     console.log(question_div);
-                    if (results[i].boolcorrect){
+                    if (results[i].boolcorrect) {
                         $(question_div).toggleClass("alert alert-success");
                         $(question_div).html("Correct!");
-                    } else{
+                    } else {
                         $(question_div).toggleClass("alert alert-danger");
-                        if(results[i].type != "matching"){
+                        if (results[i].type != "matching") {
                             $(question_div).html("Correct Answer: " + results[i].correct);
-                        } else{
+                        } else {
                             var correct_answer = "";
-                            for(var key in results[i].correct){
-                                correct_answer += (key + "-->" + results[i].correct[key] +"<br>");
+                            for (var key in results[i].correct) {
+                                correct_answer += (key + "-->" + results[i].correct[key] + "<br>");
                             }
                             $(question_div).html("Correct Answer: <br>" + correct_answer);
                         }
@@ -241,7 +244,7 @@ function submitQuiz() {
                 $("#quizScore").show();
                 $("#pdfreport").show();
                 document.getElementById("pdfreport").disabled = false;
-                window.scrollTo(0,document.body.scrollHeight);
+                window.scrollTo(0, document.body.scrollHeight);
             }
         });
 }
@@ -252,6 +255,6 @@ function printPDFReport() {
     windowWidth = 600;
     var left = (screen.width - windowWidth) / 2;
     var top = (screen.height - windowHeight) / 4;
-    QuizResultsWindow = window.open(submitReportUrl,'QuizResultsWindow','width='+windowWidth+',height='+windowHeight+',top=' + top + ', left=' + left); 
+    QuizResultsWindow = window.open(submitReportUrl, 'QuizResultsWindow', 'width=' + windowWidth + ',height=' + windowHeight + ',top=' + top + ', left=' + left);
     return false;
 }
