@@ -127,3 +127,6 @@ The application features an intelligent help feature which users can use at any 
 * IDE for debugging: [Pycharm](https://www.jetbrains.com/pycharm/)
 * [Postman](https://www.postman.com/downloads/) for sending HTTP requests 
 * Google Chrome browser for debugging Javascript
+
+## License
+[MIT License](blob/master/LICENSE)
