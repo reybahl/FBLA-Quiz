@@ -129,4 +129,4 @@ The application features an intelligent help feature which users can use at any 
 * Google Chrome browser for debugging Javascript
 
 ## License
-[MIT License](blob/master/LICENSE)
+[MIT License](https://github.com/reybahl/FBLA-Quiz/blob/master/LICENSE)
