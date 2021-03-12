@@ -64,7 +64,7 @@ class Quiz:
                                              data={'results': currentstate}))
         return quiz
 
-    def save_results(self, user, results, score):
+    def save_results(self, user, results, score, time_taken):
         connection = Connection.Instance()
         current_time = datetime.now()
         now_formatted = current_time.strftime('%b %d %Y %I:%M%p')
@@ -76,7 +76,8 @@ class Quiz:
         asyncio.run(connection.update_both_databases(primaryDB=current_user_quizzes_PrimaryRef, backupDB=current_user_quizzes_BackupRef,
                                                      ref_type='doc', task='write',
                                                      data={'results': results, 'score': score,
-                                                           'datetimesubmitted': now_formatted}))
+                                                           'datetimesubmitted': now_formatted,
+                                                           'timetaken': time_taken}))
 
         return now_formatted  # Returns the time it was saved
 
@@ -123,7 +124,7 @@ class Quiz:
                 question['answer'] = quiz_json['dropdown_answer']
             elif (question['type'] == 'matching'):
                 question['answer'] = quiz_json['matching']
-        updated_quiz = {'results': questions}
+        updated_quiz = {'results': questions, 'timeTaken': quiz_json['timeTaken']}
         asyncio.run(connection.update_both_databases(primaryDB=quiz_in_progress_PrimaryRef, backupDB=quiz_in_progress_BackupRef, ref_type='doc', task='write',
                                                      data=updated_quiz))
 

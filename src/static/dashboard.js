@@ -1,5 +1,29 @@
 var submitReportUrl = ''
+var totalSeconds = 0;
+var refreshIntervalId;
 
+function setTime() {
+  ++totalSeconds;
+  var minutesLabel = document.getElementById("minutes");
+  var secondsLabel = document.getElementById("seconds");
+  secondsLabel.innerHTML = pad(totalSeconds % 60);
+  minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+  document.getElementById("timer").hidden = false;
+}
+
+function pad(val) {
+    var valString = val + "";
+    if (valString.length < 2) {
+      return "0" + valString;
+    } else {
+      return valString;
+    }
+  }
+
+  function stopTimer() {
+    clearInterval(refreshIntervalId)
+  }
+  
 // Populates quiz tab
 function populateQuizStartPage() {
     location.hash = "";
@@ -15,6 +39,64 @@ function populateReports() {
         });
 }
 
+function populateAnalytics() {
+    make_active('analyticslink');
+    $.get('analytics', {},
+        function (response) {
+            console.log(response);
+            document.getElementById("dynamicContent").innerHTML = response['html']
+
+      
+      //labels
+      // define the chart data
+      var chartData = { 
+        labels : response['labels'],
+        datasets : [{
+            label: response['legend'],
+            fill: true,
+            lineTension: 0.1,
+            backgroundColor: "rgba(75,192,192,0.4)",
+            borderColor: "rgba(75,192,192,1)",
+            borderCapStyle: 'butt',
+            borderDash: [],
+            borderDashOffset: 0.0,
+            borderJoinStyle: 'miter',
+            pointBorderColor: "rgba(75,192,192,1)",
+            pointBackgroundColor: "rgba(75,192,192,1)",
+            pointBorderWidth: 1,
+            pointHoverRadius: 5,
+            pointHoverBackgroundColor: "#406278",
+            pointHoverBorderColor: "rgba(220,220,220,1)",
+            pointHoverBorderWidth: 2,
+            pointRadius: 5,
+            pointHitRadius: 10,
+            data : response['values'],
+            spanGaps: false
+        }]
+      }
+
+      // get chart canvas
+      var ctx = document.getElementById("quizChart").getContext("2d");
+
+      // create the chart using the chart canvas
+      var myChart = new Chart(ctx, {
+        type: 'line',
+        data: chartData,
+        options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    max: 5,
+                    min: 0,
+                    stepSize: 1
+                }
+            }]
+        }}
+      });
+            
+        });
+}
+
 // Generates a new quiz
 function generateQuiz(quiz_in_progress) {
     $loading.show();
@@ -23,12 +105,16 @@ function generateQuiz(quiz_in_progress) {
             function (response) {
                 $loading.hide();
                 document.getElementById("dynamicContent").innerHTML = response
+                totalSeconds = parseInt(document.getElementById("totalSeconds").innerHTML);
+                refreshIntervalId = setInterval(setTime, 1000);
             });
     }
 
     else {
         $.get('quiz?quiz_in_progress=false', {},
             function (response) {
+                $('#timer').show();
+                refreshIntervalId = setInterval(setTime, 1000);
                 document.getElementById("dynamicContent").innerHTML = response
             });
     }
@@ -78,6 +164,13 @@ function updatequiz() {
     var fillblankval = document.getElementById("fill").value;
     var nodes = document.getElementById('multiple_choice_options').childNodes;
     var multiple_choice_answers = [];
+
+    var minutesLabel = document.getElementById("minutes");
+    var secondsLabel = document.getElementById("seconds");
+    secondsLabel.innerHTML = pad(totalSeconds % 60);
+    minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+    
+    var timetaken = minutesLabel.innerHTML + ":" + secondsLabel.innerHTML;
     for (var i = 0; i < nodes.length; i++) {
         {
             var labelChildNodes = nodes[i].childNodes;
@@ -117,7 +210,14 @@ function updatequiz() {
         }
     }
 
-    var quiz_json = { "true_false_answer": tfval, "dropdown_answer": mcval, "fillblank_answer": fillblankval, "multiple_choice_answers": multiple_choice_answers, "matching": matching_prompts_answer }
+    var quiz_json = {
+        "true_false_answer": tfval,
+        "dropdown_answer": mcval,
+        "fillblank_answer": fillblankval,
+        "multiple_choice_answers": multiple_choice_answers,
+        "matching": matching_prompts_answer,
+        "timeTaken": timetaken
+      }
     $.ajax({
         type: 'POST',
         url: 'updateCurrentQuizState',
@@ -153,7 +253,6 @@ function responsemessage() {
                 qastring = qastring + "<br/><b>Q" + qIndex + ": " + data[i]['question'] + 
                 "</b><br/>" + "Answer: " + data[i]['answer'];
             }
-            console.log(qastring)
             document.getElementById("chatwindow").innerHTML = document.getElementById("chatwindow").innerHTML +
                 "<br/><p class=\"bg-primary text-white rounded\">" +
                 "Your question: " + "<b>" + document.getElementById("typedmessage").value + "</b></p><br/>" +
@@ -207,10 +306,17 @@ function updateSettings() {
 
 // Submits quiz and gets results to display
 function submitQuiz() {
+    var minutesLabel = document.getElementById("minutes");
+    var secondsLabel = document.getElementById("seconds");
+    secondsLabel.innerHTML = pad(totalSeconds % 60);
+    minutesLabel.innerHTML = pad(parseInt(totalSeconds / 60));
+    var saveUrl = "saveAndGetQuizResults?timetaken="+ minutesLabel.innerHTML + ":" + secondsLabel.innerHTML;
     $('#quizForm')
         .ajaxForm({
-            url: 'saveAndGetQuizResults',
+            url: saveUrl,
             success: function (response) {
+                stopTimer();
+                
                 document.getElementById("quizSubmitButton").disabled = true;
                 document.getElementById("toggleEnabled").disabled = true;
                 console.log(response);

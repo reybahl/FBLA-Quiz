@@ -17,6 +17,9 @@
     <br>
     <div class="container-fluid w-100">
       <form id="quizForm" class="needs-validation" method="POST">
+        <div id = "timer" name="timer" class="row justify-content-md-end">
+          <label id="minutes" name="minutes" style="color:#406278;font-size:large">00</label><label style="color:#406278;font-size:-large">:</label><label id="seconds" name="seconds" style="color:#406278;font-size: large;">00</label>
+          </div>
         <fieldset id = "toggleEnabled" enabled>
         {% for num, question in enumerate(questions) %}
           {% if question['type'] == 'dropdown' %}

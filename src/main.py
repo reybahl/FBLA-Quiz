@@ -99,11 +99,15 @@ def quiz():
         
         if get_quiz_in_progress == 'true':
             quiz_in_progress = quiz_ref.get_quiz_in_progress(session['username'])
-        
+            time = quiz_in_progress['timeTaken'].split(':')
+            minutes = int(time[0])
+            seconds = int(time[1])
+            totalSeconds = minutes * 60 + seconds
             if quiz_in_progress is not None:
                 # get correct answers of the quiz progress from the database
                 questions_answers = quiz_ref.get_correct_answers(quiz_in_progress)
-                return render_template('quizinprogress.html', quizqa=quiz_in_progress['results'], enumerate=enumerate, sorted = sorted)
+                return render_template('quizinprogress.html', quizqa=quiz_in_progress['results'], totalSeconds=totalSeconds
+                    ,enumerate=enumerate, sorted = sorted)
         
         else:  # If the user wants a new quiz
             quiz_ref.delete_quiz_in_progress(session['username'])  # Deletes any existing quiz
@@ -208,6 +212,28 @@ def reports():
     return render_template("reports.html", reports=reports_ref.get_reports(session['username']))
 
 
+@app.route('/analytics', methods=["GET"])
+def analytics():
+    """Show the historical quiz reports that the user has taken. It also presents
+    an option to generate PDF report for each run.
+    
+    :return: Response object that contains historical reports screen.
+    """
+    legend = 'Quiz Score'
+    reports=reports_ref.get_reports(session['username'])
+    labels = []
+    values = []
+    reports.reverse()
+    for report in reports:
+        labels.append(report['datetime'])
+        values.append(report['score'])
+    return jsonify({'html' : render_template('analytics.html'),
+                    'legend' : legend,
+                    'labels' : labels,
+                    'values' : values
+                    })
+
+
 @app.route('/updateCurrentQuizState', methods=["POST"])
 def updateCurrentQuizState():
     """Updates user's current quiz in progress as and when user changes 
@@ -287,12 +313,12 @@ def saveAndGetQuizResults():
     """
     if request.method == "POST":
         req = request.form
-
+        timetaken = request.args['timetaken']
         if questions_answers is not None:
             results, score = check(questions_answers, list(req.items()))
             #print(results)
             date_time = quiz_ref.save_results(session['username'], results,
-                                              score)  # saves results and returns the datetime
+                                              score, timetaken)  # saves results and returns the datetime
             quiz_ref.delete_quiz_in_progress(session['username'])  # Deletes the quiz in progress
 
             return jsonify({'url' : url_for('generate_report',

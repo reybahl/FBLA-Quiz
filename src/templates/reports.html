@@ -19,6 +19,7 @@
           <tr>
             <th>Date and Time</th>
             <th>Score</th>
+            <th>Time Taken</th>
             <th>PDF report</th>
           </tr>
         </thead>
@@ -27,6 +28,7 @@
           <tr>
             <td class="align-middle">{{report['datetime']}}</td>
             <td class="align-middle">{{report['score']}}/5</td>
+            <td class="align-middle">{{report['timeTaken']}}</td>
             <td class="align-middle">
               <button type="button" class="btn btn-primary">
               <a class="nav-link" target="blank" href="generateReport?datetime={{report['datetime']}}">

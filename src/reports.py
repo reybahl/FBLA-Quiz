@@ -29,7 +29,8 @@ class Reports:
             reports.append({
                 'datetimeVal': datetime.datetime.strptime(doc.id, '%b %d %Y %I:%M%p'),
                 'datetime': doc.id,
-                'score': doc.to_dict()['score']
+                'score': doc.to_dict()['score'],
+                'timeTaken': doc.to_dict()['timetaken']
             })
         
         reports = sorted(reports, key = lambda i: i['datetimeVal'],reverse=True) #Sorts the reports based upon date and time submitted

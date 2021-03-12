@@ -18,6 +18,7 @@
   <script src = "https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src='https://www.chartjs.org/dist/2.9.4/Chart.min.js'></script>
   <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/solid.js"
     integrity="sha384-tzzSw1/Vo+0N5UhStP3bvwWPq+uvzCMfrN1fEFe+xBmv1C/AtVX5K0uZtmcHitFZ"
     crossorigin="anonymous"></script>
@@ -80,6 +81,13 @@
               data-placement="top" title="You can view your historical quiz reports here">
               <span data-feather="save"></span>
               Reports
+            </a>
+          </li>
+          <li class="nav-item">
+            <a id="analyticslink" class="nav-link" href="#analytics" onclick="populateAnalytics()" data-toggle="tooltip"
+              data-placement="top" title="You can view graph based for past quiz scores">
+              <span data-feather="bar-chart-2"></span>
+              Analytics
             </a>
           </li>
           <li class="nav-item">
@@ -196,6 +204,9 @@
 
     if (hash == 'reports') {
       populateReports();
+    }
+    if (hash == 'analytics') {
+      populateAnalytics();
     }
     else if (hash == 'settings') {
       populateSettings();

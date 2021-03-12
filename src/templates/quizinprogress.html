@@ -16,6 +16,10 @@
   <body>
     <br>
     <div class="container-fluid w-100">
+      <div id="totalSeconds" hidden="true">{{totalSeconds}}</div>
+      <div id = "timer" name="timer" hidden = "true" class="row justify-content-md-end">
+        <label id="minutes" name="minutes" style="color:#406278;font-size:large">00</label><label style="color:#406278;font-size:large">:</label><label id="seconds" name="seconds" style="color:#406278;font-size: large;">00</label>
+      </div>
       <form id="quizForm" class="needs-validation" method="POST">
           <fieldset id = "toggleEnabled" enabled>
             {% for num, question in enumerate(quizqa) %}
