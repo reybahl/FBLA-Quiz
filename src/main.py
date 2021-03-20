@@ -92,7 +92,6 @@ def quiz():
 
     :return: Response object of quiz in progress or a new quiz based upon what user selected.
     """
-    global questions_answers
 
     if request.method != "POST":
         get_quiz_in_progress = request.args.get('quiz_in_progress')  # Gets url argument specifying if the user wants a quiz in progress or wants to start a new one.
@@ -214,8 +213,7 @@ def reports():
 
 @app.route('/analytics', methods=["GET"])
 def analytics():
-    """Show the historical quiz reports that the user has taken. It also presents
-    an option to generate PDF report for each run.
+    """Generates graphs based upon the historical quiz taken by the user.
     
     :return: Response object that contains historical reports screen.
     """
@@ -314,6 +312,8 @@ def saveAndGetQuizResults():
     if request.method == "POST":
         req = request.form
         timetaken = request.args['timetaken']
+        quiz_in_progress = quiz_ref.get_quiz_in_progress(session['username'])
+        questions_answers = quiz_ref.get_correct_answers(quiz_in_progress)
         if questions_answers is not None:
             results, score = check(questions_answers, list(req.items()))
             #print(results)
@@ -327,9 +327,8 @@ def saveAndGetQuizResults():
                             'results' : results})  # Sends them to the report generation page with the date and time the quiz was submitted as the url argument
 
 connection = Connection.Instance()
-questions_answers = None
 quiz_ref = Quiz()
 settings_ref = Settings()
 reports_ref = Reports()
 intelligent_qa_ref = IntelligentQA()
-app.run('localhost') #Runs the application on localhost
+app.run('localhost')
