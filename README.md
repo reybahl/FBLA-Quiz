@@ -76,7 +76,7 @@ There are 2 options to install packages.
 #### Cloud
 Application has been deployed to the heroku cloud and can be accessed here: https://rey-fbla-quiz.herokuapp.com/
 #### Local deployment
-The code internally connects to the firestore database and for that a service account key is needed. Service Account keys (for primary and backup database have been included in this repository).
+The code internally connects to the firestore database and for that a service account key is needed. Service Account keys.
 
 Below is the format of a service account key
 ```
