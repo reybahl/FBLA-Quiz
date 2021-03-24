@@ -31,7 +31,7 @@ class IntelligentQA:
         """
         classification = self.intelligentHelpNaivebayesclassifier.classify(question_json['question'])
         connection = Connection.Instance()
-        q_a_list_fromDatabase = connection.getPrimaryDatabase().collection('help').document(classification).collection('Q&A').stream()
+        q_a_list_fromDatabase = connection.get_primary_database().collection('help').document(classification).collection('Q&A').stream()
         q_a_list = []
 
         for doc in q_a_list_fromDatabase:
@@ -46,7 +46,7 @@ class IntelligentQA:
         """
         questions = []
         connection = Connection.Instance()
-        help_questions_answers = connection.getPrimaryDatabase().collection('help')
+        help_questions_answers = connection.get_primary_database().collection('help')
         docs = help_questions_answers.stream()
 
         for doc in docs:

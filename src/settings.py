@@ -21,13 +21,13 @@ class Settings:
         connection = Connection.Instance()
         settings = convert_to_dict(request)
 
-        usersPrimaryRef = connection.getPrimaryDatabase().collection('users')
-        usersBackupRef = connection.getBackupDatabase().collection('users')
-        current_user_settings_PrimaryRef = usersPrimaryRef.document(user).collection('settings').document('settings')
-        current_user_settings_BackupRef = usersBackupRef.document(user).collection('settings').document('settings')
+        users_primary_ref = connection.get_primary_database().collection('users')
+        users_backup_ref = connection.get_backup_database().collection('users')
+        current_user_settings_primary_ref = users_primary_ref.document(user).collection('settings').document('settings')
+        current_user_settings_backup_ref = users_backup_ref.document(user).collection('settings').document('settings')
 
-        asyncio.run(connection.update_both_databases(primaryDB=current_user_settings_PrimaryRef, backupDB=current_user_settings_BackupRef,
-                                             ref_type='doc', task='write', data={'settings': settings}))
+        asyncio.run(connection.update_both_databases(primary_db=current_user_settings_primary_ref, backup_db=current_user_settings_backup_ref,
+                                                     ref_type='doc', task='write', data={'settings': settings}))
 
     def get_prefs(self, user):
         """Gets all the settings for a user from the primary database.
@@ -47,9 +47,9 @@ class Settings:
         
         #By default, reports will have 18 px font, and will include the correct answer for incorrectly answered questions, the score, and question numbers
         }
-        usersPrimaryRef = connection.getPrimaryDatabase().collection('users')
-        current_user_settings_PrimaryRef = usersPrimaryRef.document(user).collection('settings').document('settings')
-        doc = current_user_settings_PrimaryRef.get()
+        users_primary_ref = connection.get_primary_database().collection('users')
+        current_user_settings_primary_ref = users_primary_ref.document(user).collection('settings').document('settings')
+        doc = current_user_settings_primary_ref.get()
         if doc.exists:
             return doc.to_dict()
         else:

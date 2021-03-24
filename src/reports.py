@@ -20,9 +20,9 @@ class Reports:
         :return: A list of all the quiz results to be used for reporting purpose.
         """
         connection = Connection.Instance()
-        users_PrimaryRef = connection.getPrimaryDatabase().collection('users')
+        users_primary_ref = connection.get_primary_database().collection('users')
 
-        user_quizResults_docs = users_PrimaryRef.document(user).collection('quiz_results').stream()
+        user_quizResults_docs = users_primary_ref.document(user).collection('quiz_results').stream()
         reports = []
         
         for doc in user_quizResults_docs:
@@ -47,6 +47,6 @@ class Reports:
         :return: A list of all the quiz results to be used for reporting purpose.
         """
         connection = Connection.Instance()
-        users_PrimaryRef = connection.getPrimaryDatabase().collection('users')
-        doc = users_PrimaryRef.document(user).collection('quiz_results').document(datetime).get()
+        users_primary_ref = connection.get_primary_database().collection('users')
+        doc = users_primary_ref.document(user).collection('quiz_results').document(datetime).get()
         return doc.to_dict()

@@ -5,6 +5,7 @@
 import random
 import asyncio
 from datetime import datetime
+from pytz import timezone
 
 from databaseconnect import Connection
 
@@ -28,10 +29,10 @@ class Quiz:
         :return: A complete Quiz object which contains 5 different types of randomly generated questions
         """
         connection = Connection.Instance()
-        questions_by_type_ref = connection.getPrimaryDatabase().collection('questions_by_type')
-        currentstate_ref = connection.getPrimaryDatabase().collection('users').document(user).collection(
+        questions_by_type_ref = connection.get_primary_database().collection('questions_by_type')
+        currentstate_ref = connection.get_primary_database().collection('users').document(user).collection(
             'quizinprogress').document('currentstate')
-        currentstate_ref_backup = connection.getBackupDatabase().collection('users').document(user).collection(
+        currentstate_ref_backup = connection.get_backup_database().collection('users').document(user).collection(
             'quizinprogress').document('currentstate')
 
         self.question_types = ['dropdown', 'multiple_choice', 'fill_in_the_blank', 'true_false', 'matching']
@@ -59,21 +60,39 @@ class Quiz:
                 else:
                     currentstate_question = {'type': question_type, 'question': doc_dict['content']}
                 currentstate.append(currentstate_question)
-        asyncio.run(connection.update_both_databases(primaryDB=currentstate_ref, backupDB=currentstate_ref_backup, ref_type='doc',
-                                             task='write',
-                                             data={'results': currentstate}))
+        asyncio.run(connection.update_both_databases(primary_db=currentstate_ref, backup_db=currentstate_ref_backup, ref_type='doc',
+                                                     task='write',
+                                                     data={'results': currentstate}))
         return quiz
 
     def save_results(self, user, results, score, time_taken):
-        connection = Connection.Instance()
-        current_time = datetime.now()
-        now_formatted = current_time.strftime('%b %d %Y %I:%M%p')
-        users_primaryDB = connection.getPrimaryDatabase().collection('users')
-        users_backupDB = connection.getBackupDatabase().collection('users')
-        current_user_quizzes_PrimaryRef = users_primaryDB.document(user).collection('quiz_results').document(now_formatted)
-        current_user_quizzes_BackupRef = users_backupDB.document(user).collection('quiz_results').document(now_formatted)
+        """Saves quiz results in the database for a particular user. The results contains the actual
+        answers that user selected as well the correct answers for future report generation and comparison
+        
+        This function also support dynamic backup feature where it writes asynchronously to a primary database and
+        secondary (backup) database. It internally uses :class:`asyncio` to asynchronously update both databases.
 
-        asyncio.run(connection.update_both_databases(primaryDB=current_user_quizzes_PrimaryRef, backupDB=current_user_quizzes_BackupRef,
+        :param user: user email for which we want to generate a new quiz. The quiz then gets associated
+                    with that user
+        :type user: string
+        :param results: actual results that contain the answers given by the user and correct answers
+        :type results: dictionary
+        :param score: score for the quiz taken by the user
+        :type score: integer
+        :param time_taken: time taken by the user to complete the quiz (in the format: mm:ss)
+        :type time_taken: string
+        :return: A complete Quiz object which contains 5 different types of randomly generated questions
+        """
+        connection = Connection.Instance()
+        eastern = timezone('US/Eastern')
+        current_time = datetime.now(eastern)
+        now_formatted = current_time.strftime('%b %d %Y %I:%M%p')
+        users_primary_db = connection.get_primary_database().collection('users')
+        users_backup_db = connection.get_backup_database().collection('users')
+        current_user_quizzes_PrimaryRef = users_primary_db.document(user).collection('quiz_results').document(now_formatted)
+        current_user_quizzes_BackupRef = users_backup_db.document(user).collection('quiz_results').document(now_formatted)
+
+        asyncio.run(connection.update_both_databases(primary_db=current_user_quizzes_PrimaryRef, backup_db=current_user_quizzes_BackupRef,
                                                      ref_type='doc', task='write',
                                                      data={'results': results, 'score': score,
                                                            'datetimesubmitted': now_formatted,
@@ -90,7 +109,7 @@ class Quiz:
         :return: A complete current Quiz in progress object
         """
         connection = Connection.Instance()
-        return connection.getPrimaryDatabase().collection('users').document(user).collection('quizinprogress').document(
+        return connection.get_primary_database().collection('users').document(user).collection('quizinprogress').document(
             'currentstate').get().to_dict()
 
     def update_quiz_in_progress(self, user, quiz_json):
@@ -105,10 +124,10 @@ class Quiz:
         :type quiz_json: JSON string
         """
         connection = Connection.Instance()
-        quiz_in_progress_PrimaryRef = connection.getPrimaryDatabase().collection('users').document(user).collection(
+        quiz_in_progress_PrimaryRef = connection.get_primary_database().collection('users').document(user).collection(
             'quizinprogress').document(
             'currentstate')
-        quiz_in_progress_BackupRef = connection.getBackupDatabase().collection('users').document(user).collection(
+        quiz_in_progress_BackupRef = connection.get_backup_database().collection('users').document(user).collection(
             'quizinprogress').document(
             'currentstate')
 
@@ -125,7 +144,7 @@ class Quiz:
             elif (question['type'] == 'matching'):
                 question['answer'] = quiz_json['matching']
         updated_quiz = {'results': questions, 'timeTaken': quiz_json['timeTaken']}
-        asyncio.run(connection.update_both_databases(primaryDB=quiz_in_progress_PrimaryRef, backupDB=quiz_in_progress_BackupRef, ref_type='doc', task='write',
+        asyncio.run(connection.update_both_databases(primary_db=quiz_in_progress_PrimaryRef, backup_db=quiz_in_progress_BackupRef, ref_type='doc', task='write',
                                                      data=updated_quiz))
 
     def delete_quiz_in_progress(self, user):
@@ -137,14 +156,14 @@ class Quiz:
         :type user: string
         """
         connection = Connection.Instance()
-        quiz_in_progress_PrimaryRef = connection.getPrimaryDatabase().collection('users').document(user).collection(
+        quiz_in_progress_PrimaryRef = connection.get_primary_database().collection('users').document(user).collection(
             'quizinprogress').document(
             'currentstate')
-        quiz_in_progress_BackupRef = connection.getBackupDatabase().collection('users').document(user).collection(
+        quiz_in_progress_BackupRef = connection.get_backup_database().collection('users').document(user).collection(
             'quizinprogress').document(
             'currentstate')
 
-        asyncio.run(connection.update_both_databases(primaryDB=quiz_in_progress_PrimaryRef, backupDB=quiz_in_progress_BackupRef, ref_type='doc', task='del', data=None))
+        asyncio.run(connection.update_both_databases(primary_db=quiz_in_progress_PrimaryRef, backup_db=quiz_in_progress_BackupRef, ref_type='doc', task='del', data=None))
 
     def get_correct_answers(self, quizqa):
         """Matches answers submitted by the user with the correct answers stored in the database.
@@ -158,11 +177,11 @@ class Quiz:
         connection = Connection.Instance()
         for entry in data:
             if (entry['type'] == 'matching'):
-                docs = connection.getPrimaryDatabase().collection('questions_by_type').document(
+                docs = connection.get_primary_database().collection('questions_by_type').document(
                     entry['type']).collection(
                     'questions').where('content', '==', entry['question']['content']).get()
             else:
-                docs = connection.getPrimaryDatabase().collection('questions_by_type').document(
+                docs = connection.get_primary_database().collection('questions_by_type').document(
                     entry['type']).collection(
                     'questions').where('content', '==', entry['question']).get()
             for doc in docs:

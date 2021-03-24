@@ -26,30 +26,30 @@ class Connection:
     and stores data in primary as well as backup database instance.
     """
     def __init__(self):
-        primaryCredentials = credentials.Certificate("src/serviceAccountKey.json")
-        primaryApp = firebase_admin.initialize_app(primaryCredentials, {
+        primary_credentials = credentials.Certificate("src/serviceAccountKey.json")
+        primary_app = firebase_admin.initialize_app(primary_credentials, {
             'projectId': 'firestoredemo-2',
-        }, name='primaryApp')
-        self.primaryDBref = firestore.client(primaryApp)
-        backupCredentials = credentials.Certificate("src/serviceAccountKeyBackup.json")
-        backupApp = firebase_admin.initialize_app(backupCredentials, {
+        }, name='primary_app')
+        self.primary_db_ref = firestore.client(primary_app)
+        backup_credentials = credentials.Certificate("src/serviceAccountKeyBackup.json")
+        backup_app = firebase_admin.initialize_app(backup_credentials, {
             'projectId': 'fir-demo-537d0',
-        }, name='backupApp')
-        self.backupDBref = firestore.client(backupApp)
+        }, name='backup_app')
+        self.backup_db_ref = firestore.client(backup_app)
 
-    def getPrimaryDatabase(self):
+    def get_primary_database(self):
         """getPrimaryDatabase gets a reference to the primary database.
 
         :return: reference to primary database
         """
-        return self.primaryDBref
+        return self.primary_db_ref
 
-    def getBackupDatabase(self):
+    def get_backup_database(self):
         """getBackupDatabase gets a reference to the backup database.
 
         :return: reference to backup database
         """
-        return self.backupDBref
+        return self.backup_db_ref
 
     async def update_primary_database(self, ref, ref_type, task, data=None):
         """Updates primary database.
@@ -89,13 +89,13 @@ class Connection:
             if ref_type == 'doc':
                 ref.delete()
 
-    async def update_both_databases(self, primaryDB, backupDB, ref_type, task, data):
+    async def update_both_databases(self, primary_db, backup_db, ref_type, task, data):
         """Asynchronously updates primary and backup databases.
 
-        :param primaryDB: Path to the Primary Firestore document or collection to be updated.
-        :type primaryDB: Object Reference
-        :param backupDB: Path to the Backup Firestore document or collection to be updated.
-        :type backupDB: Object Reference
+        :param primary_db: Path to the Primary Firestore document or collection to be updated.
+        :type primary_db: Object Reference
+        :param backup_db: Path to the Backup Firestore document or collection to be updated.
+        :type backup_db: Object Reference
         :param ref_type: Firestore document or collection
         :type ref_type: string
         :param task: Write or Delete operation
@@ -103,5 +103,5 @@ class Connection:
         :param data: data to be written (can be new data or existing data to be updated)
         :type data: dictionary
         """
-        await asyncio.gather(self.update_primary_database(primaryDB, ref_type, task, data),
-                             self.update_backup_database(backupDB, ref_type, task, data))
+        await asyncio.gather(self.update_primary_database(primary_db, ref_type, task, data),
+                             self.update_backup_database(backup_db, ref_type, task, data))

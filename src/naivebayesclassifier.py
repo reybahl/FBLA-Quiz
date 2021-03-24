@@ -37,7 +37,7 @@ class IntelligentHelpNaiveBayesClassifier:
         :return: Question category
         """
         connection = Connection.Instance()
-        data = connection.getPrimaryDatabase().collection('intelligent_help')
+        data = connection.get_primary_database().collection('intelligent_help')
 
         docs = data.stream()
         training_data = []
