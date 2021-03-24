@@ -233,7 +233,7 @@ def analytics():
 
 
 @app.route('/updateCurrentQuizState', methods=["POST"])
-def updateCurrentQuizState():
+def update_current_quiz_state():
     """Updates user's current quiz in progress as and when user changes 
     anything. This function updates the quiz state in the database.
     """
@@ -244,7 +244,7 @@ def updateCurrentQuizState():
 
 
 @app.route('/getHelp', methods=["POST"])
-def getHelp():
+def get_help():
     """Intelligent Q&A feature: This gets called when user types a
     question in get help chat window. It uses Naive Bayes algorithm
     to classify what category the question falls in and based upon that
@@ -263,7 +263,7 @@ def getHelp():
 
 
 @app.route('/quizInProgressExists', methods=["GET"])
-def quizInProgressExists():
+def quiz_in_progress_exists():
     """Checks if there's a current quiz in progress for the user.
     
     :return: True if the user has a quiz in progress, False otherwise
@@ -277,7 +277,7 @@ def quizInProgressExists():
 
 
 @app.route('/about', methods=["GET"])
-def aboutPage():
+def about_page():
     """Shows About Page with description about FBLA Quizzer and the developer
     
     :return: Response object that contains about page.
@@ -294,7 +294,7 @@ def help():
     return render_template('helppage.html', faqs=intelligent_qa_ref.get_frequently_asked_questions())
 
 @app.route('/getStarted', methods=["GET"])
-def getStarted():
+def get_started():
     """Shows a list of instructions to get started using FBLA Quiz
 
     :return: Response object that contains Get Started HTML page
@@ -303,7 +303,7 @@ def getStarted():
     return render_template("getstarted.html")
 
 @app.route('/saveAndGetQuizResults', methods=["POST"])
-def saveAndGetQuizResults():
+def save_and_get_quiz_results():
     """This function checks the quiz, saves the results, and sends back the results, 
     which include the questions, answers, and the user's responses.
 
