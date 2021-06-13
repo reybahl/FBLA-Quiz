@@ -29,10 +29,13 @@ def check(questions, responses):
     responses = convert_to_dict(responses)
     results = [] #Results list
 
+    #Create quiz factory
     quiz_factory = QuizDataFactory()
     
     for question_object in questions:
+        # Factory creates quiz object for the passed in question type
         quiz_object = quiz_factory.create_quiz_object(question_object['type'])
+        # Corresponding quiz object for that question type calls the check_correct_answer function.
         results.append(quiz_object.check_correct_answer(question_object, responses))
 
     score = 0

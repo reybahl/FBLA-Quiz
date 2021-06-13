@@ -29,6 +29,7 @@ class Quiz:
         :type user: string
         :return: A complete Quiz object which contains 5 different types of randomly generated questions
         """
+        # Get Singleton connection instance
         connection = Connection.Instance()
         questions_by_type_ref = connection.get_primary_database().collection('questions_by_type')
         currentstate_ref = connection.get_primary_database().collection('users').document(user).collection(
@@ -36,6 +37,7 @@ class Quiz:
         currentstate_ref_backup = connection.get_backup_database().collection('users').document(user).collection(
             'quizinprogress').document('currentstate')
 
+        # Create quiz data factory
         quiz_factory = QuizDataFactory()
         self.question_types = quiz_factory.all_quiz_types()
         
