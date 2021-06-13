@@ -39,8 +39,8 @@
 <span class="kn">from</span> <span class="nn">firebase_admin</span> <span class="k">import</span> <span class="n">credentials</span>
 <span class="kn">from</span> <span class="nn">firebase_admin</span> <span class="k">import</span> <span class="n">firestore</span>
 <span class="kn">import</span> <span class="nn">asyncio</span>
+<span class="kn">from</span> <span class="nn">datetime</span> <span class="k">import</span> <span class="n">datetime</span>
 <span class="kn">from</span> <span class="nn">singleton</span> <span class="k">import</span> <span class="n">Singleton</span>
-
 
 
 <div class="viewcode-block" id="Connection"><a class="viewcode-back" href="../index.html#databaseconnect.Connection">[docs]</a><span class="k">class</span> <span class="nc">Connection</span><span class="p">:</span>
@@ -58,21 +58,30 @@
 <span class="sd">    and stores data in primary as well as backup database instance.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-        <span class="k">pass</span>
+        <span class="n">primary_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">Certificate</span><span class="p">(</span><span class="s2">&quot;src/serviceAccountKey.json&quot;</span><span class="p">)</span>
+        <span class="n">primary_app</span> <span class="o">=</span> <span class="n">firebase_admin</span><span class="o">.</span><span class="n">initialize_app</span><span class="p">(</span><span class="n">primary_credentials</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="s1">&#39;firestoredemo-2&#39;</span><span class="p">,</span>
+        <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;primary_app&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">primary_db_ref</span> <span class="o">=</span> <span class="n">firestore</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">primary_app</span><span class="p">)</span>
+        <span class="n">backup_credentials</span> <span class="o">=</span> <span class="n">credentials</span><span class="o">.</span><span class="n">Certificate</span><span class="p">(</span><span class="s2">&quot;src/serviceAccountKeyBackup.json&quot;</span><span class="p">)</span>
+        <span class="n">backup_app</span> <span class="o">=</span> <span class="n">firebase_admin</span><span class="o">.</span><span class="n">initialize_app</span><span class="p">(</span><span class="n">backup_credentials</span><span class="p">,</span> <span class="p">{</span>
+            <span class="s1">&#39;projectId&#39;</span><span class="p">:</span> <span class="s1">&#39;fir-demo-537d0&#39;</span><span class="p">,</span>
+        <span class="p">},</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;backup_app&#39;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">backup_db_ref</span> <span class="o">=</span> <span class="n">firestore</span><span class="o">.</span><span class="n">client</span><span class="p">(</span><span class="n">backup_app</span><span class="p">)</span>
 
-<div class="viewcode-block" id="Connection.getPrimaryDatabase"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.getPrimaryDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">getPrimaryDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.get_primary_database"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.get_primary_database">[docs]</a>    <span class="k">def</span> <span class="nf">get_primary_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;getPrimaryDatabase gets a reference to the primary database.</span>
 
 <span class="sd">        :return: reference to primary database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">primaryDBref</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">primary_db_ref</span></div>
 
-<div class="viewcode-block" id="Connection.getBackupDatabase"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.getBackupDatabase">[docs]</a>    <span class="k">def</span> <span class="nf">getBackupDatabase</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.get_backup_database"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.get_backup_database">[docs]</a>    <span class="k">def</span> <span class="nf">get_backup_database</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;getBackupDatabase gets a reference to the backup database.</span>
 
 <span class="sd">        :return: reference to backup database</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backupDBref</span></div>
+        <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">backup_db_ref</span></div>
 
 <div class="viewcode-block" id="Connection.update_primary_database"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.update_primary_database">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_primary_database</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">ref</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Updates primary database.</span>
@@ -112,13 +121,13 @@
             <span class="k">if</span> <span class="n">ref_type</span> <span class="o">==</span> <span class="s1">&#39;doc&#39;</span><span class="p">:</span>
                 <span class="n">ref</span><span class="o">.</span><span class="n">delete</span><span class="p">()</span></div>
 
-<div class="viewcode-block" id="Connection.update_both_databases"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.update_both_databases">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_both_databases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primaryDB</span><span class="p">,</span> <span class="n">backupDB</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
+<div class="viewcode-block" id="Connection.update_both_databases"><a class="viewcode-back" href="../index.html#databaseconnect.Connection.update_both_databases">[docs]</a>    <span class="k">async</span> <span class="k">def</span> <span class="nf">update_both_databases</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">primary_db</span><span class="p">,</span> <span class="n">backup_db</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Asynchronously updates primary and backup databases.</span>
 
-<span class="sd">        :param primaryDB: Path to the Primary Firestore document or collection to be updated.</span>
-<span class="sd">        :type primaryDB: Object Reference</span>
-<span class="sd">        :param backupDB: Path to the Backup Firestore document or collection to be updated.</span>
-<span class="sd">        :type backupDB: Object Reference</span>
+<span class="sd">        :param primary_db: Path to the Primary Firestore document or collection to be updated.</span>
+<span class="sd">        :type primary_db: Object Reference</span>
+<span class="sd">        :param backup_db: Path to the Backup Firestore document or collection to be updated.</span>
+<span class="sd">        :type backup_db: Object Reference</span>
 <span class="sd">        :param ref_type: Firestore document or collection</span>
 <span class="sd">        :type ref_type: string</span>
 <span class="sd">        :param task: Write or Delete operation</span>
@@ -126,8 +135,8 @@
 <span class="sd">        :param data: data to be written (can be new data or existing data to be updated)</span>
 <span class="sd">        :type data: dictionary</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_primary_database</span><span class="p">(</span><span class="n">primaryDB</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
-                             <span class="bp">self</span><span class="o">.</span><span class="n">update_backup_database</span><span class="p">(</span><span class="n">backupDB</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span></div></div>
+        <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">gather</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">update_primary_database</span><span class="p">(</span><span class="n">primary_db</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">),</span>
+                             <span class="bp">self</span><span class="o">.</span><span class="n">update_backup_database</span><span class="p">(</span><span class="n">backup_db</span><span class="p">,</span> <span class="n">ref_type</span><span class="p">,</span> <span class="n">task</span><span class="p">,</span> <span class="n">data</span><span class="p">))</span></div></div>
 </pre></div>
 
           </div>

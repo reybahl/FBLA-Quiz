@@ -9,7 +9,17 @@ function SignInWithEmail() {
         firebase.auth().signInWithEmailAndPassword(email, password)
             .then((user) => {
                 console.log(user);
-                $.post('login', { email: email },
+                var ipaddress = '';
+                $.ajax({
+                    url: "https://api.ipify.org?format=json",
+                    dataType: 'json',
+                    async: false,
+                    success: function(data) {
+                        ipaddress = data.ip;
+                        console.log(ipaddress + 'inside')
+                    }
+                });
+                $.post('login', { email: email, ipaddress: ipaddress   },
                     function (response) {
                         window.location.href = 'dashboard#getStarted';
                     });
@@ -45,7 +55,17 @@ function RegisterWithEmail() {
             console.log(user);
             $('#exampleModal').modal('hide');
             //Posts to login, where it can be stored as a session
-            $.post('login', { email: email },
+            var ipaddress = '';
+            $.ajax({
+                url: "https://api.ipify.org?format=json",
+                dataType: 'json',
+                async: false,
+                success: function(data) {
+                    ipaddress = data.ip;
+                    console.log(ipaddress + 'inside')
+                }
+            });
+            $.post('login', { email: email, ipaddress: ipaddress  },
                 function (response) {
                     window.location.href = 'dashboard#getStarted'; //Redirects to dashboard getting started page
                 });
@@ -91,7 +111,17 @@ function ResetPassword() {
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     var email = profile.getEmail();
-    $.post('login', { email: email },
+    var ipaddress = '';
+    $.ajax({
+        url: "https://api.ipify.org?format=json",
+        dataType: 'json',
+        async: false,
+        success: function(data) {
+            ipaddress = data.ip;
+            console.log(ipaddress + 'inside')
+        }
+      });
+    $.post('login', { email: email, ipaddress: ipaddress  },
         function (response) {
             window.location.href = 'dashboard#getStarted';
         });
@@ -100,7 +130,18 @@ function onSignIn(googleUser) {
 // Sign-in as a guest user
 function signInAsGuest() {
     var email = 'Guest';
-    $.post('login', { email: email },
+    var ipaddress = '';
+    $.ajax({
+        url: "https://api.ipify.org?format=json",
+        dataType: 'json',
+        async: false,
+        success: function(data) {
+            ipaddress = data.ip;
+            console.log(ipaddress + 'inside')
+        }
+      });
+    console.log(ipaddress + 'outside')
+    $.post('login', { email: email, ipaddress: ipaddress },
         function (response) {
             window.location.href = 'dashboard#getStarted';
         });

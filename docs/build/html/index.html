@@ -40,14 +40,28 @@
 <p>FBLA Main
 .. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
 <dl class="function">
-<dt id="main.aboutPage">
-<code class="descclassname">main.</code><code class="descname">aboutPage</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#aboutPage"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.aboutPage" title="Permalink to this definition">¶</a></dt>
+<dt id="main.about_page">
+<code class="descclassname">main.</code><code class="descname">about_page</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#about_page"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.about_page" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shows About Page with description about FBLA Quizzer and the developer</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object that contains about page.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="function">
+<dt id="main.analytics">
+<code class="descclassname">main.</code><code class="descname">analytics</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#analytics"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.analytics" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generates graphs based upon the historical quiz taken by the user.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Response object that contains historical reports screen.</td>
 </tr>
 </tbody>
 </table>
@@ -86,8 +100,8 @@ in the reports tab.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="main.getHelp">
-<code class="descclassname">main.</code><code class="descname">getHelp</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#getHelp"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.getHelp" title="Permalink to this definition">¶</a></dt>
+<dt id="main.get_help">
+<code class="descclassname">main.</code><code class="descname">get_help</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#get_help"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.get_help" title="Permalink to this definition">¶</a></dt>
 <dd><p>Intelligent Q&amp;A feature: This gets called when user types a
 question in get help chat window. It uses Naive Bayes algorithm
 to classify what category the question falls in and based upon that
@@ -110,8 +124,8 @@ question that user has asked.</td>
 </dd></dl>
 
 <dl class="function">
-<dt id="main.getStarted">
-<code class="descclassname">main.</code><code class="descname">getStarted</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#getStarted"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.getStarted" title="Permalink to this definition">¶</a></dt>
+<dt id="main.get_started">
+<code class="descclassname">main.</code><code class="descname">get_started</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#get_started"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.get_started" title="Permalink to this definition">¶</a></dt>
 <dd><p>Shows a list of instructions to get started using FBLA Quiz</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -192,8 +206,8 @@ a new quiz.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="main.quizInProgressExists">
-<code class="descclassname">main.</code><code class="descname">quizInProgressExists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#quizInProgressExists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.quizInProgressExists" title="Permalink to this definition">¶</a></dt>
+<dt id="main.quiz_in_progress_exists">
+<code class="descclassname">main.</code><code class="descname">quiz_in_progress_exists</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#quiz_in_progress_exists"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.quiz_in_progress_exists" title="Permalink to this definition">¶</a></dt>
 <dd><p>Checks if there’s a current quiz in progress for the user.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -221,8 +235,8 @@ an option to generate PDF report for each run.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="main.saveAndGetQuizResults">
-<code class="descclassname">main.</code><code class="descname">saveAndGetQuizResults</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#saveAndGetQuizResults"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.saveAndGetQuizResults" title="Permalink to this definition">¶</a></dt>
+<dt id="main.save_and_get_quiz_results">
+<code class="descclassname">main.</code><code class="descname">save_and_get_quiz_results</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#save_and_get_quiz_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.save_and_get_quiz_results" title="Permalink to this definition">¶</a></dt>
 <dd><p>This function checks the quiz, saves the results, and sends back the results, 
 which include the questions, answers, and the user’s responses.</p>
 <table class="docutils field-list" frame="void" rules="none">
@@ -268,8 +282,8 @@ Users can also reset their password on login page.</p>
 </dd></dl>
 
 <dl class="function">
-<dt id="main.updateCurrentQuizState">
-<code class="descclassname">main.</code><code class="descname">updateCurrentQuizState</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#updateCurrentQuizState"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.updateCurrentQuizState" title="Permalink to this definition">¶</a></dt>
+<dt id="main.update_current_quiz_state">
+<code class="descclassname">main.</code><code class="descname">update_current_quiz_state</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/main.html#update_current_quiz_state"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#main.update_current_quiz_state" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates user’s current quiz in progress as and when user changes 
 anything. This function updates the quiz state in the database.</p>
 </dd></dl>
@@ -357,6 +371,33 @@ instance.</p>
 </dd></dl>
 
 <dl class="method">
+<dt id="quiz.Quiz.save_results">
+<code class="descname">save_results</code><span class="sig-paren">(</span><em>user</em>, <em>results</em>, <em>score</em>, <em>time_taken</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quiz.html#Quiz.save_results"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiz.Quiz.save_results" title="Permalink to this definition">¶</a></dt>
+<dd><p>Saves quiz results in the database for a particular user. The results contains the actual
+answers that user selected as well the correct answers for future report generation and comparison</p>
+<p>This function also support dynamic backup feature where it writes asynchronously to a primary database and
+secondary (backup) database. It internally uses <code class="xref py py-class docutils literal notranslate"><span class="pre">asyncio</span></code> to asynchronously update both databases.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>user</strong> (<em>string</em>) – user email for which we want to generate a new quiz. The quiz then gets associated
+with that user</li>
+<li><strong>results</strong> (<em>dictionary</em>) – actual results that contain the answers given by the user and correct answers</li>
+<li><strong>score</strong> (<em>integer</em>) – score for the quiz taken by the user</li>
+<li><strong>time_taken</strong> (<em>string</em>) – time taken by the user to complete the quiz (in the format: mm:ss)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">A complete Quiz object which contains 5 different types of randomly generated questions</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
 <dt id="quiz.Quiz.update_quiz_in_progress">
 <code class="descname">update_quiz_in_progress</code><span class="sig-paren">(</span><em>user</em>, <em>quiz_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quiz.html#Quiz.update_quiz_in_progress"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiz.Quiz.update_quiz_in_progress" title="Permalink to this definition">¶</a></dt>
 <dd><p>Updates quiz in progress for the user email passed in as a param to both primary
@@ -396,8 +437,8 @@ backup.</p>
 <p>Contains dynamic backup feature: It writes data to firestore database as the backend
 and stores data in primary as well as backup database instance.</p>
 <dl class="method">
-<dt id="databaseconnect.Connection.getBackupDatabase">
-<code class="descname">getBackupDatabase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.getBackupDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.getBackupDatabase" title="Permalink to this definition">¶</a></dt>
+<dt id="databaseconnect.Connection.get_backup_database">
+<code class="descname">get_backup_database</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.get_backup_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.get_backup_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>getBackupDatabase gets a reference to the backup database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -410,8 +451,8 @@ and stores data in primary as well as backup database instance.</p>
 </dd></dl>
 
 <dl class="method">
-<dt id="databaseconnect.Connection.getPrimaryDatabase">
-<code class="descname">getPrimaryDatabase</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.getPrimaryDatabase"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.getPrimaryDatabase" title="Permalink to this definition">¶</a></dt>
+<dt id="databaseconnect.Connection.get_primary_database">
+<code class="descname">get_primary_database</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.get_primary_database"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.get_primary_database" title="Permalink to this definition">¶</a></dt>
 <dd><p>getPrimaryDatabase gets a reference to the primary database.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
@@ -445,15 +486,15 @@ and stores data in primary as well as backup database instance.</p>
 
 <dl class="method">
 <dt id="databaseconnect.Connection.update_both_databases">
-<code class="descname">update_both_databases</code><span class="sig-paren">(</span><em>primaryDB</em>, <em>backupDB</em>, <em>ref_type</em>, <em>task</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.update_both_databases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.update_both_databases" title="Permalink to this definition">¶</a></dt>
+<code class="descname">update_both_databases</code><span class="sig-paren">(</span><em>primary_db</em>, <em>backup_db</em>, <em>ref_type</em>, <em>task</em>, <em>data</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/databaseconnect.html#Connection.update_both_databases"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#databaseconnect.Connection.update_both_databases" title="Permalink to this definition">¶</a></dt>
 <dd><p>Asynchronously updates primary and backup databases.</p>
 <table class="docutils field-list" frame="void" rules="none">
 <col class="field-name" />
 <col class="field-body" />
 <tbody valign="top">
 <tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
-<li><strong>primaryDB</strong> (<em>Object Reference</em>) – Path to the Primary Firestore document or collection to be updated.</li>
-<li><strong>backupDB</strong> (<em>Object Reference</em>) – Path to the Backup Firestore document or collection to be updated.</li>
+<li><strong>primary_db</strong> (<em>Object Reference</em>) – Path to the Primary Firestore document or collection to be updated.</li>
+<li><strong>backup_db</strong> (<em>Object Reference</em>) – Path to the Backup Firestore document or collection to be updated.</li>
 <li><strong>ref_type</strong> (<em>string</em>) – Firestore document or collection</li>
 <li><strong>task</strong> (<em>string</em>) – Write or Delete operation</li>
 <li><strong>data</strong> (<em>dictionary</em>) – data to be written (can be new data or existing data to be updated)</li>
@@ -718,6 +759,13 @@ that instance.</p>
   </ul></li>
 </ul>
 </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
 <div id="searchbox" style="display: none" role="search">
   <h3>Quick search</h3>
     <div class="searchformwrapper">

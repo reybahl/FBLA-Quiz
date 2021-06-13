@@ -70,7 +70,7 @@
 <span class="sd">        :return: Question category</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span>
-        <span class="n">data</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">getPrimaryDatabase</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;intelligent_help&#39;</span><span class="p">)</span>
+        <span class="n">data</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_primary_database</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;intelligent_help&#39;</span><span class="p">)</span>
 
         <span class="n">docs</span> <span class="o">=</span> <span class="n">data</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
         <span class="n">training_data</span> <span class="o">=</span> <span class="p">[]</span>

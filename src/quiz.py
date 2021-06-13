@@ -8,6 +8,7 @@ from datetime import datetime
 from pytz import timezone
 
 from databaseconnect import Connection
+from quizdatafactory import QuizDataFactory
 
 
 class Quiz:
@@ -35,7 +36,9 @@ class Quiz:
         currentstate_ref_backup = connection.get_backup_database().collection('users').document(user).collection(
             'quizinprogress').document('currentstate')
 
-        self.question_types = ['dropdown', 'multiple_choice', 'fill_in_the_blank', 'true_false', 'matching']
+        quiz_factory = QuizDataFactory()
+        self.question_types = quiz_factory.all_quiz_types()
+        
         quiz = []
         random.shuffle(self.question_types)
         currentstate = []
@@ -49,16 +52,8 @@ class Quiz:
             for doc in question:
                 doc_dict = doc.to_dict()
                 quiz.append({'type': question_type, 'question': doc_dict})
-                if question_type == 'dropdown':
-                    currentstate_question = {'type': question_type, 'question': doc_dict['content'],
-                                             'options': doc_dict['options']}
-                elif question_type == 'multiple_choice':
-                    currentstate_question = {'type': question_type, 'question': doc_dict['content'],
-                                             'options': doc_dict['options'], 'correct_answer': doc_dict['answer']}
-                elif question_type == 'matching':
-                    currentstate_question = {'type': question_type, 'question': doc_dict['question']}
-                else:
-                    currentstate_question = {'type': question_type, 'question': doc_dict['content']}
+                quiz_object = quiz_factory.create_quiz_object(question_type)
+                currentstate_question = quiz_object.get_quiz_question_content(question_type, doc_dict)
                 currentstate.append(currentstate_question)
         asyncio.run(connection.update_both_databases(primary_db=currentstate_ref, backup_db=currentstate_ref_backup, ref_type='doc',
                                                      task='write',
@@ -132,17 +127,10 @@ class Quiz:
             'currentstate')
 
         questions = quiz_in_progress_PrimaryRef.get().to_dict()['results']
+        quiz_factory = QuizDataFactory()
         for question in questions:
-            if (question['type'] == 'fill_in_the_blank'):
-                question['answer'] = quiz_json['fillblank_answer']
-            elif (question['type'] == 'true_false'):
-                question['answer'] = quiz_json['true_false_answer']
-            elif (question['type'] == 'multiple_choice'):
-                question['answer'] = quiz_json['multiple_choice_answers']
-            elif (question['type'] == 'dropdown'):
-                question['answer'] = quiz_json['dropdown_answer']
-            elif (question['type'] == 'matching'):
-                question['answer'] = quiz_json['matching']
+            quiz_object = quiz_factory.create_quiz_object(question['type'])
+            question['answer'] = quiz_object.get_quiz_json(quiz_json)
         updated_quiz = {'results': questions, 'timeTaken': quiz_json['timeTaken']}
         asyncio.run(connection.update_both_databases(primary_db=quiz_in_progress_PrimaryRef, backup_db=quiz_in_progress_BackupRef, ref_type='doc', task='write',
                                                      data=updated_quiz))
