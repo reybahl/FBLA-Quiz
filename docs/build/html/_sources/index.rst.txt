@@ -20,6 +20,41 @@ FBLA Quiz
 .. automodule:: quiz
    :members:
 
+FBLA QuizData
+=====================
+.. automodule:: quizdata
+   :members:
+
+FBLA QuizDataFactory
+=====================
+.. automodule:: quizdatafactory
+   :members:
+
+FBLA QuizDropDownData
+=====================
+.. automodule:: quizdropdowndata
+   :members:
+
+FBLA QuizFillInTheBlanksData
+============================
+.. automodule:: quizfillintheblanksdata
+   :members:
+
+FBLA QuizMatchingData
+=====================
+.. automodule:: quizmatchingdata
+   :members:
+
+FBLA QuizMultipleChoiceData
+===========================
+.. automodule:: quizmultiplechoicedata
+   :members:
+
+FBLA QuizTrueFalseData
+======================
+.. automodule:: quiztruefalsedata
+   :members:
+
 FBLA Database Connection
 ========================
 .. automodule:: databaseconnect

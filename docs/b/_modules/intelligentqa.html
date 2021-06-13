@@ -1,0 +1,137 @@
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>intelligentqa &#8212; Reyansh Bahl&#39;s FBLA Quizzer 2021 1.0 documentation</title>
+    <link rel="stylesheet" href="../_static/alabaster.css" type="text/css" />
+    <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+    <script type="text/javascript" id="documentation_options" data-url_root="../" src="../_static/documentation_options.js"></script>
+    <script type="text/javascript" src="../_static/jquery.js"></script>
+    <script type="text/javascript" src="../_static/underscore.js"></script>
+    <script type="text/javascript" src="../_static/doctools.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for intelligentqa</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;FBLA IntelligentQA</span>
+<span class="sd">.. moduleauthor:: Reyansh Bahl &lt;https://github.com/reybahl&gt;</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">from</span> <span class="nn">naivebayesclassifier</span> <span class="k">import</span> <span class="n">IntelligentHelpNaiveBayesClassifier</span>
+<span class="kn">from</span> <span class="nn">databaseconnect</span> <span class="k">import</span> <span class="n">Connection</span>
+
+
+<div class="viewcode-block" id="IntelligentQA"><a class="viewcode-back" href="../index.html#intelligentqa.IntelligentQA">[docs]</a><span class="k">class</span> <span class="nc">IntelligentQA</span><span class="p">:</span>
+    <span class="sd">&quot;&quot;&quot;Contains all the functionality related to intelligent help. </span>
+<span class="sd">    Contains dynamic backup feature: It writes data to firestore database as the backend</span>
+<span class="sd">    and stores data in primary as well as backup database instance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Initializes object and creates a Naive Bayes Classifier object</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">intelligentHelpNaivebayesclassifier</span> <span class="o">=</span> <span class="n">IntelligentHelpNaiveBayesClassifier</span><span class="p">()</span>
+
+<div class="viewcode-block" id="IntelligentQA.get_help"><a class="viewcode-back" href="../index.html#intelligentqa.IntelligentQA.get_help">[docs]</a>    <span class="k">def</span> <span class="nf">get_help</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">question_json</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Intelligent Q&amp;A feature: This gets called when user types a</span>
+<span class="sd">        question in get help chat window. It uses Naive Bayes algorithm</span>
+<span class="sd">        to classify what category the question falls in and based upon that</span>
+<span class="sd">        it returns the corrresponding help related to that category. The</span>
+<span class="sd">        categories and corresponding help is stored in the database.</span>
+
+<span class="sd">        :param question_json: question asked by the user in get help chat window</span>
+<span class="sd">        :type question_json: JSON string</span>
+
+<span class="sd">        :return: List of questions and answers corresponding to category of the </span>
+<span class="sd">                question that user has asked.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">classification</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">intelligentHelpNaivebayesclassifier</span><span class="o">.</span><span class="n">classify</span><span class="p">(</span><span class="n">question_json</span><span class="p">[</span><span class="s1">&#39;question&#39;</span><span class="p">])</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span>
+        <span class="n">q_a_list_fromDatabase</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_primary_database</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;help&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">classification</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;Q&amp;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+        <span class="n">q_a_list</span> <span class="o">=</span> <span class="p">[]</span>
+
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">q_a_list_fromDatabase</span><span class="p">:</span>
+            <span class="n">qa</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()</span>
+            <span class="n">q_a_list</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">qa</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">q_a_list</span></div>
+
+<div class="viewcode-block" id="IntelligentQA.get_frequently_asked_questions"><a class="viewcode-back" href="../index.html#intelligentqa.IntelligentQA.get_frequently_asked_questions">[docs]</a>    <span class="k">def</span> <span class="nf">get_frequently_asked_questions</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="sd">&quot;&quot;&quot;Get the list of all the faqs from the database.</span>
+<span class="sd">        :return: List of questions and answers.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">questions</span> <span class="o">=</span> <span class="p">[]</span>
+        <span class="n">connection</span> <span class="o">=</span> <span class="n">Connection</span><span class="o">.</span><span class="n">Instance</span><span class="p">()</span>
+        <span class="n">help_questions_answers</span> <span class="o">=</span> <span class="n">connection</span><span class="o">.</span><span class="n">get_primary_database</span><span class="p">()</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;help&#39;</span><span class="p">)</span>
+        <span class="n">docs</span> <span class="o">=</span> <span class="n">help_questions_answers</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">doc</span> <span class="ow">in</span> <span class="n">docs</span><span class="p">:</span>
+            <span class="n">category</span> <span class="o">=</span> <span class="n">doc</span><span class="o">.</span><span class="n">id</span>
+            <span class="n">questions_of_category</span> <span class="o">=</span> <span class="n">help_questions_answers</span><span class="o">.</span><span class="n">document</span><span class="p">(</span><span class="n">category</span><span class="p">)</span><span class="o">.</span><span class="n">collection</span><span class="p">(</span><span class="s1">&#39;Q&amp;A&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">stream</span><span class="p">()</span>
+            
+            <span class="k">for</span> <span class="n">question</span> <span class="ow">in</span> <span class="n">questions_of_category</span><span class="p">:</span>
+                <span class="n">questions</span><span class="o">.</span><span class="n">append</span><span class="p">({</span><span class="s1">&#39;question&#39;</span><span class="p">:</span> <span class="n">question</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;question&#39;</span><span class="p">],</span>
+                                  <span class="s1">&#39;answer&#39;</span><span class="p">:</span> <span class="n">question</span><span class="o">.</span><span class="n">to_dict</span><span class="p">()[</span><span class="s1">&#39;answer&#39;</span><span class="p">]})</span>
+        <span class="k">return</span> <span class="n">questions</span></div></div>
+</pre></div>
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper"><div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    </div>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2021, Reyansh Bahl.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 1.7.5</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.10</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

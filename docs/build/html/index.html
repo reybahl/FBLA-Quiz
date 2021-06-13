@@ -420,6 +420,444 @@ user selection</li>
 </dd></dl>
 
 </div>
+<div class="section" id="module-quizdata">
+<span id="fbla-quizdata"></span><h1>FBLA QuizData<a class="headerlink" href="#module-quizdata" title="Permalink to this headline">¶</a></h1>
+<p>FBLA QuizData
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="quizdata.QuizData">
+<em class="property">class </em><code class="descclassname">quizdata.</code><code class="descname">QuizData</code><a class="reference internal" href="_modules/quizdata.html#QuizData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdata.QuizData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Base class that contains the functionality for question type. Functinality includes
+getting complete question data from the database, getting actual question, validating responses
+against correct answers.</p>
+<dl class="method">
+<dt id="quizdata.QuizData.check_correct_answer">
+<code class="descname">check_correct_answer</code><span class="sig-paren">(</span><em>question_object</em>, <em>responses</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizdata.html#QuizData.check_correct_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdata.QuizData.check_correct_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks correct answer and validates user response against the correct answer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question_object</strong> (<em>dictionary</em>) – Question Object all the question information (id, question content, correct answer)</li>
+<li><strong>responses</strong> (<em>dictionary</em>) – Responses selected by the quiz taker (user)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Validated response along with validated answer and boolean indicating whether answer is correct or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizdata.QuizData.get_quiz_json">
+<code class="descname">get_quiz_json</code><span class="sig-paren">(</span><em>quiz_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizdata.html#QuizData.get_quiz_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdata.QuizData.get_quiz_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz json corresponding to the current question type object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>quiz_json</strong> – Json containing data for all the question types.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">quiz json corresponding to the current question type object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizdata.QuizData.get_quiz_question_content">
+<code class="descname">get_quiz_question_content</code><span class="sig-paren">(</span><em>doc_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizdata.html#QuizData.get_quiz_question_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdata.QuizData.get_quiz_question_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz question content for the question type in Json format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_dict</strong> (<em>dictionary</em>) – Contains the question database document in form of dictionary</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Quiz content in Json format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quizdatafactory">
+<span id="fbla-quizdatafactory"></span><h1>FBLA QuizDataFactory<a class="headerlink" href="#module-quizdatafactory" title="Permalink to this headline">¶</a></h1>
+<p>FBLA QuizDataFactory
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="quizdatafactory.QuizDataFactory">
+<em class="property">class </em><code class="descclassname">quizdatafactory.</code><code class="descname">QuizDataFactory</code><a class="reference internal" href="_modules/quizdatafactory.html#QuizDataFactory"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdatafactory.QuizDataFactory" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory for creating Quiz object corresponding to the type of question.
+Currently various types of questions are as below [‘dropdown’, ‘multiple_choice’, ‘fill_in_the_blank’, ‘true_false’, ‘matching’].</p>
+<dl class="method">
+<dt id="quizdatafactory.QuizDataFactory.all_quiz_types">
+<code class="descname">all_quiz_types</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizdatafactory.html#QuizDataFactory.all_quiz_types"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdatafactory.QuizDataFactory.all_quiz_types" title="Permalink to this definition">¶</a></dt>
+<dd><p>Returns all quiz types in an array.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Returns:</th><td class="field-body">Array containing all types of supported question types.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizdatafactory.QuizDataFactory.create_quiz_object">
+<code class="descname">create_quiz_object</code><span class="sig-paren">(</span><em>question_type</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizdatafactory.html#QuizDataFactory.create_quiz_object"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdatafactory.QuizDataFactory.create_quiz_object" title="Permalink to this definition">¶</a></dt>
+<dd><p>Factory method that creates quiz object for the question type.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>question_type</strong> (<em>string</em>) – Question type. The values can be one of [‘dropdown’, ‘multiple_choice’, ‘fill_in_the_blank’, ‘true_false’, ‘matching’]</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">A Quiz object which contains functionality corresponding to the question type.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quizdropdowndata">
+<span id="fbla-quizdropdowndata"></span><h1>FBLA QuizDropDownData<a class="headerlink" href="#module-quizdropdowndata" title="Permalink to this headline">¶</a></h1>
+<p>FBLA QuizDropDownData
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="quizdropdowndata.QuizDropDownData">
+<em class="property">class </em><code class="descclassname">quizdropdowndata.</code><code class="descname">QuizDropDownData</code><a class="reference internal" href="_modules/quizdropdowndata.html#QuizDropDownData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdropdowndata.QuizDropDownData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specific derived class that contains the functionality for question type: Drop Down. Functinality includes
+getting complete question data from the database, getting actual question, validating responses
+against correct answers.</p>
+<dl class="method">
+<dt id="quizdropdowndata.QuizDropDownData.check_correct_answer">
+<code class="descname">check_correct_answer</code><span class="sig-paren">(</span><em>question_object</em>, <em>responses</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizdropdowndata.html#QuizDropDownData.check_correct_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdropdowndata.QuizDropDownData.check_correct_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks correct answer and validates user response against the correct answer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question_object</strong> (<em>dictionary</em>) – Question Object all the question information (id, question content, correct answer)</li>
+<li><strong>responses</strong> (<em>dictionary</em>) – Responses selected by the quiz taker (user)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Validated response along with validated answer and boolean indicating whether answer is correct or not.</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizdropdowndata.QuizDropDownData.get_quiz_json">
+<code class="descname">get_quiz_json</code><span class="sig-paren">(</span><em>quiz_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizdropdowndata.html#QuizDropDownData.get_quiz_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdropdowndata.QuizDropDownData.get_quiz_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz json corresponding to the current question type object.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>quiz_json</strong> – Json containing data for all the question types.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">quiz json corresponding to the current question type object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizdropdowndata.QuizDropDownData.get_quiz_question_content">
+<code class="descname">get_quiz_question_content</code><span class="sig-paren">(</span><em>doc_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizdropdowndata.html#QuizDropDownData.get_quiz_question_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizdropdowndata.QuizDropDownData.get_quiz_question_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz question content for the question type in Json format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_dict</strong> (<em>dictionary</em>) – Contains the question database document in form of dictionary</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Quiz content in Json format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quizfillintheblanksdata">
+<span id="fbla-quizfillintheblanksdata"></span><h1>FBLA QuizFillInTheBlanksData<a class="headerlink" href="#module-quizfillintheblanksdata" title="Permalink to this headline">¶</a></h1>
+<p>FBLA QuizFillInTheBlanksData
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="quizfillintheblanksdata.QuizFillInTheBlanksData">
+<em class="property">class </em><code class="descclassname">quizfillintheblanksdata.</code><code class="descname">QuizFillInTheBlanksData</code><a class="reference internal" href="_modules/quizfillintheblanksdata.html#QuizFillInTheBlanksData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizfillintheblanksdata.QuizFillInTheBlanksData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specific derived class that contains the functionality for question type: Fill in the blanks. Functinality includes
+getting complete question data from the database, getting actual question, validating responses
+against correct answers.</p>
+<dl class="method">
+<dt id="quizfillintheblanksdata.QuizFillInTheBlanksData.check_correct_answer">
+<code class="descname">check_correct_answer</code><span class="sig-paren">(</span><em>question_object</em>, <em>responses</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizfillintheblanksdata.html#QuizFillInTheBlanksData.check_correct_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizfillintheblanksdata.QuizFillInTheBlanksData.check_correct_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks correct answer and validates user response against the correct answer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question_object</strong> (<em>dictionary</em>) – Question Object all the question information (id, question content, correct answer)</li>
+<li><strong>responses</strong> (<em>dictionary</em>) – Responses selected by the quiz taker (user)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Validated response along with validated answer and boolean indicating whether answer is correct or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizfillintheblanksdata.QuizFillInTheBlanksData.get_quiz_json">
+<code class="descname">get_quiz_json</code><span class="sig-paren">(</span><em>quiz_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizfillintheblanksdata.html#QuizFillInTheBlanksData.get_quiz_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizfillintheblanksdata.QuizFillInTheBlanksData.get_quiz_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz json corresponding to the current question type object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>quiz_json</strong> – Json containing data for all the question types.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">quiz json corresponding to the current question type object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizfillintheblanksdata.QuizFillInTheBlanksData.get_quiz_question_content">
+<code class="descname">get_quiz_question_content</code><span class="sig-paren">(</span><em>doc_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizfillintheblanksdata.html#QuizFillInTheBlanksData.get_quiz_question_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizfillintheblanksdata.QuizFillInTheBlanksData.get_quiz_question_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz question content for the question type in Json format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_dict</strong> (<em>dictionary</em>) – Contains the question database document in form of dictionary</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Quiz content in Json format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quizmatchingdata">
+<span id="fbla-quizmatchingdata"></span><h1>FBLA QuizMatchingData<a class="headerlink" href="#module-quizmatchingdata" title="Permalink to this headline">¶</a></h1>
+<p>FBLA QuizMatchingData
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="quizmatchingdata.QuizMatchingData">
+<em class="property">class </em><code class="descclassname">quizmatchingdata.</code><code class="descname">QuizMatchingData</code><a class="reference internal" href="_modules/quizmatchingdata.html#QuizMatchingData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizmatchingdata.QuizMatchingData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specific derived class that contains the functionality for question type: Matching. Functinality includes
+getting complete question data from the database, getting actual question, validating responses
+against correct answers.</p>
+<dl class="method">
+<dt id="quizmatchingdata.QuizMatchingData.check_correct_answer">
+<code class="descname">check_correct_answer</code><span class="sig-paren">(</span><em>question_object</em>, <em>responses</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizmatchingdata.html#QuizMatchingData.check_correct_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizmatchingdata.QuizMatchingData.check_correct_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks correct answer and validates user response against the correct answer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question_object</strong> (<em>dictionary</em>) – Question Object all the question information (id, question content, correct answer)</li>
+<li><strong>responses</strong> (<em>dictionary</em>) – Responses selected by the quiz taker (user)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Validated response along with validated answer and boolean indicating whether answer is correct or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizmatchingdata.QuizMatchingData.get_quiz_json">
+<code class="descname">get_quiz_json</code><span class="sig-paren">(</span><em>quiz_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizmatchingdata.html#QuizMatchingData.get_quiz_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizmatchingdata.QuizMatchingData.get_quiz_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz json corresponding to the current question type object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>quiz_json</strong> – Json containing data for all the question types.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">quiz json corresponding to the current question type object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizmatchingdata.QuizMatchingData.get_quiz_question_content">
+<code class="descname">get_quiz_question_content</code><span class="sig-paren">(</span><em>doc_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizmatchingdata.html#QuizMatchingData.get_quiz_question_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizmatchingdata.QuizMatchingData.get_quiz_question_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz question content for the question type in Json format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_dict</strong> (<em>dictionary</em>) – Contains the question database document in form of dictionary</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Quiz content in Json format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quizmultiplechoicedata">
+<span id="fbla-quizmultiplechoicedata"></span><h1>FBLA QuizMultipleChoiceData<a class="headerlink" href="#module-quizmultiplechoicedata" title="Permalink to this headline">¶</a></h1>
+<p>FBLA QuizMultipleChoiceData
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="quizmultiplechoicedata.QuizMultipleChoiceData">
+<em class="property">class </em><code class="descclassname">quizmultiplechoicedata.</code><code class="descname">QuizMultipleChoiceData</code><a class="reference internal" href="_modules/quizmultiplechoicedata.html#QuizMultipleChoiceData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizmultiplechoicedata.QuizMultipleChoiceData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specific derived class that contains the functionality for question type: Multiple Choice. Functinality includes
+getting complete question data from the database, getting actual question, validating responses
+against correct answers.</p>
+<dl class="method">
+<dt id="quizmultiplechoicedata.QuizMultipleChoiceData.check_correct_answer">
+<code class="descname">check_correct_answer</code><span class="sig-paren">(</span><em>question_object</em>, <em>responses</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizmultiplechoicedata.html#QuizMultipleChoiceData.check_correct_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizmultiplechoicedata.QuizMultipleChoiceData.check_correct_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks correct answer and validates user response against the correct answer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question_object</strong> (<em>dictionary</em>) – Question Object all the question information (id, question content, correct answer)</li>
+<li><strong>responses</strong> (<em>dictionary</em>) – Responses selected by the quiz taker (user)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Validated response along with validated answer and boolean indicating whether answer is correct or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizmultiplechoicedata.QuizMultipleChoiceData.get_quiz_json">
+<code class="descname">get_quiz_json</code><span class="sig-paren">(</span><em>quiz_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizmultiplechoicedata.html#QuizMultipleChoiceData.get_quiz_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizmultiplechoicedata.QuizMultipleChoiceData.get_quiz_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz json corresponding to the current question type object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>quiz_json</strong> – Json containing data for all the question types.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">quiz json corresponding to the current question type object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quizmultiplechoicedata.QuizMultipleChoiceData.get_quiz_question_content">
+<code class="descname">get_quiz_question_content</code><span class="sig-paren">(</span><em>doc_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quizmultiplechoicedata.html#QuizMultipleChoiceData.get_quiz_question_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quizmultiplechoicedata.QuizMultipleChoiceData.get_quiz_question_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz question content for the question type in Json format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_dict</strong> (<em>dictionary</em>) – Contains the question database document in form of dictionary</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Quiz content in Json format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
+<div class="section" id="module-quiztruefalsedata">
+<span id="fbla-quiztruefalsedata"></span><h1>FBLA QuizTrueFalseData<a class="headerlink" href="#module-quiztruefalsedata" title="Permalink to this headline">¶</a></h1>
+<p>FBLA QuizTrueFalseData
+.. moduleauthor:: Reyansh Bahl &lt;<a class="reference external" href="https://github.com/reybahl">https://github.com/reybahl</a>&gt;</p>
+<dl class="class">
+<dt id="quiztruefalsedata.QuizTrueFalseData">
+<em class="property">class </em><code class="descclassname">quiztruefalsedata.</code><code class="descname">QuizTrueFalseData</code><a class="reference internal" href="_modules/quiztruefalsedata.html#QuizTrueFalseData"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiztruefalsedata.QuizTrueFalseData" title="Permalink to this definition">¶</a></dt>
+<dd><p>Specific derived class that contains the functionality for question type: True False. Functinality includes
+getting complete question data from the database, getting actual question, validating responses
+against correct answers.</p>
+<dl class="method">
+<dt id="quiztruefalsedata.QuizTrueFalseData.check_correct_answer">
+<code class="descname">check_correct_answer</code><span class="sig-paren">(</span><em>question_object</em>, <em>responses</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quiztruefalsedata.html#QuizTrueFalseData.check_correct_answer"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiztruefalsedata.QuizTrueFalseData.check_correct_answer" title="Permalink to this definition">¶</a></dt>
+<dd><p>Checks correct answer and validates user response against the correct answer.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>question_object</strong> (<em>dictionary</em>) – Question Object all the question information (id, question content, correct answer)</li>
+<li><strong>responses</strong> (<em>dictionary</em>) – Responses selected by the quiz taker (user)</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first last">Validated response along with validated answer and boolean indicating whether answer is correct or not</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quiztruefalsedata.QuizTrueFalseData.get_quiz_json">
+<code class="descname">get_quiz_json</code><span class="sig-paren">(</span><em>quiz_json</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quiztruefalsedata.html#QuizTrueFalseData.get_quiz_json"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiztruefalsedata.QuizTrueFalseData.get_quiz_json" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz json corresponding to the current question type object</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>quiz_json</strong> – Json containing data for all the question types.</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">quiz json corresponding to the current question type object</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="quiztruefalsedata.QuizTrueFalseData.get_quiz_question_content">
+<code class="descname">get_quiz_question_content</code><span class="sig-paren">(</span><em>doc_dict</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/quiztruefalsedata.html#QuizTrueFalseData.get_quiz_question_content"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#quiztruefalsedata.QuizTrueFalseData.get_quiz_question_content" title="Permalink to this definition">¶</a></dt>
+<dd><p>Gets quiz question content for the question type in Json format.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><strong>doc_dict</strong> (<em>dictionary</em>) – Contains the question database document in form of dictionary</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body">Quiz content in Json format.</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="module-databaseconnect">
 <span id="fbla-database-connection"></span><h1>FBLA Database Connection<a class="headerlink" href="#module-databaseconnect" title="Permalink to this headline">¶</a></h1>
 <p>FBLA Database Singleton
@@ -744,6 +1182,13 @@ that instance.</p>
 <li><a class="reference internal" href="#">Welcome to Reyansh Bahl’s FBLA Quizzer 2021’s documentation!</a></li>
 <li><a class="reference internal" href="#module-main">FBLA Main</a></li>
 <li><a class="reference internal" href="#module-quiz">FBLA Quiz</a></li>
+<li><a class="reference internal" href="#module-quizdata">FBLA QuizData</a></li>
+<li><a class="reference internal" href="#module-quizdatafactory">FBLA QuizDataFactory</a></li>
+<li><a class="reference internal" href="#module-quizdropdowndata">FBLA QuizDropDownData</a></li>
+<li><a class="reference internal" href="#module-quizfillintheblanksdata">FBLA QuizFillInTheBlanksData</a></li>
+<li><a class="reference internal" href="#module-quizmatchingdata">FBLA QuizMatchingData</a></li>
+<li><a class="reference internal" href="#module-quizmultiplechoicedata">FBLA QuizMultipleChoiceData</a></li>
+<li><a class="reference internal" href="#module-quiztruefalsedata">FBLA QuizTrueFalseData</a></li>
 <li><a class="reference internal" href="#module-databaseconnect">FBLA Database Connection</a></li>
 <li><a class="reference internal" href="#module-reports">FBLA User Past Reports</a></li>
 <li><a class="reference internal" href="#module-intelligentqa">FBLA IntelligentQA</a></li>
