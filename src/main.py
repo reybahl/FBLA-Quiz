@@ -13,6 +13,9 @@ from settings import Settings
 from reports import Reports
 from intelligentqa import IntelligentQA
 
+from datetime import datetime
+from pytz import timezone
+
 app = Flask(__name__)
 app.secret_key = "FBLA"
 
@@ -98,10 +101,14 @@ def quiz():
         
         if get_quiz_in_progress == 'true':
             quiz_in_progress = quiz_ref.get_quiz_in_progress(session['username'])
-            time = quiz_in_progress['timeTaken'].split(':')
-            minutes = int(time[0])
-            seconds = int(time[1])
-            totalSeconds = minutes * 60 + seconds
+            quiz_start_time = quiz_in_progress['startTime']
+            
+            eastern = timezone('US/Eastern')
+            current_time = datetime.now(eastern)
+
+            time_diff = current_time - quiz_start_time
+            totalSeconds = time_diff.seconds
+            
             if quiz_in_progress is not None:
                 # get correct answers of the quiz progress from the database
                 questions_answers = quiz_ref.get_correct_answers(quiz_in_progress)

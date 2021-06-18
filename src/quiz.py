@@ -55,11 +55,13 @@ class Quiz:
                 doc_dict = doc.to_dict()
                 quiz.append({'type': question_type, 'question': doc_dict})
                 quiz_object = quiz_factory.create_quiz_object(question_type)
-                currentstate_question = quiz_object.get_quiz_question_content(question_type, doc_dict)
+                currentstate_question = quiz_object.get_quiz_question_content(doc_dict)
                 currentstate.append(currentstate_question)
+        eastern = timezone('US/Eastern')
+        quiz_start_time = datetime.now(eastern)
         asyncio.run(connection.update_both_databases(primary_db=currentstate_ref, backup_db=currentstate_ref_backup, ref_type='doc',
                                                      task='write',
-                                                     data={'results': currentstate}))
+                                                     data={'results': currentstate, 'startTime': quiz_start_time}))
         return quiz
 
     def save_results(self, user, results, score, time_taken):
@@ -129,11 +131,13 @@ class Quiz:
             'currentstate')
 
         questions = quiz_in_progress_PrimaryRef.get().to_dict()['results']
+        start_time = quiz_in_progress_PrimaryRef.get().to_dict()['startTime']
         quiz_factory = QuizDataFactory()
         for question in questions:
             quiz_object = quiz_factory.create_quiz_object(question['type'])
             question['answer'] = quiz_object.get_quiz_json(quiz_json)
-        updated_quiz = {'results': questions, 'timeTaken': quiz_json['timeTaken']}
+        updated_quiz = {'results': questions, 'timeTaken': quiz_json['timeTaken'], 
+        'startTime': start_time}
         asyncio.run(connection.update_both_databases(primary_db=quiz_in_progress_PrimaryRef, backup_db=quiz_in_progress_BackupRef, ref_type='doc', task='write',
                                                      data=updated_quiz))
 
