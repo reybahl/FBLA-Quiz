@@ -3,11 +3,13 @@
 """
 from quizdata import QuizData
 
+
 class QuizTrueFalseData(QuizData):
     """Specific derived class that contains the functionality for question type: True False. Functinality includes
     getting complete question data from the database, getting actual question, validating responses
     against correct answers.
     """
+
     def get_quiz_question_content(self, doc_dict):
         """Gets quiz question content for the question type in Json format.
         
@@ -35,15 +37,15 @@ class QuizTrueFalseData(QuizData):
             correct_fixed = question['answer'].lower()
             boolcorrect = responses[question_object['type']][0].lower() == correct_fixed
         return {'type': question_object['type'],
-                        'question': question['content'],
-                        'answer': responses[question_object['type']][0],
-                        'correct': correct_answer,
-                        'boolcorrect': boolcorrect}
+                'question': question['content'],
+                'answer': responses[question_object['type']][0],
+                'correct': correct_answer,
+                'boolcorrect': boolcorrect}
 
-    def get_quiz_json(self,  quiz_json):
+    def get_quiz_json(self, quiz_json):
         """ Gets quiz json corresponding to the current question type object
         
         :param quiz_json: Json containing data for all the question types.
         :return: quiz json corresponding to the current question type object
         """
-        return quiz_json['true_false_answer']    
+        return quiz_json['true_false_answer']

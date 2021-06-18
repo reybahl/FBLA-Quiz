@@ -3,11 +3,13 @@
 """
 from quizdata import QuizData
 
+
 class QuizMultipleChoiceData(QuizData):
     """Specific derived class that contains the functionality for question type: Multiple Choice. Functinality includes
     getting complete question data from the database, getting actual question, validating responses
     against correct answers.
     """
+
     def get_quiz_question_content(self, doc_dict):
         """Gets quiz question content for the question type in Json format.
         
@@ -28,19 +30,22 @@ class QuizMultipleChoiceData(QuizData):
         :return: Validated response along with validated answer and boolean indicating whether answer is correct or not
         """
         question = question_object['question']
-        correct_answer = question['answer'] if type(question['answer']) == str else ", ".join(question['answer'])
-        #Sorts answer if it is a list
+        correct_answer = question['answer'] if type(question['answer']) == str else ', '.join(question['answer'])
+        # Sorts answer if it is a list
         correct_sorted = sorted(question['answer']) if type(question['answer']) == list else question['answer']
-        #lowers all the answer choices
+        # lowers all the answer choices
         correct_lowered = correct_sorted.lower() if type(correct_sorted) == str else [x.lower() for x in correct_sorted]
-        response = ", ".join(responses['multiple_choice']) if type(responses['multiple_choice']) == list else responses['multiple_choice']
-        response_sorted = sorted(responses['multiple_choice']) if len(responses['multiple_choice']) > 1 else responses['multiple_choice'][0]
-        response_lowered = response_sorted.lower() if type(response_sorted) == str else [x.lower() for x in response_sorted]
+        response = ', '.join(responses['multiple_choice']) if type(responses['multiple_choice']) == list else responses[
+            'multiple_choice']
+        response_sorted = sorted(responses['multiple_choice']) if len(responses['multiple_choice']) > 1 else \
+            responses['multiple_choice'][0]
+        response_lowered = response_sorted.lower() if type(response_sorted) == str else [x.lower() for x in
+                                                                                         response_sorted]
         return {'type': question_object['type'],
-                        'question': question['content'],
-                        'answer': response,
-                        'correct': correct_answer,
-                        'boolcorrect': response_lowered == correct_lowered}
+                'question': question['content'],
+                'answer': response,
+                'correct': correct_answer,
+                'boolcorrect': response_lowered == correct_lowered}
 
     def get_quiz_json(self, quiz_json):
         """ Gets quiz json corresponding to the current question type object

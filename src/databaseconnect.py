@@ -2,11 +2,11 @@
 .. moduleauthor:: Reyansh Bahl <https://github.com/reybahl>
 """
 
+import asyncio
+
 import firebase_admin
 from firebase_admin import credentials
 from firebase_admin import firestore
-import asyncio
-from datetime import datetime
 from singleton import Singleton
 
 
@@ -25,13 +25,17 @@ class Connection:
     Contains dynamic backup feature: It writes data to firestore database as the backend
     and stores data in primary as well as backup database instance.
     """
+
     def __init__(self):
-        primary_credentials = credentials.Certificate("src/serviceAccountKey.json")
+        # Get database credentials from the service account key json generated from Firestore. This file contains the
+        # private key for the primary database.
+        primary_credentials = credentials.Certificate('src/serviceAccountKey.json')
+        # Initialize the application object corresponding to the primary database.
         primary_app = firebase_admin.initialize_app(primary_credentials, {
             'projectId': 'firestoredemo-2',
         }, name='primary_app')
         self.primary_db_ref = firestore.client(primary_app)
-        backup_credentials = credentials.Certificate("src/serviceAccountKeyBackup.json")
+        backup_credentials = credentials.Certificate('src/serviceAccountKeyBackup.json')
         backup_app = firebase_admin.initialize_app(backup_credentials, {
             'projectId': 'fir-demo-537d0',
         }, name='backup_app')

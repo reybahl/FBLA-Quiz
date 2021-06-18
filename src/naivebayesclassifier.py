@@ -13,6 +13,7 @@ class IntelligentHelpNaiveBayesClassifier:
     """Classifies the question category for question asked by the user
     in Get Help chat window.
     """
+
     def __init__(self):
         """Checks if the required NLTK(Natural Language Toolkit) 
         data is downloaded, and if not, downloads them
@@ -21,7 +22,7 @@ class IntelligentHelpNaiveBayesClassifier:
             nltk.data.find('tokenizers/punkt')
         except LookupError:
             nltk.download('punkt')
-        
+
         try:
             nltk.data.find('stopwords')
         except LookupError:
@@ -43,9 +44,10 @@ class IntelligentHelpNaiveBayesClassifier:
         training_data = []
         for doc in docs:
             training_data.append((doc.to_dict()['text'], doc.to_dict()['label']))
-        
+
         classifier = NaiveBayesClassifier(training_data)
-        text_tokens = word_tokenize(question) #Tokenizes the question
-        tokens_without_stopwords = [word for word in text_tokens if not word in stopwords.words()] #Filters stopwords(very common words) from the question
-        filtered_question = (" ").join(tokens_without_stopwords)
+        text_tokens = word_tokenize(question)  # Tokenizes the question
+        tokens_without_stopwords = [word for word in text_tokens if
+                                    not word in stopwords.words()]  # Filters stopwords(very common words) from the question
+        filtered_question = (' ').join(tokens_without_stopwords)
         return classifier.classify(filtered_question)

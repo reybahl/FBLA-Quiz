@@ -11,10 +11,11 @@ class IntelligentQA:
     Contains dynamic backup feature: It writes data to firestore database as the backend
     and stores data in primary as well as backup database instance.
     """
+
     def __init__(self):
         """Initializes object and creates a Naive Bayes Classifier object
         """
-        self.intelligentHelpNaivebayesclassifier = IntelligentHelpNaiveBayesClassifier()
+        self.intelligent_help_naive_bayes_classifier = IntelligentHelpNaiveBayesClassifier()
 
     def get_help(self, question_json):
         """Intelligent Q&A feature: This gets called when user types a
@@ -29,16 +30,17 @@ class IntelligentQA:
         :return: List of questions and answers corresponding to category of the 
                 question that user has asked.
         """
-        classification = self.intelligentHelpNaivebayesclassifier.classify(question_json['question'])
+        classification = self.intelligent_help_naive_bayes_classifier.classify(question_json['question'])
         connection = Connection.Instance()
-        q_a_list_fromDatabase = connection.get_primary_database().collection('help').document(classification).collection('Q&A').stream()
-        q_a_list = []
+        question_answer_list_from_database = connection.get_primary_database().collection('help').document(
+            classification).collection('Q&A').stream()
+        question_answer_list = []
 
-        for doc in q_a_list_fromDatabase:
-            qa = doc.to_dict()
-            q_a_list.append(qa)
+        for doc in question_answer_list_from_database:
+            question_answer = doc.to_dict()
+            question_answer_list.append(question_answer)
 
-        return q_a_list
+        return question_answer_list
 
     def get_frequently_asked_questions(self):
         """Get the list of all the faqs from the database.
@@ -52,7 +54,7 @@ class IntelligentQA:
         for doc in docs:
             category = doc.id
             questions_of_category = help_questions_answers.document(category).collection('Q&A').stream()
-            
+
             for question in questions_of_category:
                 questions.append({'question': question.to_dict()['question'],
                                   'answer': question.to_dict()['answer']})

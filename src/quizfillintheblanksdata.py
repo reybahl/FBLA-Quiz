@@ -3,11 +3,13 @@
 """
 from quizdata import QuizData
 
+
 class QuizFillInTheBlanksData(QuizData):
     """Specific derived class that contains the functionality for question type: Fill in the blanks. Functinality includes
     getting complete question data from the database, getting actual question, validating responses
     against correct answers.
     """
+
     def get_quiz_question_content(self, doc_dict):
         """Gets quiz question content for the question type in Json format.
         
@@ -27,14 +29,14 @@ class QuizFillInTheBlanksData(QuizData):
         :return: Validated response along with validated answer and boolean indicating whether answer is correct or not
         """
         question = question_object['question']
-        correct_answer = " or ".join(question['answer']) if type(question['answer']) == list else question['answer']
-        lowered_correct_answer = [answer.lower() for answer in question['answer']] 
+        correct_answer = ' or '.join(question['answer']) if type(question['answer']) == list else question['answer']
+        lowered_correct_answer = [answer.lower() for answer in question['answer']]
         return {'type': question_object['type'],
-                        'question': question['content'],
-                        'answer': responses['fill_in_the_blank'][0],
-                            'correct': correct_answer,
-                        'boolcorrect': responses[question_object['type']][0].lower() in lowered_correct_answer}
-        
+                'question': question['content'],
+                'answer': responses['fill_in_the_blank'][0],
+                'correct': correct_answer,
+                'boolcorrect': responses[question_object['type']][0].lower() in lowered_correct_answer}
+
     def get_quiz_json(self, quiz_json):
         """ Gets quiz json corresponding to the current question type object
         
