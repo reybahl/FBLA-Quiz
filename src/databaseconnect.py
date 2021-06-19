@@ -35,7 +35,11 @@ class Connection:
             'projectId': 'firestoredemo-2',
         }, name='primary_app')
         self.primary_db_ref = firestore.client(primary_app)
+
+        # Get database credentials from the service account key json generated from Firestore. This file contains the
+        # private key for the backup database.
         backup_credentials = credentials.Certificate('src/serviceAccountKeyBackup.json')
+        # Initialize the application object corresponding to the backup database.
         backup_app = firebase_admin.initialize_app(backup_credentials, {
             'projectId': 'fir-demo-537d0',
         }, name='backup_app')

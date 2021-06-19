@@ -39,6 +39,8 @@ class Settings:
         :return: Settings corresponding to the user
         """
         connection = Connection.Instance()
+        # By default, reports will have 18 px font, and will include the correct answer for incorrectly
+        # answered questions, the score, and question numbers
         default_settings = {
             'settings': {
                 'Name': [''],
@@ -46,8 +48,6 @@ class Settings:
                 'Username': [user],
                 'checkbox': ['showwronganswer', 'score', 'q_number']
             }
-
-            # By default, reports will have 18 px font, and will include the correct answer for incorrectly answered questions, the score, and question numbers
         }
         users_primary_ref = connection.get_primary_database().collection('users')
         current_user_settings_primary_ref = users_primary_ref.document(user).collection('settings').document('settings')

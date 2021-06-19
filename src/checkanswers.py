@@ -1,7 +1,11 @@
+"""FBLA CheckAnswers
+.. moduleauthor:: Reyansh Bahl <https://github.com/reybahl>
+"""
 from databaseconnect import Connection
 from quizdatafactory import QuizDataFactory
 
 connection = Connection.Instance()
+
 
 def convert_to_dict(responses):
     """Converts the users responses into a dictionary, 
@@ -14,7 +18,7 @@ def convert_to_dict(responses):
     for a, b in responses:
         if b == 'multiple_choice':
             formatted_dict.setdefault(b, []).append(a)
-        elif "matching" in a:
+        elif 'matching' in a:
             matching_dict[a.replace('matching_', '')] = b
         else:
             formatted_dict.setdefault(a, []).append(b)
@@ -27,11 +31,11 @@ def check(questions, responses):
     """Checks the user's responses based on the correct question and answer
     """
     responses = convert_to_dict(responses)
-    results = [] #Results list
+    results = []  # Results list
 
-    #Create quiz factory
+    # Create quiz factory
     quiz_factory = QuizDataFactory()
-    
+
     for question_object in questions:
         # Factory creates quiz object for the passed in question type
         quiz_object = quiz_factory.create_quiz_object(question_object['type'])
