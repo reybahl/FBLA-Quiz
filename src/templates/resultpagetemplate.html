@@ -28,6 +28,10 @@
             <h2 class="h4" style="text-align: center;">Time submitted : {{time}}</h2>
             {% endif %}
 
+            {% if 'time_taken' in prefs['checkbox'] %}
+            <h2 class="h4" style="text-align: center;">Time taken : {{time_taken}}</h2>
+            {% endif %}
+
             {% for num, question in enumerate(results) %}
                 {% if question['boolcorrect'] %}
                     <div font-size="{{prefs['font'][0]}}" style="color:green; font-size:{{prefs['font'][0]}}px;">

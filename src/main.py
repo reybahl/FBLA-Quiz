@@ -159,9 +159,10 @@ def generate_report():
         date = date_time_submitted.date()
         # extracts time from date_time_submitted
         time = date_time_submitted.time()
+        time_taken = results['timetaken']
 
         rendered = render_template('resultpagetemplate.html', enumerate=enumerate, results=results['results'],
-                                   score=results['score'], date=date, time=time,
+                                   score=results['score'], date=date, time=time, time_taken=time_taken,
                                    prefs=settings_ref.get_prefs(session['username'])['settings'], sorted=sorted)
         pdf = pdfkit.from_string(rendered, False, options)
 
@@ -203,6 +204,7 @@ def settings():
         'show_name': 'Your Name',
         'date': 'Date Submitted',
         'time': 'Time submitted',
+        'time_taken' : 'Time Taken',
         'score': 'Your Score',
         'showcorrectanswer': 'Correct Answers',
         'showwronganswer': 'Wrong Answers'
@@ -303,7 +305,7 @@ def faq_help():
     :return: Response object that contains FAQs page.
     """
     return render_template('helppage.html', faqs=intelligent_qa_ref.get_frequently_asked_questions())
-
+    
 
 @app.route('/getStarted', methods=['GET'])
 def get_started():
