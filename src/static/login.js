@@ -1,7 +1,10 @@
-/* Sign in with email and password using firebase. 
-Display error messages if email or password are not filled out
-or display error messages coming from FireBase. */
-
+/**
+*
+* Sign in with email and password using firebase.
+* Display error messages if email or password are not filled out
+* or display error messages coming from FireBase.
+*
+*/
 function SignInWithEmail() {
     var email = document.getElementById("inputEmail").value; //get email
     var password = document.getElementById("inputPassword").value; //get password
@@ -33,7 +36,11 @@ function SignInWithEmail() {
 
 }
 
-// Register with new email and password. Authentication happens via Firebase Authentication
+/**
+*
+* Register with new email and password. Authentication happens via Firebase Authentication
+*
+*/
 function RegisterWithEmail() {
     var email = document.getElementById("registerEmail").value;
     var password = document.getElementById("registerPassword").value;
@@ -69,9 +76,13 @@ function RegisterWithEmail() {
     }
 }
 
-// Reset password. Users will need to enter the email id
-// that was used to register and on clicking reset, an email will be sent
-// to the user where they can click on a link and reset their password.
+
+/**
+ *
+ * Reset password. Users will need to enter the email id that was used to register and on clicking reset,
+ * an email will be sent to the user where they can click on a link and reset their password.
+ *
+ */
 function ResetPassword() {
     var auth = firebase.auth();
     var emailAddress = document.getElementById("resetPasswordEmail").value;
@@ -87,7 +98,16 @@ function ResetPassword() {
         $("#resetPasswordErrorMessage").show();
     });
 }
-// Sign-in with Google.
+
+/**
+ *
+ * Sign-in with Google. This function is called when the Google sign-in is successful.
+ * an email will be sent to the user where they can click on a link and reset their password.
+ *
+ * @param Object googleUser - GoogleUser object represents one user account and we only use
+ * the email id, which can be retrieved from the basic profile information.
+ *
+ */
 function onSignIn(googleUser) {
     var profile = googleUser.getBasicProfile();
     var email = profile.getEmail();
@@ -97,7 +117,11 @@ function onSignIn(googleUser) {
         });
 }
 
-// Sign-in as a guest user
+/**
+ *
+ * Sign-in as a guest user
+ *
+ */
 function signInAsGuest() {
     var email = 'Guest';
     $.post('login', { email: email },
